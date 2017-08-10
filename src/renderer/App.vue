@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: 'lockok'
+    name: 'vocabook'
   }
 </script>
 

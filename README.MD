@@ -1,4 +1,4 @@
-# lockok
+# lockon
 
 > An electron-vue project
 

@@ -1,9 +1,9 @@
 {
-  "name": "lockok",
+  "name": "vocabook",
   "version": "0.0.0",
   "author": "chenwj <731028571@qq.com>",
   "description": "An electron-vue project",
-  "license": null,
+  "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -19,7 +19,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "lockok",
+    "productName": "vocabook",
     "appId": "org.simulatedgreg.electron-vue",
     "directories": {
       "output": "build"
@@ -53,14 +53,15 @@
     }
   },
   "dependencies": {
-    "vue": "^2.3.3",
     "axios": "^0.16.1",
+    "vue": "^2.3.3",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
     "vuex": "^2.3.1"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
+    "babel-eslint": "^7.0.0",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-preset-env": "^1.3.3",
@@ -75,15 +76,14 @@
     "del": "^2.2.1",
     "devtron": "^1.1.0",
     "electron": "^1.7.2",
+    "electron-builder": "^19.10.0",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.0.1",
-    "electron-builder": "^19.10.0",
-    "babel-eslint": "^7.0.0",
     "eslint": "^3.13.1",
+    "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.3.0",
     "eslint-plugin-html": "^2.0.0",
-    "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "^3.4.0",
@@ -93,6 +93,7 @@
     "html-webpack-plugin": "^2.16.1",
     "json-loader": "^0.5.4",
     "multispinner": "^0.2.1",
+    "sass-loader": "^6.0.6",
     "style-loader": "^0.18.1",
     "url-loader": "^0.5.7",
     "vue-html-loader": "^1.2.2",
