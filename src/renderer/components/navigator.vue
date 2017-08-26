@@ -109,7 +109,8 @@
         win.on('closed', () => {
           win = null
         })
-        win.loadURL(`${location.origin}/#/config`)
+        win.loadURL(`${location.href.substr(0, location.href.indexOf('#'))}#/config`)
+//        win.webContents.openDevTools()
       }
     }
   }
