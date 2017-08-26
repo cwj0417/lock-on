@@ -5,16 +5,36 @@
             margin-top: 50px;
             ul {
                 margin: 0;
-                padding: 20px;
+                padding: 20px 0;
                 li {
                     list-style: none;
-                    font-size: 28px;
+                    font-size: 25px;
                     color: #909090;
                     text-align: center;
                     padding-top: 30px;
                     cursor: pointer;
-                    i.active {
-                        color: #1fb922;
+                    p.nv-icon {
+                        transition: all 1s;
+                    }
+                    p.nv-txt {
+                        transition: all .5s;
+                        font-size: 12px;
+                    }
+                    &:hover {
+                        p.nv-icon {
+                            color: #9966ff;
+                        }
+                        p.nv-txt {
+                            color: #6666ff;
+                        }
+                    }
+                }
+                li.active {
+                    p.nv-icon {
+                        color: #6699ff;
+                    }
+                    p.nv-txt {
+                        color: #66ccff;
                     }
                 }
             }
@@ -25,8 +45,15 @@
     <div class="full-height pull-left full-width navigator app-drag">
         <div class="ul-wrap">
             <ul>
-                <li v-for="item of nav">
-                    <i :class="[item.icon, 'app-non-drag', {active: cur === item.url}]" @click="jump(item.url)"></i>
+                <li v-for="item of nav" :class="{active: cur === item.url}" @click="jump(item.url)">
+                    <p class="nv-icon">
+                        <i :class="[item.icon, 'app-non-drag']"></i>
+                    </p>
+                    <p class="nv-txt">
+                        <span>
+                            {{item.desc}}
+                        </span>
+                    </p>
                 </li>
                 <li>
                     <i class="fa fa-cog" @click="openConfig"></i>
@@ -39,22 +66,26 @@
   export default {
     data () {
       return {
-        cur: '/wordInput',
+        cur: '/search',
         nav: [{
-          url: '/wordInput',
-          desc: '输入单词',
-          icon: 'fa fa-plus-square-o'
+          url: '/search',
+          desc: 'search',
+          icon: 'fa fa-search'
+        }, {
+          url: '/quickReview',
+          desc: 'recent',
+          icon: 'fa fa-window-restore'
         }, {
           url: '/explore',
-          desc: '随便看看',
+          desc: 'explore',
           icon: 'fa fa-podcast'
         }, {
           url: '/review',
-          desc: '复习',
+          desc: 'review',
           icon: 'fa fa-eye'
         }, {
           url: '/chart',
-          desc: '报表',
+          desc: 'chart',
           icon: 'fa fa-line-chart'
         }]
       }

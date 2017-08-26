@@ -22,9 +22,14 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 608,
     useContentSize: true,
-    width: 1000,
-    titleBarStyle: 'hidden'
+    width: 1140,
+    titleBarStyle: 'hidden',
+    webPreferences: {
+      webSecurity: false
+    }
   })
+
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.loadURL(winURL)
 

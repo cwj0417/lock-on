@@ -6,7 +6,7 @@
         <div style='width: 68px;' class="full-height pull-left">
             <navigator></navigator>
         </div>
-        <div class="full-height pull-left">
+        <div class="full-height pull-left" style="width: calc(100% - 68px);">
             <router-view></router-view>
         </div>
     </div>
