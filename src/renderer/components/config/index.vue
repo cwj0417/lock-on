@@ -59,7 +59,7 @@
             单词配置...
         </div>
         <div class="content" v-if="cur === 'theme'">
-            主题配置...
+            <theme></theme>
         </div>
         <div class="content" v-if="cur === 'explore'">
             发现配置...
@@ -67,7 +67,10 @@
     </div>
 </template>
 <script>
+  import theme from './theme.vue'
+
   export default {
+    components: {theme},
     data () {
       return {
         cur: 'word',
