@@ -17,6 +17,7 @@ const actions = {
   'config/setTheme' ({commit}, theme) {
     log.info('set theme', theme)
     commit('config/setTheme', theme)
+    commit('ipc/theme', theme)
     db.update({
       type: 'theme'
     }, {

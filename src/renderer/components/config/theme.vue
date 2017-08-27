@@ -66,7 +66,6 @@
       }),
       setTheme (pl) {
         this._setTheme(pl)
-        this.$nextTick(this.$forceUpdate)
       }
     }
   }

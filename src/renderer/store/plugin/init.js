@@ -5,7 +5,7 @@ let db = dbs.get('config')
 export default store => {
   log.info('config init...')
 
-// load theme
+  // load theme
 
   db.find({
     type: 'theme'

@@ -6,7 +6,15 @@
 
 <script>
   export default {
-    name: 'vocabook'
+    name: 'vocabook',
+    watch: {
+      '$store.state.config.theme' (value) {
+        document.body.className = value
+      }
+    },
+    mounted () {
+      document.body.className = this.$store.state.config.theme
+    }
   }
 </script>
 
@@ -33,6 +41,7 @@
     .hand {
         cursor: pointer;
     }
+
     .full-height {
         height: 100%;
     }

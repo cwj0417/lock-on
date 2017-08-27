@@ -1,2 +1,3 @@
 import init from './init'
-export default [init]
+import message from './message'
+export default [init, message]
