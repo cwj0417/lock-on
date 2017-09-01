@@ -33,6 +33,14 @@
                 original
             </span>
         </div>
+        <div class="ct-item" :class="{active : theme === 'red'}" @click="setTheme('red')">
+            <div class="ct-color" style="background: #b72712">
+
+            </div>
+            <span class="ct-txt">
+                red
+            </span>
+        </div>
         <div class="ct-item" :class="{active : theme === 'night'}" @click="setTheme('night')">
             <div class="ct-color" style="background: gray">
 

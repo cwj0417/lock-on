@@ -18,10 +18,11 @@
   }
 </script>
 
-<style lang="scss">
+<style >
     /* global css */
     @import '../../node_modules/font-awesome/css/font-awesome.css';
     @import '../../node_modules/normalize.css/normalize.css';
+    @import './styles/theme.css';
 
     html, body, #app {
         height: 100%;

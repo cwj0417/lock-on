@@ -23,6 +23,10 @@ export default new Router({
     name: 'config',
     component: require('@/components/config')
   }, {
+    path: '/mini',
+    name: 'mini',
+    component: require('@/components/mini')
+  }, {
     path: '*',
     redirect: '/'
   }]

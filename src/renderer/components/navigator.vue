@@ -1,6 +1,6 @@
 <style lang="scss">
     .navigator {
-        background: #262626;
+        background: var(--bg);
         .ul-wrap {
             margin-top: 50px;
             ul {
@@ -9,7 +9,7 @@
                 li {
                     list-style: none;
                     font-size: 25px;
-                    color: #909090;
+                    color: var(--txt);
                     text-align: center;
                     padding-top: 30px;
                     cursor: pointer;
@@ -22,19 +22,19 @@
                     }
                     &:hover {
                         p.nv-icon {
-                            color: #9966ff;
+                            color: var(--major);
                         }
                         p.nv-txt {
-                            color: #6666ff;
+                            color: var(--minor);
                         }
                     }
-                }
-                li.active {
-                    p.nv-icon {
-                        color: #6699ff;
-                    }
-                    p.nv-txt {
-                        color: #66ccff;
+                    &.active {
+                        p.nv-icon {
+                            color: var(--major);
+                        }
+                        p.nv-txt {
+                            color: var(--minor);
+                        }
                     }
                 }
             }
@@ -42,7 +42,7 @@
     }
 </style>
 <template>
-    <div class="full-height pull-left full-width navigator app-drag">
+    <div class="full-height pull-left full-width navigator">
         <div class="ul-wrap">
             <ul>
                 <li v-for="item of nav" :class="{active: cur === item.url}" @click="jump(item.url)">
@@ -96,21 +96,7 @@
         this.$router.push(url)
       },
       openConfig () {
-        let {BrowserWindow} = this.$electron.remote
-        let win = new BrowserWindow({
-          width: 430,
-          height: 404,
-          titleBarStyle: 'hidden',
-          resizable: false,
-          minimizable: false,
-          maximizable: false,
-          alwaysOnTop: true
-        })
-        win.on('closed', () => {
-          win = null
-        })
-        win.loadURL(`${location.href.substr(0, location.href.indexOf('#'))}#/config`)
-//        win.webContents.openDevTools()
+        this.$electron.ipcRenderer.send('openConfig', `${location.href.substr(0, location.href.indexOf('#'))}#/config`)
       }
     }
   }

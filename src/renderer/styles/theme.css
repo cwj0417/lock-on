@@ -1,0 +1,24 @@
+.original {
+    --bg: #eeeeee;
+    --txt: #c7c7c7;
+    --major: #545454;
+    --minor: #2e2e2e;
+}
+.red {
+    --bg: #fafafa;
+    --txt: #414141;
+    --major: #b72712;
+    --minor: #d71a22;
+}
+.night {
+    --bg: #1c1f2b;
+    --txt: #909090;
+    --major: #4164d9;
+    --minor: #4164d9;
+}
+.bright {
+    --bg: #fafafa;
+    --txt: #414141;
+    --major: #1fb922;
+    --minor: #008033;
+}

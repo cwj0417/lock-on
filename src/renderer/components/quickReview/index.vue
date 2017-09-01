@@ -1,4 +1,4 @@
-<style scoped>
+<style scoped lang="scss">
     td {
         border: 1px solid black;
     }
