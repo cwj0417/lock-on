@@ -34,7 +34,7 @@ const miniConfig = {
   show: false,
   width: 430,
   height: 404,
-  resizable: false,
+  resizable: true,
   minimizable: false,
   maximizable: false,
   alwaysOnTop: true,
