@@ -46,7 +46,6 @@ const configConfig = {
   width: 430,
   height: 404,
   titleBarStyle: 'customButtonsOnHover',
-  frame: false,
   resizable: false,
   minimizable: false,
   maximizable: false
