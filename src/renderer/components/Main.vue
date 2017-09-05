@@ -51,7 +51,7 @@
     <div class="full-height">
         <div class="app-head app-drag clearfix">
             <div class="logo full-height pull-left">
-                <i class="fa fa-apple"></i>
+                <i class="fa fa-motorcycle"></i>
                 vocabook
             </div>
             <div class="operate full-height pull-right">
