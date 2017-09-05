@@ -20,9 +20,14 @@
   },
   "build": {
     "productName": "vocabook",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "com.vocabook.app",
     "directories": {
       "output": "build"
+    },
+    "publish": {
+      "provider": "github",
+      "repo": "https://github.com/fjonas/lock-on",
+      "owner": "fjonas"
     },
     "files": [
       "dist/electron/**/*"
