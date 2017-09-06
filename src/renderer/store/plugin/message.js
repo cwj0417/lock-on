@@ -10,3 +10,7 @@ export default store => {
     store.commit('config/setTheme', arg)
   })
 }
+
+ipcRenderer.on('message', (event, arg) => {
+  console.log('%c arg', 'font-size:13px;color:red;')
+})

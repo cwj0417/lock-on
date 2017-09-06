@@ -1,8 +1,31 @@
 'use strict'
 
-import { app, BrowserWindow, ipcMain, webContents } from 'electron'
+import { app, BrowserWindow, ipcMain, webContents, Menu } from 'electron'
 
 import { autoUpdater } from 'electron-updater'
+
+const name = app.getName()
+
+let template = [{
+  label: name,
+  submenu: [
+    {
+      label: 'About ' + name,
+      role: 'about'
+    },
+    {
+      label: 'open dev tools',
+      click () {
+        mainWindow.webContents.openDevTools()
+      }
+    },
+    {
+      label: 'Quit',
+      accelerator: 'Command+Q',
+      click () { app.quit() }
+    }
+  ]
+}]
 
 /**
  * Set `__static` path to static files in production
@@ -51,6 +74,10 @@ const configConfig = {
   resizable: false,
   minimizable: false,
   maximizable: false
+}
+
+function sendStatusToWindow (text) {
+  mainWindow.webContents.send('message', text)
 }
 
 function createWindow () {
@@ -117,8 +144,28 @@ app.on('activate', () => {
 autoUpdater.on('update-downloaded', () => {
   autoUpdater.quitAndInstall()
 })
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...')
+})
+autoUpdater.on('update-available', (info) => {
+  sendStatusToWindow('Update available.')
+})
+autoUpdater.on('update-not-available', (info) => {
+  sendStatusToWindow('Update not available.')
+})
+autoUpdater.on('error', (e) => {
+  sendStatusToWindow('Error in auto-updater.')
+})
+autoUpdater.on('download-progress', (progressObj) => {
+  let logMessage = 'Download speed: ' + progressObj.bytesPerSecond
+  logMessage = logMessage + ' - Downloaded ' + progressObj.percent + '%'
+  logMessage = logMessage + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
+  sendStatusToWindow(logMessage)
+})
 
 app.on('ready', () => {
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
 
