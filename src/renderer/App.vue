@@ -14,6 +14,9 @@
     },
     mounted () {
       document.body.className = this.$store.state.config.theme
+      this.$electron.ipcRenderer.on('message', (event, arg) => {
+        console.log(`%c ${arg}`, 'font-size:13px;color:red;')
+      })
     }
   }
 </script>

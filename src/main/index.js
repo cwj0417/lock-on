@@ -20,6 +20,13 @@ let template = [{
       }
     },
     {
+      label: 'check update',
+      click () {
+        autoUpdater.setFeedURL('https://github.com/fjonas/lock-on/releases/download/v0.0.5')
+        autoUpdater.checkForUpdates()
+      }
+    },
+    {
       label: 'Quit',
       accelerator: 'Command+Q',
       click () { app.quit() }
@@ -77,6 +84,7 @@ const configConfig = {
 }
 
 function sendStatusToWindow (text) {
+  console.log('%c ' + text, 'color: red')
   mainWindow.webContents.send('message', text)
 }
 
@@ -89,6 +97,7 @@ function createWindow () {
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
+    sendStatusToWindow('ttt')
   })
 
   // mainWindow.webContents.openDevTools()
@@ -154,7 +163,7 @@ autoUpdater.on('update-not-available', (info) => {
   sendStatusToWindow('Update not available.')
 })
 autoUpdater.on('error', (e) => {
-  sendStatusToWindow('Error in auto-updater.')
+  sendStatusToWindow(e.toString())
 })
 autoUpdater.on('download-progress', (progressObj) => {
   let logMessage = 'Download speed: ' + progressObj.bytesPerSecond
