@@ -1,41 +1,37 @@
 <style lang="scss">
     .navigator {
         background: var(--bg);
-        .ul-wrap {
-            margin-top: 50px;
-            ul {
-                margin: 0;
-                padding: 20px 0;
-                li {
-                    list-style: none;
-                    font-size: 25px;
-                    color: var(--txt);
-                    text-align: center;
-                    padding-top: 30px;
-                    cursor: pointer;
-                    p.nv-icon {
-                        transition: all 1s;
+        overflow: scroll;
+        user-select: none;
+        cursor: default;
+        ul {
+            li {
+                line-height: 30px;
+                text-indent: 15px;
+                font-size: 13px;
+                font-weight: 500;
+                margin-left: 1px;
+                border-left: 3px solid var(--bg);
+                i {
+                    text-indent: 0;
+                }
+                span {
+                    padding-left: 5px;
+                }
+                &.title {
+                    line-height: 20px;
+                    color: #999999;
+                    font-size: 12px;
+                    padding-top: 15px;
+                    text-indent: 2px;
+                    &:first-child {
+                        padding-top: 2px;
                     }
-                    p.nv-txt {
-                        transition: all .5s;
-                        font-size: 12px;
-                    }
-                    &:hover {
-                        p.nv-icon {
-                            color: var(--major);
-                        }
-                        p.nv-txt {
-                            color: var(--minor);
-                        }
-                    }
-                    &.active {
-                        p.nv-icon {
-                            color: var(--major);
-                        }
-                        p.nv-txt {
-                            color: var(--minor);
-                        }
-                    }
+                }
+                &.active {
+                    border-left: 3px solid var(--minor);
+                    background: var(--bg-active);
+                    color: var(--txt-dark);
                 }
             }
         }
@@ -43,60 +39,78 @@
 </style>
 <template>
     <div class="full-height pull-left full-width navigator">
-        <div class="ul-wrap">
-            <ul>
-                <li v-for="item of nav" :class="{active: cur === item.url}" @click="jump(item.url)">
-                    <p class="nv-icon">
-                        <i :class="[item.icon, 'app-non-drag']"></i>
-                    </p>
-                    <p class="nv-txt">
-                        <span>
-                            {{item.desc}}
-                        </span>
-                    </p>
-                </li>
-                <li>
-                    <i class="fa fa-cog" @click="openConfig"></i>
-                </li>
-            </ul>
-        </div>
+        <ul>
+            <li class="title">
+                <span>recommended</span>
+            </li>
+            <li :class="{active: cur === 'home'}" @click="cur = 'home'">
+                <i class="fa fa-home"></i>
+                <span>home</span>
+            </li>
+            <li :class="{active: cur === 'github'}" @click="toUrl('github', 'https', 'github.com')">
+                <i class="fa fa-github"></i>
+                <span>github</span>
+            </li>
+            <li :class="{active: cur === 'twitter'}" @click="toUrl('twitter', 'https', 'twitter.com')">
+                <i class="fa fa-twitter"></i>
+                <span>twitter</span>
+            </li>
+            <li :class="{active: cur === 'medium'}" @click="toUrl('medium', 'https', 'medium.com')">
+                <i class="fa fa-medium"></i>
+                <span>medium</span>
+            </li>
+            <li class="title">
+                <span>dictionary</span>
+            </li>
+            <li :class="{active: cur === 'dictcn'}" @click="toUrl('dictcn', 'http', 'dict.cn')">
+                <i class="fa fa-book"></i>
+                <span>dict.cn</span>
+            </li>
+            <li class="title">
+                <span>
+                    add to library
+                </span>
+            </li>
+            <li :class="{active: cur === 'search'}" @click="cur = 'search', $router.push('/search')">
+                <i class="fa fa-search"></i>
+                <span>search</span>
+            </li>
+            <li :class="{active: cur === 'quickReview'}" @click="cur = 'quickReview', $router.push('/quickReview')">
+                <i class="fa fa-edit"></i>
+                <span>quick review</span>
+            </li>
+            <li class="title">
+                <span>
+                    statistics
+                </span>
+            </li>
+            <li :class="{active: cur === 'chart'}" @click="cur = 'chart', $router.push('/chart')">
+                <i class="fa fa-line-chart"></i>
+                <span>chart</span>
+            </li>
+            <li class="title">
+                <span>
+                    review
+                </span>
+            </li>
+            <li :class="{active: cur === 'review'}" @click="cur = 'review', $router.push('/review')">
+                <i class="fa fa-calendar"></i>
+                <span>review</span>
+            </li>
+        </ul>
     </div>
 </template>
 <script>
   export default {
     data () {
       return {
-        cur: '/search',
-        nav: [{
-          url: '/search',
-          desc: 'search',
-          icon: 'fa fa-search'
-        }, {
-          url: '/quickReview',
-          desc: 'recent',
-          icon: 'fa fa-window-restore'
-        }, {
-          url: '/explore',
-          desc: 'explore',
-          icon: 'fa fa-podcast'
-        }, {
-          url: '/review',
-          desc: 'review',
-          icon: 'fa fa-eye'
-        }, {
-          url: '/chart',
-          desc: 'chart',
-          icon: 'fa fa-line-chart'
-        }]
+        cur: 'home'
       }
     },
     methods: {
-      jump (url) {
-        this.cur = url
-        this.$router.push(url)
-      },
-      openConfig () {
-        this.$electron.ipcRenderer.send('openConfig', `${location.href.substr(0, location.href.indexOf('#'))}#/config`)
+      toUrl (tag, protocal, url) {
+        this.cur = tag
+        this.$router.push(`/url/${protocal}/${url}`)
       }
     }
   }

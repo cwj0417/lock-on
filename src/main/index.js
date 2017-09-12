@@ -22,7 +22,7 @@ let template = [{
     {
       label: 'check update',
       click () {
-        autoUpdater.setFeedURL('https://github.com/fjonas/lock-on/releases/download/v0.0.5')
+        autoUpdater.setFeedURL('https://github.com/fjonas/lock-on/releases/download/v0.0.6')
         autoUpdater.checkForUpdates()
       }
     },

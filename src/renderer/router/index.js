@@ -14,9 +14,9 @@ export default new Router({
     children: [
       {path: '/search', component: require('@/components/search'), name: 'search'},
       {path: '/quickReview', component: require('@/components/quickReview'), name: 'quickReview'},
-      {path: '/explore', component: require('@/components/explore'), name: 'explore'},
       {path: '/review', component: require('@/components/review'), name: 'review'},
-      {path: '/chart', component: require('@/components/chart'), name: 'chart'}
+      {path: '/chart', component: require('@/components/chart'), name: 'chart'},
+      {path: '/url/:protocal/:url', component: require('@/components/url'), name: 'url'}
     ]
   }, {
     path: '/config',

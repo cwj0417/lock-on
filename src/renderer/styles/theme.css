@@ -1,24 +1,32 @@
 .original {
     --bg: #eeeeee;
+    --bg-active: #e3e3e3;
     --txt: #c7c7c7;
+    --txt-dark: #414141;
     --major: #545454;
     --minor: #2e2e2e;
 }
 .red {
     --bg: #fafafa;
+    --bg-active: #e3e3e3;
     --txt: #414141;
+    --txt-dark: #414141;
     --major: #b72712;
-    --minor: #d71a22;
+    --minor: #d72128;
 }
 .night {
     --bg: #1c1f2b;
+    --bg-active: #e3e3e3;
     --txt: #909090;
+    --txt-dark: #414141;
     --major: #4164d9;
     --minor: #4164d9;
 }
 .bright {
     --bg: #fafafa;
+    --bg-active: #e3e3e3;
     --txt: #414141;
+    --txt-dark: #414141;
     --major: #1fb922;
-    --minor: #008033;
+    --minor: #00cc4e;
 }

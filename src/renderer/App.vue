@@ -34,7 +34,8 @@
     /* app-related css have 'app-' prefix */
     .app-drag {
         -webkit-app-region: drag;
-        -webkit-user-select: none;
+        user-select: none;
+        cursor: default;
     }
 
     .app-non-drag {
