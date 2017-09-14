@@ -55,113 +55,113 @@
     </div>
 </template>
 <script>
-  import webview from '../common/webview.vue'
-  import { langConfig, getUrl } from './baiduConfig'
-  import { mapActions } from 'vuex'
+    import webview from '../common/webview.vue'
+    import { langConfig, getUrl } from './baiduConfig'
+    import { mapActions } from 'vuex'
 
-  let inputHandle
+    let inputHandle
 
-  let word = ''
-  let definition = ''
-  let rank = 3
-  let recognized = false
-  let like = false
-  let sourceSentence = ''
-  let sourceUrl = ''
-  let finded = 0
+    let word = ''
+    let definition = ''
+    let rank = 3
+    let recognized = false
+    let like = false
+    let sourceSentence = ''
+    let sourceUrl = ''
+    let finded = 0
 
-  export default {
-    components: {webview},
-    data () {
-      return {
-        word: '',
-        dict: null,
-        fromLang: 'auto',
-        toLang: 'auto',
-        langConfig,
-        info: 'input please',
-        result: '',
-        form: {
-          word,
-          definition,
-          rank,
-          recognized,
-          like,
-          createTime: new Date(),
-          sourceSentence,
-          sourceUrl,
-          finded
+    export default {
+        components: {webview},
+        data () {
+            return {
+                word: '',
+                dict: null,
+                fromLang: 'auto',
+                toLang: 'auto',
+                langConfig,
+                info: 'input please',
+                result: '',
+                form: {
+                    word,
+                    definition,
+                    rank,
+                    recognized,
+                    like,
+                    createTime: new Date(),
+                    sourceSentence,
+                    sourceUrl,
+                    finded
+                },
+                rules: {
+                    word: {
+                        required: true,
+                        message: 'word was required'
+                    },
+                    definition: {
+                        required: true,
+                        message: 'definition was required'
+                    }
+                }
+            }
         },
-        rules: {
-          word: {
-            required: true,
-            message: 'word was required'
-          },
-          definition: {
-            required: true,
-            message: 'definition was required'
-          }
+        methods: {
+            ...mapActions({
+                postWord: 'words/post'
+            }),
+            resetForm (reset) {
+                this.form = {
+                    word: reset ? '' : this.word,
+                    definition: reset ? '' : this.result,
+                    rank,
+                    recognized,
+                    like,
+                    createTime: new Date(),
+                    sourceSentence,
+                    sourceUrl,
+                    finded
+                }
+                this.$refs.form.resetFields()
+            },
+            search () {
+                if (!this.word) {
+                    this.info = 'input please'
+                    this.result = ''
+                    return
+                }
+                let url = getUrl(this.word, this.fromLang, this.toLang)
+                this.info = 'searching...'
+                this.$http.get(url)
+                .then(res => {
+                    this.result = res.trans_result[0].dst
+                    this.info = 'done'
+                    this.resetForm(false)
+                })
+            },
+            inputting () {
+                this.info = 'inputting...'
+                if (inputHandle) {
+                    clearTimeout(inputHandle)
+                }
+                inputHandle = setTimeout(() => {
+                    this.search()
+                }, 550)
+            },
+            post () {
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        this.form.createTime = new Date()
+                        this.postWord(this.form)
+                        .then(() => {
+                            this.$Message.success('succeed')
+                            this.resetForm(true)
+                        }, () => {
+                            this.$Message.error('error')
+                        })
+                    } else {
+                        this.$Message.error('invalid form')
+                    }
+                })
+            }
         }
-      }
-    },
-    methods: {
-      ...mapActions({
-        postWord: 'words/post'
-      }),
-      resetForm (reset) {
-        this.form = {
-          word: reset ? '' : this.word,
-          definition: reset ? '' : this.result,
-          rank,
-          recognized,
-          like,
-          createTime: new Date(),
-          sourceSentence,
-          sourceUrl,
-          finded
-        }
-        this.$refs.form.resetFields()
-      },
-      search () {
-        if (!this.word) {
-          this.info = 'input please'
-          this.result = ''
-          return
-        }
-        let url = getUrl(this.word, this.fromLang, this.toLang)
-        this.info = 'searching...'
-        this.$http.get(url)
-          .then(res => {
-            this.result = res.trans_result[0].dst
-            this.info = 'done'
-            this.resetForm(false)
-          })
-      },
-      inputting () {
-        this.info = 'inputting...'
-        if (inputHandle) {
-          clearTimeout(inputHandle)
-        }
-        inputHandle = setTimeout(() => {
-          this.search()
-        }, 550)
-      },
-      post () {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            this.form.createTime = new Date()
-            this.postWord(this.form)
-              .then(() => {
-                this.$Message.success('succeed')
-                this.resetForm(true)
-              }, () => {
-                this.$Message.error('error')
-              })
-          } else {
-            this.$Message.error('invalid form')
-          }
-        })
-      }
     }
-  }
 </script>

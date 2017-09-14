@@ -13,12 +13,12 @@ Vue.use(iView)
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
 axios.interceptors.response.use(function (response) {
-  if (response.status === 200) {
-    return response.data
-  }
-  return response
+    if (response.status === 200) {
+        return response.data
+    }
+    return response
 }, function (error) {
-  return Promise.reject(error)
+    return Promise.reject(error)
 })
 
 Vue.http = Vue.prototype.$http = axios
@@ -26,8 +26,8 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  components: {App},
-  router,
-  store,
-  template: '<App/>'
+    components: {App},
+    router,
+    store,
+    template: '<App/>'
 }).$mount('#app')

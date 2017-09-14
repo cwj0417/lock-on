@@ -38,10 +38,12 @@
             }
         }
     }
+
     .app-nav {
         width: 200px;
         overflow: scroll;
     }
+
     .app-body {
         width: calc(100% - 200px);
         overflow: scroll;
@@ -81,16 +83,17 @@
     </div>
 </template>
 <script>
-  import navigator from './navigator.vue'
-  export default {
-    components: {navigator},
-    methods: {
-      openConfig () {
-        this.$electron.ipcRenderer.send('openConfig', `${location.href.substr(0, location.href.indexOf('#'))}#/config`)
-      },
-      changeToMini () {
-        this.$electron.ipcRenderer.send('changeToMini')
-      }
+    import navigator from './navigator.vue'
+
+    export default {
+        components: {navigator},
+        methods: {
+            openConfig () {
+                this.$electron.ipcRenderer.send('openConfig', `${location.href.substr(0, location.href.indexOf('#'))}#/config`)
+            },
+            changeToMini () {
+                this.$electron.ipcRenderer.send('changeToMini')
+            }
+        }
     }
-  }
 </script>

@@ -5,23 +5,23 @@
 </template>
 
 <script>
-  export default {
-    name: 'vocabook',
-    watch: {
-      '$store.state.config.theme' (value) {
-        document.body.className = value
-      }
-    },
-    mounted () {
-      document.body.className = this.$store.state.config.theme
-      this.$electron.ipcRenderer.on('message', (event, arg) => {
-        console.log(`%c ${arg}`, 'font-size:13px;color:red;')
-      })
+    export default {
+        name: 'vocabook',
+        watch: {
+            '$store.state.config.theme' (value) {
+                document.body.className = value
+            }
+        },
+        mounted () {
+            document.body.className = this.$store.state.config.theme
+            this.$electron.ipcRenderer.on('message', (event, arg) => {
+                console.log(`%c ${arg}`, 'font-size:13px;color:red;')
+            })
+        }
     }
-  }
 </script>
 
-<style >
+<style>
     /* global css */
     @import '../../node_modules/font-awesome/css/font-awesome.css';
     @import '../../node_modules/normalize.css/normalize.css';
@@ -56,10 +56,13 @@
     }
 
     .clearfix {
-        &:after {
-            display: block;
-            clear: both;
-            content: "";
-        }
+
+    &
+    :after {
+        display: block;
+        clear: both;
+        content: "";
+    }
+
     }
 </style>

@@ -60,21 +60,21 @@
     </div>
 </template>
 <script>
-  import { mapState, mapActions } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
 
-  export default {
-    computed: {
-      ...mapState({
-        theme: state => state.config.theme
-      })
-    },
-    methods: {
-      ...mapActions({
-        _setTheme: 'config/setTheme'
-      }),
-      setTheme (pl) {
-        this._setTheme(pl)
-      }
+    export default {
+        computed: {
+            ...mapState({
+                theme: state => state.config.theme
+            })
+        },
+        methods: {
+            ...mapActions({
+                _setTheme: 'config/setTheme'
+            }),
+            setTheme (pl) {
+                this._setTheme(pl)
+            }
+        }
     }
-  }
 </script>

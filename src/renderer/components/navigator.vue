@@ -110,17 +110,17 @@
     </div>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        cur: 'home'
-      }
-    },
-    methods: {
-      toUrl (tag, protocal, url) {
-        this.cur = tag
-        this.$router.push(`/url/${protocal}/${url}`)
-      }
+    export default {
+        data () {
+            return {
+                cur: 'home'
+            }
+        },
+        methods: {
+            toUrl (tag, protocal, url) {
+                this.cur = tag
+                this.$router.push(`/url/${protocal}/${url}`)
+            }
+        }
     }
-  }
 </script>

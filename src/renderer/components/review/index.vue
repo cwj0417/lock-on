@@ -7,7 +7,7 @@
                 tr {
                     td {
                         overflow: hidden;
-                        text-overflow:ellipsis;
+                        text-overflow: ellipsis;
                         white-space: nowrap;
                         border: 1px solid black;
                         &.desc:after {
@@ -63,16 +63,33 @@
         <div class="display">
             <table>
                 <tr>
-                    <td width="10%" @click="sort('word')" :class="{asc: sortStatus.word === 1, desc: sortStatus.word === -1}">word(sortable)</td>
+                    <td width="5%">like</td>
+                    <td width="10%" @click="sort('word')"
+                        :class="{asc: sortStatus.word === 1, desc: sortStatus.word === -1}">word(sortable)
+                    </td>
                     <td width="10%">definition</td>
-                    <td width="20%" @click="sort('rank')" :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">rank(sortable)</td>
-                    <td width="10%" @click="sort('recognized')" :class="{asc: sortStatus.recognized === 1, desc: sortStatus.recognized === -1}">recognized(sortable)</td>
-                    <td width="20%" @click="sort('createTime')" :class="{asc: sortStatus.createTime === 1, desc: sortStatus.createTime === -1}">createtime(sortable)</td>
+                    <td width="20%" @click="sort('rank')"
+                        :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">rank(sortable)
+                    </td>
+                    <td width="10%" @click="sort('recognized')"
+                        :class="{asc: sortStatus.recognized === 1, desc: sortStatus.recognized === -1}">
+                        recognized(sortable)
+                    </td>
+                    <td width="15%" @click="sort('createTime')"
+                        :class="{asc: sortStatus.createTime === 1, desc: sortStatus.createTime === -1}">
+                        createtime(sortable)
+                    </td>
                     <td width="10%">sourceurl</td>
                     <td width="10%">sourceSentence</td>
-                    <td width="10%" @click="sort('finded')" :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">finded(sortable)</td>
+                    <td width="10%" @click="sort('finded')"
+                        :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">finded(sortable)
+                    </td>
                 </tr>
                 <tr v-for="item of list">
+                    <td>
+                        <i :class="item.like ? 'fa fa-heart hand' : 'fa fa-heart-o hand'"
+                           @click="toggleLike(item)"></i>
+                    </td>
                     <td>{{item.word}}</td>
                     <td>{{item.definition}}</td>
                     <td>
@@ -95,127 +112,128 @@
     </div>
 </template>
 <script>
-  import { mapState, mapActions } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
 
-  let handle
+    let handle
 
-  export default {
-    data () {
-      return {
-        filter: {
-          rankMin: 1,
-          rankMax: 5
-        },
-        sortStatus: {
-          word: 0,
-          rank: 0,
-          recognized: 0,
-          createTime: 0,
-          finded: 0
-        },
-        pageTotal: 1,
-        pageSize: 10,
-        curPage: 1
-      }
-    },
-    computed: {
-      ...mapState({
-        list: state => state.words.words
-      })
-    },
-    mounted () {
-      this.timer()
-    },
-    watch: {
-      'filter.rankMin': function (value) {
-        if (value > this.filter.rankMax) {
-          this.filter.rankMax = value
-        }
-      },
-      'filter.rankMax': function (value) {
-        if (value < this.filter.rankMin) {
-          this.filter.rankMin = value
-        }
-      }
-    },
-    methods: {
-      ...mapActions({
-        search: 'words/search',
-        count: 'words/count'
-      }),
-      sort (field) {
-        this.sortStatus[field] = this.sortStatus[field] === 0 ? 1 : this.sortStatus[field] === 1 ? -1 : 0
-        this.findWords()
-      },
-      changePage (number) {
-        this.curPage = number
-        this.findWords()
-      },
-      findWords (getTotal = false) {
-        let conds = {}
-        let has = (key) => {
-          if (this.filter[key]) {
-            return true
-          }
-          return false
-        }
-        if (has('recognized')) {
-          conds.recognized = this.filter.recognized
-        }
-        if (has('word')) {
-          conds.word = new RegExp(this.filter.word)
-        }
-        if (has('sourceUrl')) {
-          conds.sourceUrl = new RegExp(this.filter.sourceUrl)
-        }
-        if (has('sourceSentence')) {
-          conds.sourceSentence = new RegExp(this.filter.sourceSentence)
-        }
-        let vm = this
-        if (getTotal) {
-          this.count({
-            find: {
-              ...conds,
-              $where: function () {
-                return (has('rankMin') ? this.rank >= vm.filter.rankMin && this.rank <= vm.filter.rankMax : true) &&
-                  (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
-                  (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
-              }
+    export default {
+        data () {
+            return {
+                filter: {
+                    rankMin: 1,
+                    rankMax: 5
+                },
+                sortStatus: {
+                    word: 0,
+                    rank: 0,
+                    recognized: 0,
+                    createTime: 0,
+                    finded: 0
+                },
+                pageTotal: 1,
+                pageSize: 10,
+                curPage: 1
             }
-          })
-            .then(res => {
-              this.pageTotal = res
+        },
+        computed: {
+            ...mapState({
+                list: state => state.words.words
             })
-        }
-        let sort = {}
-        for (let [key, value] of Object.entries(this.sortStatus)) {
-          if (value !== 0) {
-            sort[key] = value
-          }
-        }
-        this.search({
-          find: {
-            ...conds,
-            $where: function () {
-              return (has('rankMin') ? this.rank >= vm.filter.rankMin && this.rank <= vm.filter.rankMax : true) &&
-                (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
-                (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
+        },
+        mounted () {
+            this.timer()
+        },
+        watch: {
+            'filter.rankMin': function (value) {
+                if (value > this.filter.rankMax) {
+                    this.filter.rankMax = value
+                }
+            },
+            'filter.rankMax': function (value) {
+                if (value < this.filter.rankMin) {
+                    this.filter.rankMin = value
+                }
             }
-          },
-          sort,
-          skip: this.pageSize * (this.curPage - 1),
-          limit: this.pageSize
-        })
-      },
-      timer () {
-        if (handle) {
-          clearTimeout(handle)
+        },
+        methods: {
+            ...mapActions({
+                search: 'words/search',
+                count: 'words/count',
+                toggleLike: 'words/toggleLike'
+            }),
+            sort (field) {
+                this.sortStatus[field] = this.sortStatus[field] === 0 ? 1 : this.sortStatus[field] === 1 ? -1 : 0
+                this.findWords()
+            },
+            changePage (number) {
+                this.curPage = number
+                this.findWords()
+            },
+            findWords (getTotal = false) {
+                let conds = {}
+                let has = (key) => {
+                    if (this.filter[key]) {
+                        return true
+                    }
+                    return false
+                }
+                if (has('recognized')) {
+                    conds.recognized = this.filter.recognized
+                }
+                if (has('word')) {
+                    conds.word = new RegExp(this.filter.word)
+                }
+                if (has('sourceUrl')) {
+                    conds.sourceUrl = new RegExp(this.filter.sourceUrl)
+                }
+                if (has('sourceSentence')) {
+                    conds.sourceSentence = new RegExp(this.filter.sourceSentence)
+                }
+                let vm = this
+                if (getTotal) {
+                    this.count({
+                        find: {
+                            ...conds,
+                            $where: function () {
+                                return (has('rankMin') ? this.rank >= vm.filter.rankMin && this.rank <= vm.filter.rankMax : true) &&
+                                    (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
+                                    (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
+                            }
+                        }
+                    })
+                    .then(res => {
+                        this.pageTotal = res
+                    })
+                }
+                let sort = {}
+                for (let [key, value] of Object.entries(this.sortStatus)) {
+                    if (value !== 0) {
+                        sort[key] = value
+                    }
+                }
+                this.search({
+                    find: {
+                        ...conds,
+                        $where: function () {
+                            return (has('rankMin') ? this.rank >= vm.filter.rankMin && this.rank <= vm.filter.rankMax : true) &&
+                                (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
+                                (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
+                        }
+                    },
+                    sort,
+                    skip: this.pageSize * (this.curPage - 1),
+                    limit: this.pageSize
+                })
+            },
+            timer () {
+                if (handle) {
+                    clearTimeout(handle)
+                }
+                handle = setTimeout(() => {
+                    this.curPage = 1
+                    this.findWords(true)
+                }, 350)
+            }
         }
-        handle = setTimeout(() => {
-          this.curPage = 1
-          this.findWords(true)
-        }, 350)
-      }
     }
-  }
 </script>

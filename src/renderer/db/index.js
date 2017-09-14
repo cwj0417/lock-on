@@ -8,11 +8,11 @@ const collections = ['words', 'config', 'books']
 let pool = {}
 
 export default {
-  get (dbName) {
-    assert(collections.indexOf(dbName) > -1, 'collection not exists')
-    return pool[dbName] || ((pool[dbName] = new Datastore({
-      autoload: true,
-      filename: path.join(remote.app.getPath('userData'), `/${dbName}.db`)
-    })), pool[dbName])
-  }
+    get (dbName) {
+        assert(collections.indexOf(dbName) > -1, 'collection not exists')
+        return pool[dbName] || ((pool[dbName] = new Datastore({
+            autoload: true,
+            filename: path.join(remote.app.getPath('userData'), `/${dbName}.db`)
+        })), pool[dbName])
+    }
 }

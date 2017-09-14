@@ -67,19 +67,19 @@
     </div>
 </template>
 <script>
-  import theme from './theme.vue'
+    import theme from './theme.vue'
 
-  export default {
-    components: {theme},
-    data () {
-      return {
-        cur: 'word',
-        map: {
-          word: '单词',
-          theme: '主题',
-          explore: '发现'
+    export default {
+        components: {theme},
+        data () {
+            return {
+                cur: 'word',
+                map: {
+                    word: '单词',
+                    theme: '主题',
+                    explore: '发现'
+                }
+            }
         }
-      }
     }
-  }
 </script>

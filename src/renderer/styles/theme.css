@@ -6,6 +6,7 @@
     --major: #545454;
     --minor: #2e2e2e;
 }
+
 .red {
     --bg: #fafafa;
     --bg-active: #e3e3e3;
@@ -14,6 +15,7 @@
     --major: #b72712;
     --minor: #d72128;
 }
+
 .night {
     --bg: #1c1f2b;
     --bg-active: #e3e3e3;
@@ -22,6 +24,7 @@
     --major: #4164d9;
     --minor: #4164d9;
 }
+
 .bright {
     --bg: #fafafa;
     --bg-active: #e3e3e3;
