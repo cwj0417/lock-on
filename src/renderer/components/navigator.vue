@@ -77,7 +77,7 @@
             </li>
             <li :class="{active: cur === 'quickReview'}" @click="cur = 'quickReview', $router.push('/quickReview')">
                 <i class="fa fa-edit"></i>
-                <span>quick review</span>
+                <span>recent added</span>
             </li>
             <li class="title">
                 <span>
@@ -96,6 +96,15 @@
             <li :class="{active: cur === 'review'}" @click="cur = 'review', $router.push('/review')">
                 <i class="fa fa-calendar"></i>
                 <span>review</span>
+            </li>
+            <li class="title">
+                <span>
+                    books
+                </span>
+            </li>
+            <li :class="{active: cur === 'favourite'}" @click="cur = 'favourite', $router.push('/favourite')">
+                <i class="fa fa-heart-o"></i>
+                <span>favourite</span>
             </li>
         </ul>
     </div>

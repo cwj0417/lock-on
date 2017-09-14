@@ -65,6 +65,7 @@
   let definition = ''
   let rank = 3
   let recognized = false
+  let like = false
   let sourceSentence = ''
   let sourceUrl = ''
   let finded = 0
@@ -85,6 +86,7 @@
           definition,
           rank,
           recognized,
+          like,
           createTime: new Date(),
           sourceSentence,
           sourceUrl,
@@ -112,6 +114,7 @@
           definition: reset ? '' : this.result,
           rank,
           recognized,
+          like,
           createTime: new Date(),
           sourceSentence,
           sourceUrl,

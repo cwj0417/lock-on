@@ -47,6 +47,7 @@ const actions = {
                 $in: docs.map(_ => _._id)
               }
             }, {$inc: {finded: 1}}, {multi: true})
+            db.update({}, {$addToSet: {like: true}}, {multi: true})
             resolve(docs)
           }
         })

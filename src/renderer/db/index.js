@@ -3,7 +3,7 @@ import path from 'path'
 import { remote } from 'electron'
 import { assert } from '../util'
 
-const collections = ['words', 'config']
+const collections = ['words', 'config', 'books']
 
 let pool = {}
 

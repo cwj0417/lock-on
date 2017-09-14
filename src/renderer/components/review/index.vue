@@ -1,13 +1,22 @@
 <style lang="scss">
     .review {
         .display {
-            td {
-                border: 1px solid black;
-                &.desc:after {
-                    content: "⬆";
-                }
-                &.asc:after {
-                    content: "⬇";
+            table {
+                width: 100%;
+                table-layout: fixed;
+                tr {
+                    td {
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
+                        border: 1px solid black;
+                        &.desc:after {
+                            content: "⬆";
+                        }
+                        &.asc:after {
+                            content: "⬇";
+                        }
+                    }
                 }
             }
         }
@@ -54,14 +63,14 @@
         <div class="display">
             <table>
                 <tr>
-                    <td @click="sort('word')" :class="{asc: sortStatus.word === 1, desc: sortStatus.word === -1}">word(sortable)</td>
-                    <td>definition</td>
-                    <td @click="sort('rank')" :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">rank(sortable)</td>
-                    <td @click="sort('recognized')" :class="{asc: sortStatus.recognized === 1, desc: sortStatus.recognized === -1}">recognized(sortable)</td>
-                    <td @click="sort('createTime')" :class="{asc: sortStatus.createTime === 1, desc: sortStatus.createTime === -1}">createtime(sortable)</td>
-                    <td>sourceurl</td>
-                    <td>sourceSentence</td>
-                    <td @click="sort('finded')" :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">finded(sortable)</td>
+                    <td width="10%" @click="sort('word')" :class="{asc: sortStatus.word === 1, desc: sortStatus.word === -1}">word(sortable)</td>
+                    <td width="10%">definition</td>
+                    <td width="20%" @click="sort('rank')" :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">rank(sortable)</td>
+                    <td width="10%" @click="sort('recognized')" :class="{asc: sortStatus.recognized === 1, desc: sortStatus.recognized === -1}">recognized(sortable)</td>
+                    <td width="20%" @click="sort('createTime')" :class="{asc: sortStatus.createTime === 1, desc: sortStatus.createTime === -1}">createtime(sortable)</td>
+                    <td width="10%">sourceurl</td>
+                    <td width="10%">sourceSentence</td>
+                    <td width="10%" @click="sort('finded')" :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">finded(sortable)</td>
                 </tr>
                 <tr v-for="item of list">
                     <td>{{item.word}}</td>
