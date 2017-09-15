@@ -21,7 +21,7 @@
     }
 </script>
 
-<style>
+<style lang="scss">
     /* global css */
     @import '../../node_modules/font-awesome/css/font-awesome.css';
     @import '../../node_modules/normalize.css/normalize.css';
@@ -56,13 +56,14 @@
     }
 
     .clearfix {
-
-    &
-    :after {
-        display: block;
-        clear: both;
-        content: "";
+        &:after {
+            display: block;
+            clear: both;
+            content: "";
+        }
     }
 
+    .heart {
+        color: var(--major)
     }
 </style>

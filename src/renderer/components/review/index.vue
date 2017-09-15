@@ -87,13 +87,13 @@
                 </tr>
                 <tr v-for="item of list">
                     <td>
-                        <i :class="item.like ? 'fa fa-heart hand' : 'fa fa-heart-o hand'"
+                        <i :class="item.like ? 'fa fa-heart hand heart' : 'fa fa-heart-o hand heart'"
                            @click="toggleLike(item)"></i>
                     </td>
                     <td>{{item.word}}</td>
                     <td>{{item.definition}}</td>
                     <td>
-                        <Rate allow-half v-model="item.rank"></Rate>
+                        <Rate allow-half v-model="item.rank" disabled></Rate>
                     </td>
                     <td>
                         <Checkbox v-model="item.recognized"></Checkbox>

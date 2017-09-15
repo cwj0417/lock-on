@@ -87,6 +87,25 @@ const actions = {
                 }
             })
         })
+    },
+    'words/modify' ({commit}, {word, field, value}) {
+        return new Promise((resolve, reject) => {
+            db
+            .update({
+                _id: word._id
+            }, {
+                $set: {
+                    [field]: value
+                }
+            }, {}, function (err) {
+                if (err) {
+                    reject(err)
+                } else {
+                    commit('words/modify', {word, field, value})
+                    resolve()
+                }
+            })
+        })
     }
 }
 export default {

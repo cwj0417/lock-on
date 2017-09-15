@@ -63,7 +63,7 @@
 
     let word = ''
     let definition = ''
-    let rank = 3
+    let rank = 0
     let recognized = false
     let like = false
     let sourceSentence = ''
