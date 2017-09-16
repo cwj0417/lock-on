@@ -4,33 +4,45 @@ import { app, BrowserWindow, ipcMain, Menu, webContents } from 'electron'
 
 import { autoUpdater } from 'electron-updater'
 
+import {ipt, xpt} from './actions'
+
 const name = app.getName()
 
 let template = [{
     label: name,
-    submenu: [
-        {
-            label: 'About ' + name,
-            role: 'about'
-        },
-        {
-            label: 'open dev tools',
-            click () {
-                mainWindow.webContents.openDevTools()
-            }
-        },
-        {
-            label: 'check update',
-            click () {
-                autoUpdater.setFeedURL('https://github.com/fjonas/lock-on/releases/download/v0.0.6')
-                autoUpdater.checkForUpdates()
-            }
-        },
-        {
-            label: 'Quit',
-            accelerator: 'Command+Q',
-            click () { app.quit() }
+    submenu: [{
+        label: 'About ' + name,
+        role: 'about'
+    }, {
+        label: 'open dev tools',
+        click () {
+            mainWindow.webContents.openDevTools()
         }
+    }, {
+        label: 'check update',
+        click () {
+            autoUpdater.setFeedURL('https://github.com/fjonas/lock-on/releases/download/v0.0.6')
+            autoUpdater.checkForUpdates()
+        }
+    }, {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click () { app.quit() }
+    }
+    ]
+}, {
+    label: 'backup',
+    submenu: [{
+        label: 'import',
+        click () {
+            ipt()
+        }
+    }, {
+        label: 'export',
+        click () {
+            xpt()
+        }
+    }
     ]
 }]
 
@@ -94,16 +106,12 @@ function createWindow () {
      * Initial window options
      */
     mainWindow = new BrowserWindow(normalConfig)
-    
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
         sendStatusToWindow('ttt')
     })
-    
     // mainWindow.webContents.openDevTools()
-    
     mainWindow.loadURL(winURL)
-    
     mainWindow.on('closed', () => {
         mainWindow = null
     })

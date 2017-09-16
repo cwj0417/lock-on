@@ -2,8 +2,7 @@ import Datastore from 'nedb'
 import path from 'path'
 import { remote } from 'electron'
 import { assert } from '../util'
-
-const collections = ['words', 'config', 'books']
+import { collections } from '../../shared'
 
 let pool = {}
 
