@@ -15,7 +15,7 @@ export function ipt () {
         let p = pa[0]
         for (let collection of collections) {
             if (fs.existsSync(path.resolve(p, `${collection}.db`))) {
-                fs.writeFileSync(path.resolve(userPath, `${collection}.db`), fs.readFileSync(path.resolve(p, `${collection}.db`))))
+                fs.writeFileSync(path.resolve(userPath, `${collection}.db`), fs.readFileSync(path.resolve(p, `${collection}.db`)))
             }
         }
     })
