@@ -1,9 +1,11 @@
-import { app, dialog } from 'electron'
-import path from 'path'
+import { dialog, webContents } from 'electron'
 import fs from 'fs'
-import { collections } from '../shared'
 
-let userPath = app.getPath('userData')
+function broadCast (name, content) {
+    webContents.getAllWebContents().forEach(v => {
+        v.send(name, content)
+    })
+}
 
 export function ipt () {
     dialog.showOpenDialog({
@@ -13,11 +15,7 @@ export function ipt () {
     }, function (pa) {
         if (!pa) return
         let p = pa[0]
-        for (let collection of collections) {
-            if (fs.existsSync(path.resolve(p, `${collection}.db`))) {
-                fs.writeFileSync(path.resolve(userPath, `${collection}.db`), fs.readFileSync(path.resolve(p, `${collection}.db`)))
-            }
-        }
+        broadCast('import', p)
     })
 }
 
@@ -29,10 +27,6 @@ export function xpt () {
     }, function (p) {
         if (!p) return
         if (!fs.existsSync(p)) fs.mkdir(p)
-        for (let collection of collections) {
-            if (fs.existsSync(path.resolve(userPath, `${collection}.db`))) {
-                fs.writeFileSync(path.resolve(p, `${collection}.db`), fs.readFileSync(path.resolve(userPath, `${collection}.db`)))
-            }
-        }
+        broadCast('export', p)
     })
 }

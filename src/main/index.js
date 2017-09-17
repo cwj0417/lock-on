@@ -4,11 +4,51 @@ import { app, BrowserWindow, ipcMain, Menu, webContents } from 'electron'
 
 import { autoUpdater } from 'electron-updater'
 
-import {ipt, xpt} from './actions'
+import { ipt, xpt } from './actions'
 
 const name = app.getName()
 
 let template = [{
+    label: 'Edit',
+    submenu: [
+        {role: 'undo'},
+        {role: 'redo'},
+        {type: 'separator'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {role: 'pasteandmatchstyle'},
+        {role: 'delete'},
+        {role: 'selectall'}
+    ]
+}, {
+    label: 'View',
+    submenu: [
+        {role: 'reload'},
+        {role: 'forcereload'},
+        {role: 'toggledevtools'},
+        {type: 'separator'},
+        {role: 'resetzoom'},
+        {role: 'zoomin'},
+        {role: 'zoomout'},
+        {type: 'separator'},
+        {role: 'togglefullscreen'}
+    ]
+}, {
+    role: 'window',
+    submenu: [
+        {role: 'minimize'},
+        {role: 'close'}
+    ]
+}, {
+    role: 'help',
+    submenu: [
+        {
+            label: 'Learn More',
+            click () { require('electron').shell.openExternal('https://github.com/fjonas/lock-on/releases') }
+        }
+    ]
+}, {
     label: name,
     submenu: [{
         label: 'About ' + name,
@@ -28,8 +68,7 @@ let template = [{
         label: 'Quit',
         accelerator: 'Command+Q',
         click () { app.quit() }
-    }
-    ]
+    }]
 }, {
     label: 'backup',
     submenu: [{
@@ -42,9 +81,44 @@ let template = [{
         click () {
             xpt()
         }
-    }
-    ]
+    }]
 }]
+
+if (process.platform === 'darwin') {
+    template.unshift({
+        label: app.getName(),
+        submenu: [
+            {role: 'about'},
+            {type: 'separator'},
+            {role: 'services', submenu: []},
+            {type: 'separator'},
+            {role: 'hide'},
+            {role: 'hideothers'},
+            {role: 'unhide'},
+            {type: 'separator'},
+            {role: 'quit'}
+        ]
+    })
+    // Edit menu
+    template[0].submenu.push(
+        {type: 'separator'},
+        {
+            label: 'Speech',
+            submenu: [
+                {role: 'startspeaking'},
+                {role: 'stopspeaking'}
+            ]
+        }
+    )
+    // Window menu
+    template[2].submenu = [
+        {role: 'close'},
+        {role: 'minimize'},
+        {role: 'zoom'},
+        {type: 'separator'},
+        {role: 'front'}
+    ]
+}
 
 /**
  * Set `__static` path to static files in production

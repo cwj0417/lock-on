@@ -39,7 +39,7 @@
             this.search({
                 find: {
                     $where: function () {
-                        return new Date().setHours(0, 0, 0, 0).valueOf() < this.createTime.valueOf() || this.rank === 3
+                        return new Date().setHours(0, 0, 0, 0).valueOf() < this.createTime.valueOf() || this.rank === 0
                     }
                 }
             })
