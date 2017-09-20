@@ -150,9 +150,9 @@ const normalConfig = {
 
 const miniConfig = {
     show: false,
-    width: 430,
-    height: 404,
-    resizable: true,
+    width: 530,
+    height: 110,
+    resizable: false,
     minimizable: false,
     maximizable: false,
     alwaysOnTop: true,

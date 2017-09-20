@@ -1,72 +1,59 @@
 <style lang="scss">
     .mini {
-        font-size: 20px;
-        .ball {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .tool {
+            width: 40px;
             float: left;
-            margin-left: 50px;
-            font-size: 12px;
-            line-height: 40px;
-            text-align: center;
-            &.suc {
-                background: rgba(0, 255, 0, .3)
+            background: var(--major);
+            i {
+                color: var(--minor);
+                &:hover {
+                    color: var(--bg);
+                }
             }
-            &.danger {
-                background: rgba(255, 255, 0, 0.3)
+            div {
+                text-align: center;
+                &.close {
+                    height: 20px;
+                }
+                &.body {
+                    height: calc(100% - 40px);
+                    padding-top: 18px;
+                    font-size: 20px;
+                }
+                &.bottom {
+                    height: 20px;
+                }
             }
-            &.err {
-                background: rgba(255, 0, 0, .3)
-            }
+        }
+        .content {
+            width: calc(100% - 40px);
+            float: left;
         }
     }
 </style>
 <template>
-    <div class="mini app-drag">
-        <button @click="changeToNormal">
-            (恢复窗口)
-        </button>
-        <button @click="close">
-            (关闭窗口)
-        </button>
-        <button @click="clear">
-            (确定添加)
-        </button>
-        <div style="width:100%;height:50px;" class="clearfix">
-            <div v-if="word" class="ball" :class="word && ex && url ? 'suc' : 'danger'" @click="set('word')"
-                 @mouseenter="show('word')" @mouseout="shown = ''">
-                {{this.word.substr(0, 7)}}
+    <div class="mini full-height clearfix">
+        <div class="tool app-drag full-height">
+            <div class="close">
+                <i class="fa fa-close" @click="close"></i>
             </div>
-            <div v-else class="ball err" @click="set('word')">
-                word
+            <div class="body">
+                <i class="fa fa-calendar-plus-o"></i>
             </div>
-            <div v-if="ex" class="ball" :class="word && ex && url ? 'suc' : 'danger'" @click="set('ex')"
-                 @mouseenter="show('ex')" @mouseout="shown = ''">
-                {{this.ex.substr(0, 7)}}
-            </div>
-            <div v-else class="ball err" @click="set('ex')">
-                example
-            </div>
-            <div v-if="url" class="ball" :class="word && ex && url ? 'suc' : 'danger'" @click="set('url')"
-                 @mouseenter="show('url')" @mouseout="shown = ''">
-                {{this.url.substr(0, 7)}}
-            </div>
-            <div v-else class="ball err" @click="set('url')">
-                url
+            <div class="bottom">
+                <i class="fa fa-window-restore" @click="changeToNormal"></i>
             </div>
         </div>
-        <div v-if="shown"
-             style="width: 100%; height: 100px; text-align:center; font-weight: bold; overflow: scroll; margin-top: 20px;">
-            {{shown}}
-        </div>
-        <div v-else
-             style="width: 100%; height: 100px; text-align:center; font-weight: bold; overflow: scroll; margin-top: 20px;">
-            {{message}}
+        <div class="content full-height">
+            <panel v-model="word" @startDrag="startDrag('word')" @endDrag="endDrag('word')"></panel>
+            <panel v-model="def" @startDrag="startDrag('def')" @endDrag="endDrag('def')"></panel>
+            <panel v-model="url" @startDrag="startDrag('url')" @endDrag="endDrag('url')"></panel>
         </div>
     </div>
 </template>
 <script>
+    import panel from './panel.vue'
+
     function isWord (p) {
         return p.split(' ').length < 2 && !isUrl(p)
     }
@@ -80,11 +67,12 @@
     }
 
     export default {
+        components: {panel},
         data () {
             return {
                 cb: '',
                 word: '',
-                ex: '',
+                def: '',
                 url: '',
                 message: '',
                 shown: ''
@@ -97,10 +85,16 @@
             close () {
                 this.$electron.ipcRenderer.send('closeWindow')
             },
+            startDrag () {
+                //
+            },
+            endDrag () {
+                //
+            },
             clear () {
-                if (this.word && this.ex && this.url) {
+                if (this.word && this.def && this.url) {
                     this.word = ''
-                    this.ex = ''
+                    this.def = ''
                     this.url = ''
                     this.message = ''
                 }
@@ -125,8 +119,8 @@
                     this.word = t
                     this.message += '单词意思为:xxx'
                 }
-                if (isEx(t) && !this.ex) {
-                    this.ex = t
+                if (isEx(t) && !this.def) {
+                    this.def = t
                 }
                 if (isUrl(t) && !this.url) {
                     this.url = t
