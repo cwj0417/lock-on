@@ -288,6 +288,7 @@ ipcMain.on('openConfig', (event, arg) => {
 
 ipcMain.on('changeToMini', (event, arg) => {
     currentWindow = 'mini'
+    if (configWindow) configWindow.close()
     closeWindow()
     createMini()
 })
@@ -296,4 +297,12 @@ ipcMain.on('changeToNormal', (event, arg) => {
     currentWindow = 'normal'
     closeWindow()
     createWindow()
+})
+
+ipcMain.on('setMini', (event, {w, h}) => {
+    mainWindow.setSize(w, h, true)
+})
+
+ipcMain.on('minimize', (event) => {
+    mainWindow.minimize()
 })
