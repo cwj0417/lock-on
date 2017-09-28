@@ -43,6 +43,14 @@
     }
 
     /* common css */
+
+    .txt-ellipsis {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .hand {
         cursor: pointer;
     }

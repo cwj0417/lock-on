@@ -1,17 +1,53 @@
 <style lang="scss">
     .mini {
         .panel {
-            width: 150px;
-            height: 110px;
+            width: 140px;
+            height: 60px;
             float: left;
+            box-shadow: 0 3px 3px var(--major);
+            margin: 29px 0 0 17px;
             .drop {
-                width: 130px;
-                height: 70px;
-                background: #999;
+                width: 100%;
+                height: 60px;
+                &.active {
+                    background: green;
+                }
+                .ops {
+                    height: 30px;
+                    width: 100%;
+                    line-height: 23px;
+                    .circle {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        border-bottom: 3px solid var(--major);
+                        float: left;
+                        margin-top: -25px;
+                        margin-left: 5px;
+                        text-align: center;
+                        i {
+                            font-size: 35px;
+                            line-height: 50px;
+                            margin: 0;
+                        }
+                    }
+                    i {
+                        color: var(--major);
+                        font-size: 15px;
+                        margin-right: 5px;
+                        &.separator {
+                            color: var(--minor);
+                            font-size: 8px;
+                            line-height: 10px;
+                        }
+                    }
+                }
                 .drag {
-                    width: 130px;
-                    height: 40px;
-                    background: #ccc;
+                    width: 100%;
+                    height: 30px;
+                    line-height: 30px;
+                    text-align: center;
+                    padding: 0 15px;
                 }
             }
         }
@@ -19,11 +55,19 @@
 </style>
 <template>
     <div class="panel">
-        <div class="drop">
-            <i class="fa fa-trash" @click="($emit('input', '')) && (pin = false) && ($emit('pin', false))"></i>
-            <i class="fa fa-map-pin" v-if="!pin" @click="togglePin"></i>
-            <i class="fa fa-map-marker" v-if="pin" @click="togglePin"></i>
-            <div class="drag" draggable="true">
+        <div class="drop" :class="{active: active}">
+            <div class="ops">
+                <div class="circle">
+                    <i :class="'fa fa-' + icon"></i>
+                </div>
+                <div class="pull-right">
+                    <i class="fa fa-trash" @click="($emit('input', '')) && (pin = false) && ($emit('pin', false))"></i>
+                    <i class="separator">|</i>
+                    <i class="fa fa-map-pin" v-if="!pin" @click="togglePin"></i>
+                    <i class="fa fa-map-marker" v-if="pin" @click="togglePin"></i>
+                </div>
+            </div>
+            <div class="drag txt-ellipsis" draggable="true">
                 {{value}}
             </div>
         </div>
@@ -31,10 +75,12 @@
 </template>
 <script>
     export default {
-        props: ['value'],
+        props: ['value', 'current', 'icon'],
         data () {
             return {
-                pin: false
+                pin: false,
+                active: false,
+                self: ''
             }
         },
         methods: {
@@ -45,24 +91,32 @@
         },
         mounted () {
             let vm = this
-            function drag () {
+            function drag (ev) {
                 vm.$emit('startDrag')
             }
-
             function allowDrop (ev) {
                 ev.preventDefault()
             }
-
             function drop (ev) {
+                vm.active = false
                 vm.$emit('endDrag')
                 ev.preventDefault()
             }
-
+            function enter (ev) {
+                if (vm.current !== vm.self) {
+                    vm.active = true
+                }
+            }
+            function leave (ev) {
+                vm.active = false
+            }
             let dropEl = this.$el.querySelector('.drop')
             let dragEl = this.$el.querySelector('.drag')
             dragEl.ondragstart = drag
             dropEl.ondrop = drop
             dropEl.ondragover = allowDrop
+            dropEl.ondragenter = enter
+            dropEl.ondragleave = leave
         }
     }
 </script>

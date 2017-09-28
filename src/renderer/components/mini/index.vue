@@ -48,9 +48,9 @@
             </div>
         </div>
         <div class="content full-height" v-if="!mini">
-            <panel v-model="word" @pin="v => {pin.word = v}" @startDrag="startDrag('word')" @endDrag="endDrag('word')"></panel>
-            <panel v-model="sentence" @pin="v => {pin.sentence = v}" @startDrag="startDrag('sentence')" @endDrag="endDrag('sentence')"></panel>
-            <panel v-model="url" @pin="v => {pin.url = v}" @startDrag="startDrag('url')" @endDrag="endDrag('url')"></panel>
+            <panel icon="wikipedia-w" ref="word" :current="dragging" v-model="word" @pin="v => {pin.word = v}" @startDrag="startDrag('word')" @endDrag="endDrag('word')"></panel>
+            <panel icon="book" ref="sentence" :current="dragging" v-model="sentence" @pin="v => {pin.sentence = v}" @startDrag="startDrag('sentence')" @endDrag="endDrag('sentence')"></panel>
+            <panel icon="tv" ref="url" :current="dragging" v-model="url" @pin="v => {pin.url = v}" @startDrag="startDrag('url')" @endDrag="endDrag('url')"></panel>
         </div>
     </div>
 </template>
@@ -105,6 +105,7 @@
             },
             endDrag (v) {
                 [this[this.dragging], this[v]] = [this[v], this[this.dragging]]
+                this.dragging = ''
             },
             addToDb () {
                 if (this.word && this.sentence && this.url) {
@@ -140,6 +141,9 @@
                 if (isUrl(t) && !this.url) {
                     this.url = t
                 }
+                this.$refs.word.self = 'word'
+                this.$refs.sentence.self = 'sentence'
+                this.$refs.url.self = 'url'
             })
         },
         watch: {
