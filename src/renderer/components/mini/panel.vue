@@ -6,11 +6,17 @@
             float: left;
             box-shadow: 0 3px 3px var(--major);
             margin: 29px 0 0 17px;
+            .editing {
+                animation: shake .2s infinite;
+            }
             .drop {
                 width: 100%;
                 height: 60px;
                 &.active {
-                    background: green;
+                    animation: rainbow .2s infinite;
+                    i {
+                        animation: blinblin 1s infinite;
+                    }
                 }
                 .ops {
                     height: 30px;
@@ -55,7 +61,7 @@
 </style>
 <template>
     <div class="panel">
-        <div class="drop" :class="{active: active}">
+        <div class="drop" :class="{active: active, editing: current === self}">
             <div class="ops">
                 <div class="circle">
                     <i :class="'fa fa-' + icon"></i>
@@ -80,7 +86,8 @@
             return {
                 pin: false,
                 active: false,
-                self: ''
+                self: '',
+                entered: 0
             }
         },
         methods: {
@@ -98,17 +105,19 @@
                 ev.preventDefault()
             }
             function drop (ev) {
+                vm.entered--
                 vm.active = false
                 vm.$emit('endDrag')
                 ev.preventDefault()
             }
             function enter (ev) {
                 if (vm.current !== vm.self) {
+                    vm.entered++
                     vm.active = true
                 }
             }
             function leave (ev) {
-                vm.active = false
+                if (vm.current !== vm.self && !--vm.entered) vm.active = false
             }
             let dropEl = this.$el.querySelector('.drop')
             let dragEl = this.$el.querySelector('.drag')

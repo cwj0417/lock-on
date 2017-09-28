@@ -26,6 +26,7 @@
     @import '../../node_modules/font-awesome/css/font-awesome.css';
     @import '../../node_modules/normalize.css/normalize.css';
     @import './styles/theme.css';
+    @import './styles/animates.css';
 
     html, body, #app {
         height: 100%;
