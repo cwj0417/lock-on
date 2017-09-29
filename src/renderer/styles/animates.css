@@ -1,0 +1,25 @@
+@keyframes blinblin {
+    0%{
+        color: var(--major);
+    }
+    50% {
+        color: var(--minor);
+    }
+    100% {
+        color: var(--major);
+    }
+}
+@keyframes shake {
+    25% {
+        transform: rotate(-.5deg)
+    }
+    50% {
+        transform: rotate(0deg)
+    }
+    75% {
+        transform: rotate(.5deg)
+    }
+}
+@keyframes rainbow {
+    
+}

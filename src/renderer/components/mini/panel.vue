@@ -15,7 +15,7 @@
                 &.active {
                     animation: rainbow .2s infinite;
                     i {
-                        animation: blinblin 1s infinite;
+                        animation: blinblin 2s infinite;
                     }
                 }
                 .ops {
@@ -61,7 +61,7 @@
 </style>
 <template>
     <div class="panel">
-        <div class="drop" :class="{active: active, editing: current === self}">
+        <div class="drop" :class="{active: active, editing: current === self && self !== ''}">
             <div class="ops">
                 <div class="circle">
                     <i :class="'fa fa-' + icon"></i>

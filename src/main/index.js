@@ -306,3 +306,7 @@ ipcMain.on('setMini', (event, {w, h}) => {
 ipcMain.on('minimize', (event) => {
     mainWindow.minimize()
 })
+
+ipcMain.on('pinWindow', (event, pin) => {
+    mainWindow.setAlwaysOnTop(pin)
+})

@@ -58,6 +58,8 @@
             </div>
             <div class="operate full-height pull-right">
                 <div class="minimize">
+                    <i class="fa fa-map-pin" v-if="!pin" @click="togglePin"></i>
+                    <i class="fa fa-map-marker" v-if="pin" @click="togglePin"></i>
                     <i class="fa fa-window-minimize pull-right" @click="changeToMini"></i>
                 </div>
                 <div class="user-info">
@@ -86,6 +88,11 @@
     import navigator from './navigator.vue'
 
     export default {
+        data () {
+            return {
+                pin: false
+            }
+        },
         components: {navigator},
         methods: {
             openConfig () {
@@ -93,6 +100,10 @@
             },
             changeToMini () {
                 this.$electron.ipcRenderer.send('changeToMini')
+            },
+            togglePin () {
+                this.pin = !this.pin
+                this.$electron.ipcRenderer.send('pinWindow', this.pin)
             }
         }
     }

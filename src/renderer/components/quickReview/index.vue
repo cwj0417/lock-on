@@ -1,22 +1,45 @@
-<style scoped lang="scss">
-    td {
-        border: 1px solid black;
+<style lang="scss">
+    .quick-review {
+        input {
+            height: 30px;
+            padding: 5px;
+        }
+        .head {
+            height: 30px;
+            line-height: 30px;
+            font-weight: bold;
+            text-indent: 7px;
+        }
+        .column {
+            float: left;
+        }
+        .like {
+            padding-left: 25px;
+            width: 60px;
+            text-align: center;
+        }
+        .word {
+            width: 150px;
+        }
+        .sentence {
+            width: calc(100% - 210px);
+        }
     }
 </style>
 <template>
-    <div>
-        这里的单词是系统探测可能需要修改的, 可以快速修改, 探测条件为: 添加时间小于一天 或 星级为0
-        <table>
-            <tr>
-                <td width="10%">like</td>
-                <td width="15%">word</td>
-                <td width="15%">definition</td>
-                <td width="20%">rank</td>
-                <td width="20%">sourceurl</td>
-                <td width="20%">sourceSentence</td>
-            </tr>
-            <edit v-for="item of list" :word="item" :key="item.id"></edit>
-        </table>
+    <div class="quick-review">
+        <div class="head clearfix">
+            <div class="like column">
+                like
+            </div>
+            <div class="word column">
+                word
+            </div>
+            <div class="sentence column">
+                sentence
+            </div>
+        </div>
+        <edit v-model="activeId" v-for="item of list" :word="item" :key="item.id"></edit>
     </div>
 </template>
 <script>
@@ -24,6 +47,11 @@
     import edit from './edit.vue'
 
     export default {
+        data () {
+            return {
+                activeId: null
+            }
+        },
         components: {edit},
         computed: {
             ...mapState({
