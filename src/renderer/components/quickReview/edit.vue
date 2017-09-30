@@ -13,7 +13,7 @@
                 cursor: pointer;
             }
             .edit {
-                background: #f0f0f0;
+                background: #ffffff;
                 table {
                     width: 100%;
                     tr {
@@ -22,10 +22,11 @@
                     }
                     .key {
                         padding-left: 60px;
-                        width: 210px;
+                        width: 160px;
                     }
                     .value {
                         width: calc(100% - 210px);
+                        padding-right: 30px;
                         input {
                             width: 100%;
                         }
@@ -35,6 +36,41 @@
                             resize: vertical;
                         }
                     }
+                }
+            }
+            .item-enter, .item-leave {
+                height: 0;
+            }
+            .item-enter-active {
+                animation: fold-down .2s;
+                transform-origin: 0 0;
+            }
+            .item-enter {
+                height: 247px;
+            }
+            .item-leave-active {
+                animation: fold-up .2s;
+                transform-origin: 0 0;
+            }
+            .item-leave-to {
+                height: 0;
+            }
+            @keyframes fold-down {
+                from {
+                    height: 0;
+                    transform: scaleY(0);
+                }
+                to {
+                    height: 247px;
+                }
+            }
+            @keyframes fold-up {
+                from {
+                    height: 247px;
+                }
+                to {
+                    height: 0;
+                    transform: scaleY(0);
                 }
             }
         }
@@ -60,42 +96,44 @@
                 </p>
             </div>
         </div>
-        <div class="edit clearfix" v-if="show">
-            <table>
-                <tr>
-                    <td class="key">
-                        ranking
-                    </td>
-                    <td class="value">
-                        <Rate allow-half :value="word.rank" @input="setRank"></Rate>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="key">
-                        definition
-                    </td>
-                    <td class="value">
-                        <textarea :value="word.definition" @input="mod({word, field: 'definition', value: $event.target.value})" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="key">
-                        sentence
-                    </td>
-                    <td class="value">
-                        <textarea :value="word.sourceSentence" @input="mod({word, field: 'sourceSentence', value: $event.target.value})" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="key">
-                        url
-                    </td>
-                    <td class="value">
-                        <input type="text" :value="word.sourceUrl" @input="mod({word, field: 'sourceUrl', value: $event.target.value})">
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <transition name="item" mode="out-in">
+            <div class="edit clearfix" v-if="show">
+                <table>
+                    <tr>
+                        <td class="key">
+                            ranking
+                        </td>
+                        <td class="value">
+                            <Rate allow-half :value="word.rank" @input="setRank"></Rate>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="key">
+                            definition
+                        </td>
+                        <td class="value">
+                            <textarea rows="5" :value="word.definition" @input="mod({word, field: 'definition', value: $event.target.value})" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="key">
+                            sentence
+                        </td>
+                        <td class="value">
+                            <textarea rows="5" :value="word.sourceSentence" @input="mod({word, field: 'sourceSentence', value: $event.target.value})" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="key">
+                            url
+                        </td>
+                        <td class="value">
+                            <input type="text" :value="word.sourceUrl" @input="mod({word, field: 'sourceUrl', value: $event.target.value})">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
