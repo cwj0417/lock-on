@@ -78,19 +78,18 @@
 </style>
 <template>
     <div class="item clearfix">
-        <div class="display clearfix" @click="$emit('input', word._id)">
+        <div class="display clearfix" @click="show ? $emit('input', '') : $emit('input', word._id)">
             <div class="like column">
                 <i :class="word.like ? 'fa fa-heart hand heart' : 'fa fa-heart-o hand heart'"
                    @click.stop="mod({word, field: 'like', value: !word.like})"></i>
             </div>
             <div class="word column">
                 <span class="txt-ellipsis" v-if="!show" >{{word.word}}</span>
-                <input type="text" v-if="show" :value="word.word" @input="mod({word, field: 'word', value: $event.target.value})">
+                <input @click.stop="" type="text" v-if="show" :value="word.word" @input="mod({word, field: 'word', value: $event.target.value})">
             </div>
             <div class="sentence column">
                 <span class="txt-ellipsis" v-if="!show">{{word.sourceSentence}}</span>
                 <p v-if="show">
-                    <i class="fa fa-arrow-up" @click.stop="$emit('input', '')"></i>
                     <i class="fa fa-trash"></i>
                     <i class="fa fa-save"></i>
                 </p>
@@ -126,6 +125,7 @@
                     <tr>
                         <td class="key">
                             url
+                            <i class="fa fa-share" style="float: right; cursor: pointer; padding-top: 10px;" @click="$electron.shell.openExternal(word.sourceUrl)"></i>
                         </td>
                         <td class="value">
                             <input type="text" :value="word.sourceUrl" @input="mod({word, field: 'sourceUrl', value: $event.target.value})">

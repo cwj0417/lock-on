@@ -28,7 +28,7 @@
 </style>
 <template>
     <div class="quick-review">
-        <div class="head clearfix">
+        <div class="head clearfix" v-if="list.length">
             <div class="like column">
                 like
             </div>
@@ -38,6 +38,9 @@
             <div class="sentence column">
                 sentence
             </div>
+        </div>
+        <div class="empty" v-else>
+            all words inserted, so you are very good good!
         </div>
         <edit v-model="activeId" v-for="item of list" :word="item" :key="item.id"></edit>
     </div>
