@@ -50,6 +50,7 @@
     import edit from './edit.vue'
 
     export default {
+        name: 'quickReview',
         data () {
             return {
                 activeId: null

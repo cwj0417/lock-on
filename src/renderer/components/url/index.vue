@@ -6,6 +6,7 @@
 </template>
 <script>
     export default {
+        name: 'url',
         data () {
             return {
                 src: ''

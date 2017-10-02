@@ -119,7 +119,7 @@
                 </span>
                 <i class="fa fa-plus-circle menu-action" @click="creatingBook = true"></i>
             </li>
-            <li :class="{active: cur === 'favourite'}" @click="cur = 'favourite', $router.push('/favourite')">
+            <li :class="{active: cur === 'favourite'}" @click="cur = 'favourite', $router.push('/view/like/true')">
                 <i class="fa fa-heart-o"></i>
                 <span>favourite</span>
             </li>
@@ -128,7 +128,7 @@
                 <input @blur="createBook($event.target.value)" @keyup.enter="creatingBook = false" type="text"
                        placeholder="your new book's name" style="height: 26px; width: 160px; padding: 5px;">
             </li>
-            <li :class="{active: cur === `book${book._id}`}" @click="cur = `book${book._id}`" v-for="book of books">
+            <li :class="{active: cur === `book${book._id}`}" @click="cur = `book${book._id}`, $router.push(`/view/book/${book._id}`)" v-for="book of books">
                 <i class="fa fa-list"></i>
                 <span>{{book.name}}</span>
                 <i class="fa fa-trash operate" @click="remove(book)"></i>
@@ -140,6 +140,7 @@
     import { mapState, mapActions } from 'vuex'
 
     export default {
+        name: 'navigator',
         data () {
             return {
                 cur: 'home',

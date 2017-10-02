@@ -6,6 +6,7 @@
 </template>
 <script>
     export default {
+        name: 'webview',
         props: ['src', 'css'],
         mounted () {
             this.$emit('update:webview', this.$el)

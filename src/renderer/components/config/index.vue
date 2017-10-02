@@ -70,6 +70,7 @@
     import theme from './theme.vue'
 
     export default {
+        name: 'config',
         components: {theme},
         data () {
             return {

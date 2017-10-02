@@ -71,6 +71,7 @@
     }
 
     export default {
+        name: 'mini',
         components: {panel},
         data () {
             return {

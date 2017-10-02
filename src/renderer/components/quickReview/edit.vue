@@ -140,6 +140,7 @@
     import { mapActions } from 'vuex'
 
     export default {
+        name: 'edit',
         data () {
             return {
                 curEdit: ''

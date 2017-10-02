@@ -81,6 +81,7 @@
 </template>
 <script>
     export default {
+        name: 'panel',
         props: ['value', 'current', 'icon'],
         data () {
             return {

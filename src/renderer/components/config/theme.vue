@@ -63,6 +63,7 @@
     import { mapState, mapActions } from 'vuex'
 
     export default {
+        name: 'theme',
         computed: {
             ...mapState({
                 theme: state => state.config.theme

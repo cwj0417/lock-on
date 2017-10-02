@@ -129,6 +129,7 @@
     let handle
 
     export default {
+        name: 'review',
         data () {
             return {
                 filter: {

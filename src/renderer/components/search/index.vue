@@ -71,6 +71,7 @@
     let finded = 0
 
     export default {
+        name: 'search',
         components: {webview},
         data () {
             return {
