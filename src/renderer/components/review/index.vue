@@ -250,10 +250,14 @@
             },
             addToBook (book, word) {
                 this.wordToBook({book, word})
-                .then(res => {
-                    this.$Message.success(res)
+                .then(suc => {
+                    if (suc === 'existed') {
+                        this.$Message.info('existed')
+                    } else {
+                        this.$Message.success('succeed')
+                    }
                 }, err => {
-                    this.$message.error(err)
+                    this.$Message.error(err)
                 })
             }
         }

@@ -14,12 +14,12 @@ const mutations = {
     },
     'books/remove' (state, id) {
         state.books.splice(state.books.findIndex(({_id}) => _id === id), 1)
+    },
+    'books/addWord' (state, {book, word}) {
+        state.books.find(({_id}) => _id === book).list.push(word)
     }
 }
 const actions = {
-    'books/search' ({commit}, {find = {}}) {
-        //
-    },
     'books/post' ({commit}, name) {
         if (name.trim() === '') return Promise.reject(new Error())
         return new Promise((resolve, reject) => {
@@ -50,7 +50,33 @@ const actions = {
         })
     },
     'books/addWord' ({commit}, {book, word}) {
-        //
+        return new Promise((resolve, reject) => {
+            db.find({
+                _id: book
+            }, function (err, item) {
+                if (err) {
+                    reject(new Error('an error occurred'))
+                    return
+                }
+                let {list} = item[0]
+                if (list.indexOf(word) > -1) {
+                    resolve('existed')
+                    return
+                }
+                db.update({
+                    _id: book
+                }, {
+                    $push: {
+                        list: word
+                    }
+                }, {}, function (err) {
+                    if (!err) {
+                        commit('books/addWord', {book, word})
+                        resolve()
+                    }
+                })
+            })
+        })
     }
 }
 export default {
