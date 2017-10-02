@@ -64,11 +64,12 @@
             <table>
                 <tr>
                     <td width="5%">like</td>
+                    <td width="15%">add to book</td>
                     <td width="10%" @click="sort('word')"
                         :class="{asc: sortStatus.word === 1, desc: sortStatus.word === -1}">word(sortable)
                     </td>
                     <td width="10%">definition</td>
-                    <td width="20%" @click="sort('rank')"
+                    <td width="5%" @click="sort('rank')"
                         :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">rank(sortable)
                     </td>
                     <td width="10%" @click="sort('recognized')"
@@ -90,10 +91,21 @@
                         <i :class="item.like ? 'fa fa-heart hand heart' : 'fa fa-heart-o hand heart'"
                            @click="toggleLike(item)"></i>
                     </td>
+                    <td>
+                        <Dropdown>
+                            <a href="javascript:void(0)">
+                                add to book
+                                <Icon type="arrow-down-b"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem :key="_id" @click.native="addToBook(_id, item._id)" v-for="({_id, name}) of books">{{name}}</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </td>
                     <td>{{item.word}}</td>
                     <td>{{item.definition}}</td>
                     <td>
-                        <Rate allow-half v-model="item.rank" disabled></Rate>
+                        {{item.rank}}
                     </td>
                     <td>
                         <Checkbox v-model="item.recognized"></Checkbox>
@@ -137,7 +149,8 @@
         },
         computed: {
             ...mapState({
-                list: state => state.words.words
+                list: state => state.words.words,
+                books: state => state.books.books
             })
         },
         mounted () {
@@ -159,7 +172,8 @@
             ...mapActions({
                 search: 'words/search',
                 count: 'words/count',
-                toggleLike: 'words/toggleLike'
+                toggleLike: 'words/toggleLike',
+                wordToBook: 'books/addWord'
             }),
             sort (field) {
                 this.sortStatus[field] = this.sortStatus[field] === 0 ? 1 : this.sortStatus[field] === 1 ? -1 : 0
@@ -233,6 +247,14 @@
                     this.curPage = 1
                     this.findWords(true)
                 }, 350)
+            },
+            addToBook (book, word) {
+                this.wordToBook({book, word})
+                .then(res => {
+                    this.$Message.success(res)
+                }, err => {
+                    this.$message.error(err)
+                })
             }
         }
     }

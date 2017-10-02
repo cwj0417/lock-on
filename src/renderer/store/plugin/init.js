@@ -1,17 +1,18 @@
 import dbs from '../../db'
 import { log } from '../../util'
 
-let db = dbs.get('config')
+let dbConfig = dbs.get('config')
+let dbBooks = dbs.get('books')
 export default store => {
     log.info('config init...')
     // load theme
-    db.find({
+    dbConfig.find({
         type: 'theme'
     }, function (err, docs) {
         if (err || !docs.length || !docs[0].theme) {
             log.err('can not get theme', docs)
             let theme = store.state.theme
-            db.update({
+            dbConfig.update({
                 type: 'theme'
             }, {
                 type: 'theme',
@@ -22,6 +23,16 @@ export default store => {
         } else {
             log.suc('got theme', docs[0].theme)
             store.commit('config/setTheme', docs[0].theme)
+        }
+    })
+    log.info('books init...')
+    // load books
+    dbBooks.find({}, function (err, books) {
+        if (err) {
+            log.err('can not get books', books)
+        } else {
+            log.suc('got books', books)
+            store.commit('books/set', books)
         }
     })
 }

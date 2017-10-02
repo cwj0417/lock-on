@@ -33,6 +33,22 @@
                     background: var(--bg-active);
                     color: var(--txt-dark);
                 }
+                &:hover {
+                    .operate {
+                        transform: scale(1);
+                    }
+                }
+                .menu-action {
+                    font-size: 17px;
+                    float: right;
+                    padding-right: 12px;
+                }
+                .operate {
+                    transition: transform .2s;
+                    transform: scale(0);
+                    float: right;
+                    padding: 8px 12px;
+                }
             }
         }
     }
@@ -73,7 +89,7 @@
             </li>
             <li :class="{active: cur === 'search'}" @click="cur = 'search', $router.push('/search')">
                 <i class="fa fa-search"></i>
-                <span>search</span>
+                <span>record new word</span>
             </li>
             <li :class="{active: cur === 'quickReview'}" @click="cur = 'quickReview', $router.push('/quickReview')">
                 <i class="fa fa-edit"></i>
@@ -101,25 +117,52 @@
                 <span>
                     books
                 </span>
+                <i class="fa fa-plus-circle menu-action" @click="creatingBook = true"></i>
             </li>
             <li :class="{active: cur === 'favourite'}" @click="cur = 'favourite', $router.push('/favourite')">
                 <i class="fa fa-heart-o"></i>
                 <span>favourite</span>
             </li>
+            <li v-if="creatingBook">
+                <i class="fa fa-list"></i>
+                <input @blur="createBook($event.target.value)" @keyup.enter="creatingBook = false" type="text"
+                       placeholder="your new book's name" style="height: 26px; width: 160px; padding: 5px;">
+            </li>
+            <li :class="{active: cur === `book${book._id}`}" @click="cur = `book${book._id}`" v-for="book of books">
+                <i class="fa fa-list"></i>
+                <span>{{book.name}}</span>
+                <i class="fa fa-trash operate" @click="remove(book)"></i>
+            </li>
         </ul>
     </div>
 </template>
 <script>
+    import { mapState, mapActions } from 'vuex'
+
     export default {
         data () {
             return {
-                cur: 'home'
+                cur: 'home',
+                creatingBook: false
             }
         },
+        computed: {
+            ...mapState({
+                books: state => state.books.books
+            })
+        },
         methods: {
+            ...mapActions({
+                postBook: 'books/post',
+                remove: 'books/remove'
+            }),
             toUrl (tag, protocal, url) {
                 this.cur = tag
                 this.$router.push(`/url/${protocal}/${url}`)
+            },
+            createBook (name) {
+                this.creatingBook = false
+                this.postBook(name)
             }
         }
     }

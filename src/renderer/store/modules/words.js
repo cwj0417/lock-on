@@ -14,7 +14,7 @@ const mutations = {
         // must check words type here. write an assert lib
         state.words.push(word)
     },
-    'words/modify' (state, {word, field, value}) {
+    'words/update' (state, {word, field, value}) {
         word[field] = value
     }
 }
@@ -82,13 +82,13 @@ const actions = {
                 if (err) {
                     reject(err)
                 } else {
-                    commit('words/modify', {word, field: 'like', value: !like})
+                    commit('words/update', {word, field: 'like', value: !like})
                     resolve()
                 }
             })
         })
     },
-    'words/modify' ({commit}, {word, field, value}) {
+    'words/update' ({commit}, {word, field, value}) {
         return new Promise((resolve, reject) => {
             db
             .update({
@@ -101,7 +101,7 @@ const actions = {
                 if (err) {
                     reject(err)
                 } else {
-                    commit('words/modify', {word, field, value})
+                    commit('words/update', {word, field, value})
                     resolve()
                 }
             })

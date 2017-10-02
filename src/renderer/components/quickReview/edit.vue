@@ -153,7 +153,7 @@
         props: ['word', 'value'],
         methods: {
             ...mapActions({
-                mod: 'words/modify'
+                mod: 'words/update'
             }),
             setRank (value) {
                 this.mod({word: this.word, field: 'rank', value})
