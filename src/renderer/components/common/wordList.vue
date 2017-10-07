@@ -1,23 +1,68 @@
 <style lang="scss">
     .wordList {
         .display {
-            table {
-                width: 100%;
-                table-layout: fixed;
-                tr {
-                    td {
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        border: 1px solid black;
-                        &.desc:after {
-                            content: "⬆";
-                        }
-                        &.asc:after {
-                            content: "⬇";
-                        }
+            .line {
+                height: 32px;
+                line-height: 32px;
+                cursor: pointer;
+                border-left: 1px solid #acb5c4;
+                border-right: 1px solid #acb5c4;
+                border-bottom: 1px solid #acb5c4;
+                div {
+                    text-align: center;
+                    float: left;
+                }
+                &:nth-child(2n) {
+                    background: #f8fdff;
+                }
+                &.active {
+                    background: #e3e3e3;
+                }
+            }
+            .head {
+                background: #c5cdd8;
+                color: var(--txt);
+                div {
+                    border-right: 1px solid #acb5c4;
+                    &:last-child {
+                        border-right: 0;
                     }
                 }
+            }
+            .like {
+                width: 33px;
+            }
+            .word {
+                width: 160px;
+            }
+            .rank {
+                position: relative;
+                width: 35px;
+                .star-high {
+                    color: #da5b5d;
+                }
+                .star-medium {
+                    color: #fec634;
+                }
+                .star-low {
+                    color: #f8f051;
+                }
+                .badge {
+                    display: none;
+                    position: absolute;
+                    top: 2px;
+                    left: 25px;
+                    line-height: 8px;
+                    text-align: center;
+                    font-size: 8px;
+                }
+                &:hover .badge {
+                    display: block;
+                }
+            }
+            .sentence {
+                padding: 0 10px;
+                width: calc(100% - 230px);
             }
         }
     }
@@ -25,31 +70,38 @@
 <template>
     <div class="wordList">
         <div class="display">
-            <table>
-                <tr>
-                    <td width="2%">like</td>
-                    <td width="10%">word</td>
-                    <!--<td width="10%">definition</td>-->
-                    <td width="5%">rank</td>
-                    <!--<td width="15%">createtime</td>-->
-                    <!--<td width="10%">sourceurl</td>-->
-                    <td width="10%" v-if="!mini">sourceSentence</td>
-                    <!--<td width="10%">finded</td>-->
-                </tr>
-                <tr class="hand" v-for="item of list" @click="$emit('detail', item)">
-                    <td>
-                        <i :class="item.like ? 'fa fa-heart hand heart' : 'fa fa-heart-o hand heart'"
-                           @click="toggleLike(item)"></i>
-                    </td>
-                    <td>{{item.word}}</td>
-                    <!--<td>{{item.definition}}</td>-->
-                    <td>{{item.rank}}</td>
-                    <!--<td>{{item.createTime.toLocaleString()}}</td>-->
-                    <!--<td>{{item.sourceUrl}}</td>-->
-                    <td v-if="!mini">{{item.sourceSentence}}</td>
-                    <!--<td>{{item.finded}}</td>-->
-                </tr>
-            </table>
+            <div class="head line">
+                <div class="like">
+                    like
+                </div>
+                <div class="word">
+                    word
+                </div>
+                <div class="rank">
+                    rank
+                </div>
+                <div class="sentence" v-if="!mini">
+                    sentence
+                </div>
+            </div>
+            <div class="line" :class="{active: curWord && item._id === curWord._id}" v-for="item of list" @click="$emit('detail', item)">
+                <div class="like">
+                    <i :class="item.like ? 'fa fa-heart hand heart' : 'fa fa-heart-o hand heart'"
+                       @click.stop="toggleLike(item)"></i>
+                </div>
+                <div class="word">
+                    {{item.word}}
+                </div>
+                <div class="rank">
+                    <i class="fa fa-star" :class="item.rank >= 4 ? 'star-high' : item.rank >= 2 ? 'star-medium' : 'star-low'"></i>
+                    <div class="badge">
+                        {{item.rank}}
+                    </div>
+                </div>
+                <div class="sentence txt-ellipsis" style="text-align: left;" v-if="!mini">
+                    {{item.sourceSentence}}
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -66,6 +118,6 @@
                 toggleLike: 'words/toggleLike'
             })
         },
-        props: ['list', 'mini']
+        props: ['list', 'mini', 'curWord']
     }
 </script>

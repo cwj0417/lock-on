@@ -103,7 +103,7 @@
                             ranking
                         </td>
                         <td class="value">
-                            <Rate allow-half :value="word.rank" @input="setRank"></Rate>
+                            <Rate :value="word.rank" @input="setRank"></Rate>
                         </td>
                     </tr>
                     <tr>

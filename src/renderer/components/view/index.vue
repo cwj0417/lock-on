@@ -1,6 +1,7 @@
 <style lang="scss">
     .viewWrap {
         .viewContent {
+            transition: all .2s;
             float: left;
             &.full {
                 width: 100%;
@@ -10,6 +11,7 @@
             }
         }
         .viewDetail {
+            transition: all .2s;
             float: left;
             &.full {
                 width: 570px;
@@ -24,12 +26,12 @@
     <div class="viewWrap clearfix full-height">
         <div class="viewContent full-height" :class="{full: !curWord, mini: curWord}">
             <div v-if="curWord">
-                <i class="fa fa-backward hand" @click="curWord = null"></i>返回
+                <i class="fa fa-backward hand" @click="curWord = null" style="font-size: 25px; padding: 5px;"></i>
             </div>
             <div v-else>
                 这里是过滤器...
             </div>
-            <wordList :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
+            <wordList :curWord="curWord" :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
         </div>
         <div class="viewDetail full-height" :class="{mini: !curWord, full: curWord}">
             <wordDetail :word="curWord"></wordDetail>
