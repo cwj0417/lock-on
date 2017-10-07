@@ -90,7 +90,13 @@
                        @click.stop="toggleLike(item)"></i>
                 </div>
                 <div class="word">
-                    {{item.word}}
+                    <Dropdown @click.native.stop="">
+                        {{item.word}}
+                        <i class="fa fa-plus-circle"></i>
+                        <DropdownMenu slot="list">
+                            <DropdownItem :key="_id" @click.native="addToBook(_id, item._id)" v-for="({_id, name}) of books">{{name}}</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </div>
                 <div class="rank">
                     <i class="fa fa-star" :class="item.rank >= 4 ? 'star-high' : item.rank >= 2 ? 'star-medium' : 'star-low'"></i>
@@ -106,16 +112,22 @@
     </div>
 </template>
 <script>
-    import { mapActions } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
 
     export default {
         name: 'wordList',
         data () {
             return {}
         },
+        computed: {
+            ...mapState({
+                books: state => state.books.books
+            })
+        },
         methods: {
             ...mapActions({
-                toggleLike: 'words/toggleLike'
+                toggleLike: 'words/toggleLike',
+                wordToBook: 'books/addWord'
             })
         },
         props: ['list', 'mini', 'curWord']

@@ -70,7 +70,12 @@
                 <textarea v-else rows="2" cols="50" style="resize: none;" :value="word.definition" @input="mod({word, field: 'definition', value: $event.target.value})" />
             </div>
             <div class="operation">
-                <i class="fa fa-plus-circle" v-if="!editing"></i>
+                <Dropdown v-if="!editing">
+                    <i class="fa fa-plus-circle"></i>
+                    <DropdownMenu slot="list">
+                        <DropdownItem :key="_id" @click.native="addToBook(_id, item._id)" v-for="({_id, name}) of books">{{name}}</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
                 <i class="fa fa-edit" v-if="!editing" @click="editing = true"></i>
                 <i class="fa fa-close" v-if="editing" @click="editing = false"></i>
                 <i class="fa fa-trash" v-if="!editing"></i>
@@ -87,7 +92,7 @@
     </div>
 </template>
 <script>
-    import { mapActions } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
 
     export default {
         props: ['word'],
@@ -96,9 +101,15 @@
                 editing: false
             }
         },
+        computed: {
+            ...mapState({
+                books: state => state.books.books
+            })
+        },
         methods: {
             ...mapActions({
-                mod: 'words/update'
+                mod: 'words/update',
+                wordToBook: 'books/addWord'
             }),
             setRank (value) {
                 this.mod({word: this.word, field: 'rank', value})
