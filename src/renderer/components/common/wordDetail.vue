@@ -1,7 +1,16 @@
 <style lang="scss">
+
+    .editing {
+        animation: shake .2s infinite;
+    }
+
     .wordDetail {
         width: 100%;
         padding: 20px;
+        input, textarea {
+            border: 1px solid rgb(238, 238, 238);
+            outline: none;
+        }
         .wordstar {
             .word {
                 font-size: 25px;
@@ -16,7 +25,7 @@
             line-height: 17px;
             padding: 5px;
             .definition {
-                height: 34px;
+                height: 36px;
                 overflow: auto;
                 width: calc(100% - 100px);
                 float: left;
@@ -49,31 +58,51 @@
     <div class="wordDetail" v-if="word">
         <div class="wordstar clearfix">
             <div class="word">
-                <span>{{word.word}}</span>
+                <span v-if="!editing">{{word.word}}</span>
+                <input v-else type="text" :value="word.word" @input="mod({word, field: 'word', value: $event.target.value})">
                 <i class="fa fa-check-square-o" style="padding-left: 15px; font-size: 15px; color: var(--minor);"></i>
             </div>
-            <Rate class="pull-right" disabled v-model="word.rank"></Rate>
+            <Rate class="pull-right" :disabled="!editing" :value="word.rank" @input="setRank" :class="{editing: editing}"></Rate>
         </div>
         <div class="defoperate clearfix">
             <div class="definition">
-                <span>{{word.definition}}</span>
+                <span v-if="!editing">{{word.definition}}</span>
+                <textarea v-else rows="2" cols="50" style="resize: none;" :value="word.definition" @input="mod({word, field: 'definition', value: $event.target.value})" />
             </div>
             <div class="operation">
-                <i class="fa fa-plus-circle"></i>
-                <i class="fa fa-edit"></i>
-                <i class="fa fa-trash"></i>
+                <i class="fa fa-plus-circle" v-if="!editing"></i>
+                <i class="fa fa-edit" v-if="!editing" @click="editing = true"></i>
+                <i class="fa fa-close" v-if="editing" @click="editing = false"></i>
+                <i class="fa fa-trash" v-if="!editing"></i>
             </div>
         </div>
         <div class="sentence">
-            <span>{{word.sourceSentence}}</span>
+            <span v-if="!editing">{{word.sourceSentence}}</span>
+            <textarea v-else rows="5" cols="75" style="resize: vertical;" :value="word.sourceSentence" @input="mod({word, field: 'sourceSentence', value: $event.target.value})" />
         </div>
         <div class="footer">
-            <span class="url" @click="$electron.shell.openExternal(word.sourceUrl)">{{word.sourceUrl}}</span>
+            <span v-if="!editing" class="url" @click="$electron.shell.openExternal(word.sourceUrl)">{{word.sourceUrl}}</span>
+            <input style="width: 100%;" v-else type="text" :value="word.sourceUrl" @input="mod({word, field: 'sourceUrl', value: $event.target.value})">
         </div>
     </div>
 </template>
 <script>
+    import { mapActions } from 'vuex'
+
     export default {
-        props: ['word']
+        props: ['word'],
+        data () {
+            return {
+                editing: false
+            }
+        },
+        methods: {
+            ...mapActions({
+                mod: 'words/update'
+            }),
+            setRank (value) {
+                this.mod({word: this.word, field: 'rank', value})
+            }
+        }
     }
 </script>
