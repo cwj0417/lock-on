@@ -149,6 +149,8 @@ const normalConfig = {
 }
 
 const miniConfig = {
+    x: 0,
+    y: 0,
     show: false,
     width: 530,
     height: 110,
