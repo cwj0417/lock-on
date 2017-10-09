@@ -82,7 +82,7 @@
             init () {
                 let {type, id} = this.$route.params
                 this.curType = types[type]
-                if (!this.books.length) {
+                if (type === 'book' && !this.books.length) {
                     setTimeout(this.init, 500)
                     return
                 }
