@@ -1,6 +1,7 @@
 <style lang="scss">
     .viewWrap {
         .viewContent {
+            overflow: auto;
             transition: all .2s;
             float: left;
             &.full {
@@ -11,6 +12,7 @@
             }
         }
         .viewDetail {
+            overflow: auto;
             transition: all .2s;
             float: left;
             &.full {

@@ -45,6 +45,11 @@
 
     /* common css */
 
+    ::-webkit-scrollbar{
+        width: 0;
+        height: 0;
+    }
+
     .txt-ellipsis {
         display: block;
         white-space: nowrap;
