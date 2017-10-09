@@ -59,7 +59,7 @@
     import { mapActions } from 'vuex'
 
     function isWord (p) {
-        return p.split(' ').length < 2 && !isUrl(p)
+        return !isEx(p) && !isUrl(p)
     }
 
     function isEx (p) {
