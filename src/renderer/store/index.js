@@ -10,6 +10,9 @@ Vue.use(Vuex)
 let mutations = {
     'ipc/theme' (state, pl) {
         //
+    },
+    'ipc/lang' (state, pl) {
+        //
     }
 }
 

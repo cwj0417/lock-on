@@ -57,11 +57,11 @@
     <div class="full-height pull-left full-width navigator">
         <ul>
             <li class="title">
-                <span>recommended</span>
+                <span>{{ $t('recommended') }}</span>
             </li>
             <li :class="{active: cur === 'home'}" @click="cur = 'home'">
                 <i class="fa fa-home"></i>
-                <span>home</span>
+                <span>{{ $t('home') }}</span>
             </li>
             <li :class="{active: cur === 'github'}" @click="toUrl('github', 'https', 'github.com')">
                 <i class="fa fa-github"></i>
@@ -76,52 +76,45 @@
                 <span>medium</span>
             </li>
             <li class="title">
-                <span>dictionary</span>
-            </li>
-            <li :class="{active: cur === 'dictcn'}" @click="toUrl('dictcn', 'http', 'dict.cn')">
-                <i class="fa fa-book"></i>
-                <span>dict.cn</span>
-            </li>
-            <li class="title">
                 <span>
-                    add to library
+                    {{ $t('add to library') }}
                 </span>
             </li>
             <li :class="{active: cur === 'search'}" @click="cur = 'search', $router.push('/search')">
                 <i class="fa fa-search"></i>
-                <span>record new word</span>
+                <span>{{ $t('record new word') }}</span>
             </li>
             <li :class="{active: cur === 'quickReview'}" @click="cur = 'quickReview', $router.push('/quickReview')">
                 <i class="fa fa-edit"></i>
-                <span>recent added</span>
+                <span>{{ $t('recent added') }}</span>
             </li>
             <li class="title">
                 <span>
-                    statistics
+                    {{ $t('statistics') }}
                 </span>
             </li>
             <li :class="{active: cur === 'chart'}" @click="cur = 'chart', $router.push('/chart')">
                 <i class="fa fa-line-chart"></i>
-                <span>chart</span>
+                <span>{{ $t('chart') }}</span>
             </li>
             <li class="title">
                 <span>
-                    review
+                    {{ $t('review') }}
                 </span>
             </li>
             <li :class="{active: cur === 'review'}" @click="cur = 'review', $router.push('/review')">
                 <i class="fa fa-calendar"></i>
-                <span>review</span>
+                <span>{{ $t('review all') }}</span>
             </li>
             <li class="title">
                 <span>
-                    books
+                    {{ $t('books') }}
                 </span>
                 <i class="fa fa-plus-circle menu-action" @click="creatingBook = true"></i>
             </li>
             <li :class="{active: cur === 'favourite'}" @click="cur = 'favourite', $router.push('/view/like/true')">
                 <i class="fa fa-heart-o"></i>
-                <span>favourite</span>
+                <span>{{ $t('favourite') }}</span>
             </li>
             <li v-if="creatingBook">
                 <i class="fa fa-list"></i>

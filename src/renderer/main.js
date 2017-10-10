@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
+import VueI18n from 'vue-i18n'
 
 import App from './App'
 import router from './router'
@@ -7,8 +8,10 @@ import store from './store'
 
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
+import messages from './i18n'
 
 Vue.use(iView)
+Vue.use(VueI18n)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
@@ -24,10 +27,16 @@ axios.interceptors.response.use(function (response) {
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
+const i18n = new VueI18n({
+    locale: 'cn',
+    messages
+})
+
 /* eslint-disable no-new */
 new Vue({
     components: {App},
     router,
     store,
+    i18n,
     template: '<App/>'
 }).$mount('#app')

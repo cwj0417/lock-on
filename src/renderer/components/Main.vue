@@ -1,3 +1,75 @@
+<template>
+    <div class="full-height">
+        <div class="app-head app-drag clearfix">
+            <div class="logo full-height pull-left">
+                <i class="fa fa-linode"></i>
+                {{ $t('appName') }}
+            </div>
+            <div class="operate full-height pull-right">
+                <div class="minimize">
+                    <i class="fa fa-map-pin" v-if="!pin" @click="togglePin"></i>
+                    <i class="fa fa-map-marker" v-if="pin" @click="togglePin"></i>
+                    <i class="fa fa-window-minimize pull-right" @click="changeToMini"></i>
+                </div>
+                <div class="user-info">
+                    <div style="border-radius:50%;border:1px solid gray;width:30px;height:30px;font-size:20px;color:white;text-align:center;line-height:30px;">
+                        头
+                    </div>
+                </div>
+            </div>
+            <div class="action full-height pull-right">
+                <div class="icon pull-right">
+                    <i class="fa fa-cog" @click="openConfig"></i>
+                </div>
+            </div>
+        </div>
+        <div style="height: calc(100% - 60px);">
+            <div class="full-height pull-left app-nav">
+                <navigator></navigator>
+            </div>
+            <div class="full-height pull-left app-body">
+                <router-view></router-view>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import navigator from './navigator.vue'
+    import dbs from '../db'
+
+    export default {
+        data () {
+            return {
+                pin: false
+            }
+        },
+        components: {navigator},
+        methods: {
+            openConfig () {
+                this.$electron.ipcRenderer.send('openConfig', `${location.href.substr(0, location.href.indexOf('#'))}#/config`)
+            },
+            changeToMini () {
+                this.$electron.ipcRenderer.send('changeToMini')
+            },
+            togglePin () {
+                this.pin = !this.pin
+                this.$electron.ipcRenderer.send('pinWindow', this.pin)
+            }
+        },
+        mounted () {
+            dbs.get('config').find({
+                type: 'lang'
+            }, (err, docs) => {
+                if (err || !docs.length) return
+                let [{lang}] = docs
+                this.$i18n.locale = lang
+            })
+            this.$electron.ipcRenderer.on('broadcastLang', (event, arg) => {
+                this.$i18n.locale = arg
+            })
+        }
+    }
+</script>
 <style lang="scss">
     .app-head {
         height: 60px;
@@ -49,62 +121,3 @@
         overflow: scroll;
     }
 </style>
-<template>
-    <div class="full-height">
-        <div class="app-head app-drag clearfix">
-            <div class="logo full-height pull-left">
-                <i class="fa fa-motorcycle"></i>
-                vocabook
-            </div>
-            <div class="operate full-height pull-right">
-                <div class="minimize">
-                    <i class="fa fa-map-pin" v-if="!pin" @click="togglePin"></i>
-                    <i class="fa fa-map-marker" v-if="pin" @click="togglePin"></i>
-                    <i class="fa fa-window-minimize pull-right" @click="changeToMini"></i>
-                </div>
-                <div class="user-info">
-                    <div style="border-radius:50%;border:1px solid gray;width:30px;height:30px;font-size:20px;color:white;text-align:center;line-height:30px;">
-                        头
-                    </div>
-                </div>
-            </div>
-            <div class="action full-height pull-right">
-                <div class="icon pull-right">
-                    <i class="fa fa-cog" @click="openConfig"></i>
-                </div>
-            </div>
-        </div>
-        <div style="height: calc(100% - 60px);">
-            <div class="full-height pull-left app-nav">
-                <navigator></navigator>
-            </div>
-            <div class="full-height pull-left app-body">
-                <router-view></router-view>
-            </div>
-        </div>
-    </div>
-</template>
-<script>
-    import navigator from './navigator.vue'
-
-    export default {
-        data () {
-            return {
-                pin: false
-            }
-        },
-        components: {navigator},
-        methods: {
-            openConfig () {
-                this.$electron.ipcRenderer.send('openConfig', `${location.href.substr(0, location.href.indexOf('#'))}#/config`)
-            },
-            changeToMini () {
-                this.$electron.ipcRenderer.send('changeToMini')
-            },
-            togglePin () {
-                this.pin = !this.pin
-                this.$electron.ipcRenderer.send('pinWindow', this.pin)
-            }
-        }
-    }
-</script>

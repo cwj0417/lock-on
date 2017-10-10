@@ -24,6 +24,18 @@ const actions = {
             type: 'theme',
             theme
         })
+    },
+    'config/changeLang' ({commit}, lang) {
+        log.info('change language', lang)
+        commit('ipc/lang', lang)
+        db.update({
+            type: 'lang'
+        }, {
+            type: 'lang',
+            lang
+        }, {
+            upsert: true
+        })
     }
 }
 

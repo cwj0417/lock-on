@@ -54,6 +54,10 @@
                 <i class="fa fa-snapchat"></i>
                 <span>{{map['explore']}}</span>
             </div>
+            <div class="tab hand app-non-drag" :class="{active: cur === 'lang'}" @click="cur = 'lang'">
+                <i class="fa fa-language"></i>
+                <span>{{map['lang']}}</span>
+            </div>
         </div>
         <div class="content" v-if="cur === 'word'">
             单词配置...
@@ -64,21 +68,26 @@
         <div class="content" v-if="cur === 'explore'">
             发现配置...
         </div>
+        <div class="content" v-if="cur === 'lang'">
+            <lang></lang>
+        </div>
     </div>
 </template>
 <script>
     import theme from './theme.vue'
+    import lang from './lang.vue'
 
     export default {
         name: 'config',
-        components: {theme},
+        components: {theme, lang},
         data () {
             return {
                 cur: 'word',
                 map: {
                     word: '单词',
                     theme: '主题',
-                    explore: '发现'
+                    explore: '发现',
+                    lang: '语言'
                 }
             }
         }

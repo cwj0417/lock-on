@@ -269,6 +269,11 @@ ipcMain.on('themeChange', (event, arg) => {
         v.send('broadcastTheme', arg)
     })
 })
+ipcMain.on('langChange', (event, arg) => {
+    webContents.getAllWebContents().forEach(v => {
+        v.send('broadcastLang', arg)
+    })
+})
 ipcMain.on('closeWindow', (event, arg) => {
     closeWindow()
 })

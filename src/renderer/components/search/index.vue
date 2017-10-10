@@ -15,20 +15,20 @@
 <template>
     <div class="search">
         <div class="search-wrap">
-            <Input v-model="word" style="width: 50%" @on-change="inputting" @click.native="$event.target.select()">
-            <i-select v-model="fromLang" slot="prepend" style="width: 80px" @on-change="search">
-                <i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>
-            </i-select>
-            <i-select v-model="toLang" slot="append" style="width: 80px" @on-change="search">
-                <i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>
-            </i-select>
-            </Input>
-            <div class="info">
-                {{info}}
-            </div>
-            <div class="result">
-                {{result}} <span v-if="!result">no results</span>
-            </div>
+            <!--<Input v-model="word" style="width: 50%" @on-change="inputting" @click.native="$event.target.select()">-->
+            <!--<i-select v-model="fromLang" slot="prepend" style="width: 80px" @on-change="search">-->
+                <!--<i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>-->
+            <!--</i-select>-->
+            <!--<i-select v-model="toLang" slot="append" style="width: 80px" @on-change="search">-->
+                <!--<i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>-->
+            <!--</i-select>-->
+            <!--</Input>-->
+            <!--<div class="info">-->
+                <!--{{info}}-->
+            <!--</div>-->
+            <!--<div class="result">-->
+                <!--{{result}} <span v-if="!result">no results</span>-->
+            <!--</div>-->
         </div>
         <div>
             <Form ref="form" :model="form" :label-width="110" :rules="rules">
