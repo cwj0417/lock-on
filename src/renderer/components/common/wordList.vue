@@ -72,16 +72,16 @@
         <div class="display">
             <div class="head line">
                 <div class="like">
-                    like
+                    {{ $t('like') }}
                 </div>
                 <div class="word">
-                    word
+                    {{ $t('word') }}
                 </div>
                 <div class="rank">
-                    rank
+                    {{ $t('rank') }}
                 </div>
                 <div class="sentence" v-if="!mini">
-                    sentence
+                    {{ $t('sentence') }}
                 </div>
             </div>
             <div class="line" :class="{active: curWord && item._id === curWord._id}" v-for="item of list" @click="$emit('detail', item)">
