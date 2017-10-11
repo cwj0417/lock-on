@@ -77,7 +77,7 @@
                     </DropdownMenu>
                 </Dropdown>
                 <i class="fa fa-edit" v-if="!editing" @click="editing = true"></i>
-                <i class="fa fa-close" v-if="editing" @click="editing = false"></i>
+                <i class="fa fa-check" v-if="editing" @click="editing = false"></i>
                 <i class="fa fa-trash" v-if="!editing"></i>
             </div>
         </div>

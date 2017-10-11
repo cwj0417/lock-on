@@ -102,7 +102,7 @@
                     {{ $t('review') }}
                 </span>
             </li>
-            <li :class="{active: cur === 'review'}" @click="cur = 'review', $router.push('/review')">
+            <li :class="{active: cur === 'review'}" @click="cur = 'review', $router.push('/review/all/true')">
                 <i class="fa fa-calendar"></i>
                 <span>{{ $t('review all') }}</span>
             </li>

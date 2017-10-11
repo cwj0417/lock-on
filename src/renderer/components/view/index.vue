@@ -1,37 +1,12 @@
-<style lang="scss">
-    .viewWrap {
-        .viewContent {
-            overflow: auto;
-            transition: all .2s;
-            float: left;
-            &.full {
-                width: 100%;
-            }
-            &.mini {
-                width: calc(100% - 570px);
-            }
-        }
-        .viewDetail {
-            overflow: auto;
-            transition: all .2s;
-            float: left;
-            &.full {
-                width: 570px;
-            }
-            &.mini {
-                width: 0;
-            }
-        }
-    }
-</style>
 <template>
     <div class="viewWrap clearfix full-height">
         <div class="viewContent full-height" :class="{full: !curWord, mini: curWord}">
             <div v-if="curWord">
-                <i class="fa fa-backward hand" @click="curWord = null" style="font-size: 25px; padding: 5px;"></i>
+                <i class="fa fa-backward hand header" @click="curWord = null"></i>
+                <span class="header">{{title}}</span>
             </div>
             <div v-else>
-                这里是过滤器...
+                <span class="header">{{title}}</span>
             </div>
             <wordList :curWord="curWord" :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
         </div>
@@ -73,7 +48,15 @@
             ...mapState({
                 list: state => state.words.words,
                 books: state => state.books.books
-            })
+            }),
+            title () {
+                if (this.$route.params.type === 'book') {
+                    return this.books.length ? this.books.find(({_id}) => _id === this.$route.params.id).name : ''
+                }
+                if (this.$route.params.type === 'like') {
+                    return 'like'
+                }
+            }
         },
         methods: {
             ...mapActions({
@@ -101,3 +84,33 @@
         }
     }
 </script>
+<style lang="scss">
+    .viewWrap {
+        .header {
+            font-size: 25px;
+            padding: 5px;
+        }
+        .viewContent {
+            overflow: auto;
+            transition: all .2s;
+            float: left;
+            &.full {
+                width: 100%;
+            }
+            &.mini {
+                width: calc(100% - 570px);
+            }
+        }
+        .viewDetail {
+            overflow: auto;
+            transition: all .2s;
+            float: left;
+            &.full {
+                width: 570px;
+            }
+            &.mini {
+                width: 0;
+            }
+        }
+    }
+</style>
