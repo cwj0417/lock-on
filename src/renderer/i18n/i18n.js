@@ -1,10 +1,13 @@
 export default {
-    // common
+    // common-fileds
     'word': ['单词', 'word', '単語'],
     'rank': ['等级', 'rank', '等級'],
     'sentence': ['例句', 'sentence', '例文'],
     'sourceUrl': ['来源', 'source url', 'ソース'],
     'like': ['喜欢', 'like', '好き'],
+    // common-hint
+    'more-options': ['更多选项', 'more options', 'more options'],
+    'search': ['搜索', 'search', 'search'],
     // head and navigator
     'appName': ['词王', 'vocabook', '語彙集'],
     'recommended': ['推荐', 'recommended', 'おすすめ'],

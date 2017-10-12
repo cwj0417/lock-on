@@ -1,81 +1,3 @@
-<style lang="scss">
-    .quick-review {
-        .item {
-            &:nth-child(2n-1) {
-                background: #fafafa;
-            }
-            &:nth-child(2n) {
-                background: #f4f4f4;
-            }
-            .display {
-                height: 30px;
-                line-height: 30px;
-                cursor: pointer;
-            }
-            .edit {
-                background: #ffffff;
-                table {
-                    width: 100%;
-                    tr {
-                        height: 30px;
-                        line-height: 30px;
-                    }
-                    .key {
-                        padding-left: 60px;
-                        width: 160px;
-                    }
-                    .value {
-                        width: calc(100% - 210px);
-                        padding-right: 30px;
-                        input {
-                            width: 100%;
-                        }
-                        textarea {
-                            padding: 5px;
-                            width: 100%;
-                            resize: vertical;
-                        }
-                    }
-                }
-            }
-            .item-enter, .item-leave {
-                height: 0;
-            }
-            .item-enter-active {
-                animation: fold-down .2s;
-                transform-origin: 0 0;
-            }
-            .item-enter {
-                height: 247px;
-            }
-            .item-leave-active {
-                animation: fold-up .2s;
-                transform-origin: 0 0;
-            }
-            .item-leave-to {
-                height: 0;
-            }
-            @keyframes fold-down {
-                from {
-                    height: 0;
-                    transform: scaleY(0);
-                }
-                to {
-                    height: 247px;
-                }
-            }
-            @keyframes fold-up {
-                from {
-                    height: 247px;
-                }
-                to {
-                    height: 0;
-                    transform: scaleY(0);
-                }
-            }
-        }
-    }
-</style>
 <template>
     <div class="item clearfix">
         <div class="display clearfix" @click="show ? $emit('input', '') : $emit('input', word._id)">
@@ -162,3 +84,81 @@
         }
     }
 </script>
+<style lang="scss">
+    .quick-review {
+        .item {
+            &:nth-child(2n-1) {
+                background: #fafafa;
+            }
+            &:nth-child(2n) {
+                background: #f4f4f4;
+            }
+            .display {
+                height: 30px;
+                line-height: 30px;
+                cursor: pointer;
+            }
+            .edit {
+                background: #ffffff;
+                table {
+                    width: 100%;
+                    tr {
+                        height: 30px;
+                        line-height: 30px;
+                    }
+                    .key {
+                        padding-left: 60px;
+                        width: 160px;
+                    }
+                    .value {
+                        width: calc(100% - 210px);
+                        padding-right: 30px;
+                        input {
+                            width: 100%;
+                        }
+                        textarea {
+                            padding: 5px;
+                            width: 100%;
+                            resize: vertical;
+                        }
+                    }
+                }
+            }
+            .item-enter, .item-leave {
+                height: 0;
+            }
+            .item-enter-active {
+                animation: fold-down .2s;
+                transform-origin: 0 0;
+            }
+            .item-enter {
+                height: 247px;
+            }
+            .item-leave-active {
+                animation: fold-up .2s;
+                transform-origin: 0 0;
+            }
+            .item-leave-to {
+                height: 0;
+            }
+            @keyframes fold-down {
+                from {
+                    height: 0;
+                    transform: scaleY(0);
+                }
+                to {
+                    height: 247px;
+                }
+            }
+            @keyframes fold-up {
+                from {
+                    height: 247px;
+                }
+                to {
+                    height: 0;
+                    transform: scaleY(0);
+                }
+            }
+        }
+    }
+</style>

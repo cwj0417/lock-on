@@ -1,31 +1,3 @@
-<style lang="scss">
-    .quick-review {
-        input {
-            height: 30px;
-            padding: 5px;
-        }
-        .head {
-            height: 30px;
-            line-height: 30px;
-            font-weight: bold;
-            text-indent: 7px;
-        }
-        .column {
-            float: left;
-        }
-        .like {
-            padding-left: 25px;
-            width: 60px;
-            text-align: center;
-        }
-        .word {
-            width: 150px;
-        }
-        .sentence {
-            width: calc(100% - 210px);
-        }
-    }
-</style>
 <template>
     <div class="quick-review">
         <div class="head clearfix" v-if="list.length">
@@ -78,3 +50,31 @@
         }
     }
 </script>
+<style lang="scss">
+    .quick-review {
+        input {
+            height: 30px;
+            padding: 5px;
+        }
+        .head {
+            height: 30px;
+            line-height: 30px;
+            font-weight: bold;
+            text-indent: 7px;
+        }
+        .column {
+            float: left;
+        }
+        .like {
+            padding-left: 25px;
+            width: 60px;
+            text-align: center;
+        }
+        .word {
+            width: 150px;
+        }
+        .sentence {
+            width: calc(100% - 210px);
+        }
+    }
+</style>

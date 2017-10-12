@@ -6,7 +6,28 @@
                 <span class="header">{{title}}</span>
             </div>
             <div v-else class="filter">
-
+                <div class="brief clearfix">
+                    <i-input class="ipt-word" v-model="filter.word" :placeholder="$t('search')" icon="ios-search"></i-input>
+                    <div class="filter-more" @click="fullFilter = !fullFilter">
+                        {{ $t('more-options') }}
+                        <i class="fa fa-angle-double-down" :style="{transition: 'all .5s', transform: fullFilter ? 'rotate(180deg)' : 'rotate(0deg)'}"></i>
+                    </div>
+                </div>
+                <div class="more clearfix" v-if="fullFilter === true">
+                    <div class="url">
+                        <span class="search">
+                            {{ $t('sourceUrl') }}:
+                        </span>
+                        <i-input v-model="filter.sourceUrl" style="width: 200px;"></i-input>
+                    </div>
+                    <div class="rank">
+                        <span class="search">
+                            {{ $t('rank') }}:
+                        </span>
+                        <rate v-model="filter.rankMin" placeholder="rank-min"></rate>
+                        <rate v-model="filter.rankMax" placeholder="rank-max"></rate>
+                    </div>
+                </div>
             </div>
             <wordList :curWord="curWord" :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
         </div>
@@ -37,7 +58,22 @@
         data () {
             return {
                 curType: null,
-                curWord: null
+                curWord: null,
+                fullFilter: false,
+                filter: {
+                    rankMin: 1,
+                    rankMax: 5
+                },
+                sortStatus: {
+                    word: 0,
+                    rank: 0,
+                    recognized: 0,
+                    createTime: 0,
+                    finded: 0
+                },
+                pageTotal: 1,
+                pageSize: 10,
+                curPage: 1
             }
         },
         name: 'review',
@@ -99,7 +135,22 @@
                 width: calc(100% - 570px);
             }
             .filter {
-
+                .brief {
+                    padding: 10px;
+                    .ipt-word {
+                        width: 200px;
+                        float: left;
+                    }
+                    .filter-more {
+                        float: left;
+                        line-height: 32px;
+                        padding: 0 5px;
+                        cursor: pointer;
+                    }
+                }
+                .more {
+                    padding: 10px;
+                }
             }
         }
         .viewDetail {
