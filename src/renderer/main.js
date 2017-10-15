@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import axios from 'axios'
-import VueI18n from 'vue-i18n'
-
 import App from './App'
+import VueI18n from 'vue-i18n'
+import axios from 'axios'
+
 import router from './router'
 import store from './store'
 
@@ -10,8 +10,10 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import messages from './i18n'
 
-Vue.use(iView)
 Vue.use(VueI18n)
+Vue.use(iView, {
+    i18n: (key, value) => i18n.vm._t(key, value)
+})
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 

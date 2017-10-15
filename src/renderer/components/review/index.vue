@@ -1,38 +1,60 @@
 <template>
-    <div class="review clearfix full-height">
-        <div class="viewContent full-height" :class="{full: !curWord, mini: curWord}">
-            <div v-if="curWord">
-                <i class="fa fa-backward hand header" @click="curWord = null"></i>
-                <span class="header">{{title}}</span>
-            </div>
-            <div v-else class="filter">
-                <div class="brief clearfix">
-                    <i-input class="ipt-word" v-model="filter.word" :placeholder="$t('search')" icon="ios-search"></i-input>
-                    <div class="filter-more" @click="fullFilter = !fullFilter">
-                        {{ $t('more-options') }}
-                        <i class="fa fa-angle-double-down" :style="{transition: 'all .5s', transform: fullFilter ? 'rotate(180deg)' : 'rotate(0deg)'}"></i>
-                    </div>
+    <div class="review-all full-height">
+        <div class="review clearfix">
+            <div class="viewContent full-height" :class="{full: !curWord, mini: curWord}">
+                <div v-if="curWord">
+                    <i class="fa fa-backward hand header" @click="curWord = null"></i>
+                    <span class="header">{{title}}</span>
                 </div>
-                <div class="more clearfix" v-if="fullFilter === true">
-                    <div class="url">
-                        <span class="search">
-                            {{ $t('sourceUrl') }}:
-                        </span>
-                        <i-input v-model="filter.sourceUrl" style="width: 200px;"></i-input>
+                <div v-else class="filter">
+                    <div class="brief clearfix">
+                        <i-input class="ipt-word" @on-change="timer" v-model="filter.word" :placeholder="$t('search')" icon="ios-search"></i-input>
+                        <div class="filter-more non-select" @click="fullFilter = !fullFilter">
+                            {{ $t('more-options') }}
+                            <i class="fa fa-angle-double-down" :style="{transition: 'all .5s', transform: fullFilter ? 'rotate(180deg)' : 'rotate(0deg)'}"></i>
+                        </div>
+                        <i class="fa fa-spinner fa-spin" v-show="timing" style="line-height: 32px; padding: 0 10px;"></i>
                     </div>
-                    <div class="rank">
-                        <span class="search">
-                            {{ $t('rank') }}:
+                    <transition name="more" mode="out-in">
+                        <div class="more clearfix" v-if="fullFilter === true">
+                            <div class="clearfix" style="margin-bottom: 10px;">
+                                <div class="sort">
+                        <span @click="sort('rank')" :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">
+                            <i class="fa fa-sort-amount-desc"></i> {{ $t('rank') }}
                         </span>
-                        <rate v-model="filter.rankMin" placeholder="rank-min"></rate>
-                        <rate v-model="filter.rankMax" placeholder="rank-max"></rate>
-                    </div>
+                                    <span @click="sort('finded')" :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">
+                            <i class="fa fa-sort-amount-desc"></i> {{ $t('hot') }}
+                        </span>
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                                <div class="url">
+                                <span class="search">
+                                    {{ $t('sourceUrl') }}:
+                                </span>
+                                    <i-input @on-change="timer" v-model="filter.sourceUrl" style="width: 200px;"></i-input>
+                                </div>
+                                <div class="rank">
+                                <span class="search">
+                                    {{ $t('rank') }}:
+                                </span>
+                                    <rate v-model="filter.rankMin" placeholder="rank-min" @on-change="timer"></rate>
+                                    <rate v-model="filter.rankMax" placeholder="rank-max" @on-change="timer" v-if="fullRank"></rate>
+                                    <i class="fa fa-arrow-left" @click="fullRank = !fullRank" :style="{transition: 'all .5s', transform: fullRank ? 'rotate(0deg)' : 'rotate(180deg)'}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
                 </div>
+                <wordList :curWord="curWord" :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
             </div>
-            <wordList :curWord="curWord" :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
+            <div class="viewDetail full-height" :class="{mini: !curWord, full: curWord}">
+                <wordDetail :word="curWord"></wordDetail>
+            </div>
         </div>
-        <div class="viewDetail full-height" :class="{mini: !curWord, full: curWord}">
-            <wordDetail :word="curWord"></wordDetail>
+        <div class="pagination">
+            <Page :total="pageTotal" size="small" :page-size="pageSize" :current="curPage"
+                  @on-change="changePage"></Page>
         </div>
     </div>
 </template>
@@ -50,7 +72,11 @@
             })
         },
         all: {
-            search: () => ({})
+            getFilter: () => ({
+                rankMin: 0,
+                rankMax: 5
+            }),
+            getSort: () => ({})
         }
     }
 
@@ -60,20 +86,17 @@
                 curType: null,
                 curWord: null,
                 fullFilter: false,
+                fullRank: false,
+                timing: false,
                 filter: {
-                    rankMin: 1,
+                    rankMin: 0,
                     rankMax: 5
                 },
-                sortStatus: {
-                    word: 0,
-                    rank: 0,
-                    recognized: 0,
-                    createTime: 0,
-                    finded: 0
-                },
+                sortStatus: {},
                 pageTotal: 1,
                 pageSize: 10,
-                curPage: 1
+                curPage: 1,
+                handle: null
             }
         },
         name: 'review',
@@ -94,23 +117,123 @@
         },
         methods: {
             ...mapActions({
-                search: 'words/search'
+                search: 'words/search',
+                count: 'words/count'
             }),
             init () {
                 let {type, id} = this.$route.params
                 this.curType = types[type]
-                if (type === 'book' && !this.books.length) {
-                    setTimeout(this.init, 500)
-                    return
+                this.filter = this.curType.getFilter(this, id)
+                this.sortStatus = this.curType.getSort(this, id)
+                this.findWords(true)
+            },
+            changePage (number) {
+                this.curPage = number
+                this.findWords()
+            },
+            sort (field) {
+                if (field in this.sortStatus) {
+                    if (this.sortStatus[field] === 1) {
+                        this.sortStatus[field] = -1
+                    } else {
+                        delete this.sortStatus[field]
+                    }
+                } else {
+                    this.sortStatus[field] = 1
+                }
+                this.curPage = 1
+                this.findWords()
+            },
+            timer () {
+                if (this.handle) {
+                    clearTimeout(this.handle)
+                }
+                this.timing = true
+                this.handle = setTimeout(() => {
+                    this.timing = false
+                    this.curPage = 1
+                    this.findWords(true)
+                }, 650)
+            },
+            findWords (getTotal = false) {
+                let conds = {}
+                let has = (key) => {
+                    if (this.filter[key]) {
+                        return true
+                    }
+                    return false
+                }
+                if (has('recognized')) {
+                    conds.recognized = this.filter.recognized
+                }
+                if (has('word')) {
+                    conds.word = new RegExp(this.filter.word)
+                }
+                if (has('sourceUrl')) {
+                    conds.sourceUrl = new RegExp(this.filter.sourceUrl)
+                }
+                if (has('sourceSentence')) {
+                    conds.sourceSentence = new RegExp(this.filter.sourceSentence)
+                }
+                let vm = this
+                if (getTotal) {
+                    this.count({
+                        find: {
+                            ...conds,
+                            $where: function () {
+                                return (has('rankMin') ? this.rank >= vm.filter.rankMin && this.rank <= vm.filter.rankMax : true) &&
+                                    (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
+                                    (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
+                            }
+                        }
+                    })
+                    .then(res => {
+                        this.pageTotal = res
+                    })
+                }
+                let sort = {}
+                for (let [key, value] of Object.entries(this.sortStatus)) {
+                    sort[key] = value
+                }
+                if (!sort.createTime) {
+                    sort.createTime = -1
                 }
                 this.search({
-                    find: this.curType.search(this, id)
+                    find: {
+                        ...conds,
+                        $where: function () {
+                            return (has('rankMin') ? this.rank >= vm.filter.rankMin && this.rank <= vm.filter.rankMax : true) &&
+                                (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
+                                (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
+                        }
+                    },
+                    sort,
+                    skip: this.pageSize * (this.curPage - 1),
+                    limit: this.pageSize
                 })
             }
         },
         watch: {
             $route: function () {
                 this.init()
+            },
+            'fullRank': function (v) {
+                if (!v) {
+                    this.filter.rankMax = this.filter.rankMin
+                    this.timer()
+                }
+            },
+            'filter.rankMin': function (value) {
+                if (!this.fullRank) {
+                    this.filter.rankMax = value
+                } else if (value > this.filter.rankMax) {
+                    this.filter.rankMax = value
+                }
+            },
+            'filter.rankMax': function (value) {
+                if (value < this.filter.rankMin) {
+                    this.filter.rankMin = value
+                }
             }
         },
         mounted () {
@@ -119,50 +242,146 @@
     }
 </script>
 <style lang="scss">
-    .review {
-        .header {
-            font-size: 25px;
-            padding: 5px;
-        }
-        .viewContent {
-            overflow: auto;
-            transition: all .2s;
-            float: left;
-            &.full {
-                width: 100%;
+    .review-all {
+        .review {
+            height: calc(100% - 50px);
+            .header {
+                font-size: 25px;
+                padding: 5px;
             }
-            &.mini {
-                width: calc(100% - 570px);
-            }
-            .filter {
-                .brief {
-                    padding: 10px;
-                    .ipt-word {
-                        width: 200px;
-                        float: left;
+            .viewContent {
+                overflow: auto;
+                transition: all .2s;
+                float: left;
+                &.full {
+                    width: 100%;
+                }
+                &.mini {
+                    width: calc(100% - 570px);
+                }
+                .filter {
+                    .timer-bar {
+                        height: 4px;
+                        div {
+                            width: 100%;
+                            background: var(--minor);
+                            height: 100%;
+                        }
                     }
-                    .filter-more {
-                        float: left;
-                        line-height: 32px;
-                        padding: 0 5px;
-                        cursor: pointer;
+                    .brief {
+                        padding: 10px;
+                        .ipt-word {
+                            width: 200px;
+                            float: left;
+                        }
+                        .filter-more {
+                            float: left;
+                            line-height: 32px;
+                            padding: 0 5px;
+                            cursor: pointer;
+                        }
+                    }
+                    .more-enter, .more-leave {
+                        height: 0;
+                    }
+                    .more-enter-active {
+                        animation: more-fold-down .2s;
+                        transform-origin: 0 0;
+                    }
+                    .more-enter {
+                        height: 247px;
+                    }
+                    .more-leave-active {
+                        animation: more-fold-up .2s;
+                        transform-origin: 0 0;
+                    }
+                    .more-leave-to {
+                        height: 0;
+                    }
+                    @keyframes more-fold-down {
+                        from {
+                            height: 0;
+                            transform: scaleY(0);
+                        }
+                        to {
+                            height: 94px;
+                        }
+                    }
+                    @keyframes more-fold-up {
+                        from {
+                            height: 94px;
+                        }
+                        to {
+                            height: 0;
+                            transform: scaleY(0);
+                        }
+                    }
+                    .more {
+                        padding: 10px;
+                        .sort {
+                            float: left;
+                            height: 32px;
+                            span {
+                                display: inline-block;
+                                line-height: 32px;
+                                background: #eeeeee;
+                                height: 32px;
+                                cursor: pointer;
+                                padding-left: 5px;
+                                border-radius: 5px;
+                                user-select: none;
+                                &:after {
+                                    display: inline-block;
+                                    content: "";
+                                    width: 12px;
+                                }
+                                &.desc, &.asc {
+                                    background: var(--minor);
+                                }
+                                &.desc:after {
+                                    content: "⬇";
+                                }
+                                &.asc:after {
+                                    content: "⬆";
+                                }
+                            }
+                        }
+                        .search {
+                            display: inline-block;
+                            line-height: 32px;
+                            height: 32px;
+                            vertical-align: middle;
+                        }
+                        .url {
+                            padding-left: 5px;
+                            float: left;
+                        }
+                        .rank {
+                            padding-left: 10px;
+                            float: left;
+                            .ivu-rate {
+                                border-radius: 5px;
+                                border: 1px solid #eee;
+                            }
+                        }
                     }
                 }
-                .more {
-                    padding: 10px;
+            }
+            .viewDetail {
+                overflow: auto;
+                transition: all .2s;
+                float: left;
+                &.full {
+                    width: 570px;
+                }
+                &.mini {
+                    width: 0;
                 }
             }
         }
-        .viewDetail {
-            overflow: auto;
-            transition: all .2s;
-            float: left;
-            &.full {
-                width: 570px;
-            }
-            &.mini {
-                width: 0;
-            }
+        .pagination {
+            text-align: center;
+            padding: 13px 0;
         }
     }
 </style>

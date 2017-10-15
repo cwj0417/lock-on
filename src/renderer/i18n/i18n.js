@@ -1,5 +1,6 @@
 export default {
     // common-fileds
+    'hot': ['热度', 'hot', 'hot'],
     'word': ['单词', 'word', '単語'],
     'rank': ['等级', 'rank', '等級'],
     'sentence': ['例句', 'sentence', '例文'],

@@ -45,6 +45,10 @@
 
     /* common css */
 
+    .non-select {
+        user-select: none;
+    }
+
     ::-webkit-scrollbar{
         width: 0;
         height: 0;

@@ -35,8 +35,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             db
             .find(find)
-            .skip(skip)
             .sort(sort)
+            .skip(skip)
             .limit(limit)
             .exec(function (err, docs) {
                 if (err) {
