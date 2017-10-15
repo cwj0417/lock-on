@@ -13,18 +13,19 @@
                             {{ $t('more-options') }}
                             <i class="fa fa-angle-double-down" :style="{transition: 'all .5s', transform: fullFilter ? 'rotate(180deg)' : 'rotate(0deg)'}"></i>
                         </div>
-                        <i class="fa fa-spinner fa-spin" v-show="timing" style="line-height: 32px; padding: 0 10px;"></i>
+                        <i class="fa fa-hourglass-o fa-spin" v-show="timing" style="line-height: 32px; padding: 0 10px;"></i>
                     </div>
                     <transition name="more" mode="out-in">
                         <div class="more clearfix" v-if="fullFilter === true">
                             <div class="clearfix" style="margin-bottom: 10px;">
                                 <div class="sort">
-                        <span @click="sort('rank')" :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">
-                            <i class="fa fa-sort-amount-desc"></i> {{ $t('rank') }}
-                        </span>
-                                    <span @click="sort('finded')" :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">
-                            <i class="fa fa-sort-amount-desc"></i> {{ $t('hot') }}
-                        </span>
+                                    <span @click="sort('rank')" :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">
+                                        <i class="fa fa-sort-amount-desc"></i> {{ $t('rank') }}
+                                    </span>
+                                                <span @click="sort('finded')" :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">
+                                        <i class="fa fa-sort-amount-desc"></i> {{ $t('hot') }}
+                                    </span>
+                                    <i class="fa fa-eraser hand" @click="(sortStatus = {}) && (curPage = 1) && (findWords())"></i>
                                 </div>
                             </div>
                             <div class="clearfix">
