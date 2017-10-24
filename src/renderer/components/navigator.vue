@@ -106,6 +106,11 @@
                 <i class="fa fa-calendar"></i>
                 <span>{{ $t('review all') }}</span>
             </li>
+            <li :class="{active: cur === `scheme${scheme._id}`}" @click="cur = `scheme${scheme._id}`, $router.push(`/review/scheme/${scheme._id}`)" v-for="scheme of schemes">
+                <i class="fa fa-list"></i>
+                <span>{{scheme.name}}</span>
+                <i class="fa fa-trash operate" @click.stop="removeScheme(scheme)"></i>
+            </li>
             <li class="title">
                 <span>
                     {{ $t('books') }}
@@ -124,7 +129,7 @@
             <li :class="{active: cur === `book${book._id}`}" @click="cur = `book${book._id}`, $router.push(`/view/book/${book._id}`)" v-for="book of books">
                 <i class="fa fa-list"></i>
                 <span>{{book.name}}</span>
-                <i class="fa fa-trash operate" @click="remove(book)"></i>
+                <i class="fa fa-trash operate" @click.stop="removeBook(book)"></i>
             </li>
         </ul>
     </div>
@@ -142,13 +147,15 @@
         },
         computed: {
             ...mapState({
-                books: state => state.books.books
+                books: state => state.books.books,
+                schemes: state => state.schemes.schemes
             })
         },
         methods: {
             ...mapActions({
                 postBook: 'books/post',
-                remove: 'books/remove'
+                removeBook: 'books/remove',
+                removeScheme: 'schemes/remove'
             }),
             toUrl (tag, protocal, url) {
                 this.cur = tag

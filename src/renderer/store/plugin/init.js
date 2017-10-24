@@ -3,6 +3,7 @@ import { log } from '../../util'
 
 let dbConfig = dbs.get('config')
 let dbBooks = dbs.get('books')
+let dbScheme = dbs.get('scheme')
 export default store => {
     log.info('config init...')
     // load theme
@@ -29,10 +30,19 @@ export default store => {
     // load books
     dbBooks.find({}, function (err, books) {
         if (err) {
-            log.err('can not get books', books)
+            log.err('can not get books', err)
         } else {
             log.suc('got books', books)
             store.commit('books/set', books)
+        }
+    })
+    // load schemes
+    dbScheme.find({}, function (err, schemes) {
+        if (err) {
+            log.err('can not get scheme', err)
+        } else {
+            log.suc('got scheme', schemes)
+            store.commit('schemes/set', schemes)
         }
     })
 }

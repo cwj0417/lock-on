@@ -1,1 +1,1 @@
-export const collections = ['words', 'config', 'books']
+export const collections = ['words', 'config', 'books', 'scheme']

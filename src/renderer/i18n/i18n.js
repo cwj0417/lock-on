@@ -1,4 +1,7 @@
 export default {
+    // hint
+    'succeed': ['成功', 'succeed', 'succeed'],
+    'error': ['发生了些错误', 'an error occurred', 'an error occurred'],
     // common-fileds
     'hot': ['热度', 'hot', 'hot'],
     'word': ['单词', 'word', '単語'],
@@ -9,6 +12,7 @@ export default {
     // common-hint
     'more-options': ['更多选项', 'more options', 'more options'],
     'search': ['搜索', 'search', 'search'],
+    'save-filter-as': ['保存方案为...', 'save filter as...', 'save filter as...'],
     // head and navigator
     'appName': ['词王', 'vocabook', '語彙集'],
     'recommended': ['推荐', 'recommended', 'おすすめ'],

@@ -63,6 +63,7 @@
                 search: 'words/search'
             }),
             init () {
+                this.curWord = null
                 let {type, id} = this.$route.params
                 this.curType = types[type]
                 if (type === 'book' && !this.books.length) {

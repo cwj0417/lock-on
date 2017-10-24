@@ -6,7 +6,7 @@
                     <i class="fa fa-backward hand header" @click="curWord = null"></i>
                     <span class="header">{{title}}</span>
                 </div>
-                <div v-else class="filter">
+                <div v-else-if="$route.params.type !== 'scheme'" class="filter">
                     <div class="brief clearfix">
                         <i-input class="ipt-word" @on-change="timer" v-model="filter.word" :placeholder="$t('search')" icon="ios-search"></i-input>
                         <div class="filter-more non-select" @click="fullFilter = !fullFilter">
@@ -25,7 +25,11 @@
                                                 <span @click="sort('finded')" :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">
                                         <i class="fa fa-sort-amount-desc"></i> {{ $t('hot') }}
                                     </span>
-                                    <i class="fa fa-eraser hand" @click="(sortStatus = {}) && (curPage = 1) && (findWords())"></i>
+                                </div>
+                                <div class="save-as">
+                                    <i class="fa fa-eraser hand" @click="clear" style="margin-right: 10px;"></i>
+                                    <i class="fa fa-save hand" v-if="!inputFilterTheme" @click="inputFilterTheme = true"></i>
+                                    <i-input v-else :placeholder="$t('save-filter-as')" style="width: 160px;"  @on-blur="inputFilterTheme = false" @on-keyup.enter="saveFilter($event.target.value)" @on-keyup.tab="inputFilterTheme = false" @on-keyup.esc="inputFilterTheme = false"></i-input>
                                 </div>
                             </div>
                             <div class="clearfix">
@@ -47,6 +51,11 @@
                         </div>
                     </transition>
                 </div>
+                <div class="filter" v-else>
+                    <span class="header">
+                        {{title}}
+                    </span>
+                </div>
                 <wordList :curWord="curWord" :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
             </div>
             <div class="viewDetail full-height" :class="{mini: !curWord, full: curWord}">
@@ -62,15 +71,13 @@
 <script>
     import wordList from '../common/wordList.vue'
     import wordDetail from '../common/wordDetail.vue'
+    import clone from 'lodash.clonedeep'
     import { mapState, mapActions } from 'vuex'
 
     let types = {
-        filter: {
-            search: (vm, id) => ({
-                _id: {
-                    $in: vm.books.find(({_id}) => _id === id).list
-                }
-            })
+        scheme: {
+            getFilter: (vm, id) => vm.schemes.find(({_id}) => _id === id).filter.filter,
+            getSort: (vm, id) => vm.schemes.find(({_id}) => _id === id).filter.sort
         },
         all: {
             getFilter: () => ({
@@ -89,6 +96,7 @@
                 fullFilter: false,
                 fullRank: false,
                 timing: false,
+                inputFilterTheme: false,
                 filter: {
                     rankMin: 0,
                     rankMax: 5
@@ -105,28 +113,53 @@
         computed: {
             ...mapState({
                 list: state => state.words.words,
-                books: state => state.books.books
+                books: state => state.books.books,
+                schemes: state => state.schemes.schemes
             }),
             title () {
-                if (this.$route.params.type === 'book') {
-                    return this.books.length ? this.books.find(({_id}) => _id === this.$route.params.id).name : ''
-                }
-                if (this.$route.params.type === 'like') {
-                    return 'like'
+                if (this.$route.params.type === 'scheme') {
+                    return this.schemes.length ? this.schemes.find(({_id}) => _id === this.$route.params.id).name : ''
                 }
             }
         },
         methods: {
             ...mapActions({
                 search: 'words/search',
-                count: 'words/count'
+                count: 'words/count',
+                addScheme: 'schemes/post'
             }),
             init () {
+                this.fullFilter = false
+                this.curWord = null
                 let {type, id} = this.$route.params
                 this.curType = types[type]
                 this.filter = this.curType.getFilter(this, id)
                 this.sortStatus = this.curType.getSort(this, id)
                 this.findWords(true)
+            },
+            saveFilter (name) {
+                if (name.trim()) {
+                    let filter = {
+                        filter: {},
+                        sort: {}
+                    }
+                    for (let key of ['rankMin', 'rankMax', 'sourceUrl']) {
+                        filter.filter[key] = this.filter[key]
+                    }
+                    filter.sort = clone(this.sortStatus)
+                    this.addScheme({
+                        name,
+                        filter
+                    })
+                    .then(() => {
+                        this.$Message.success(this.$t('succeed'))
+                        this.inputFilterTheme = false
+                    }, () => {
+                        this.$Message.error(this.$t('error'))
+                    })
+                } else {
+                    this.inputFilterTheme = false
+                }
             },
             changePage (number) {
                 this.curPage = number
@@ -155,6 +188,16 @@
                     this.curPage = 1
                     this.findWords(true)
                 }, 650)
+            },
+            clear () {
+                this.curPage = 1
+                this.sortStatus = {}
+                this.fullRank = false
+                this.filter = {
+                    rankMin: 0,
+                    rankMax: 5
+                }
+                this.findWords(true)
             },
             findWords (getTotal = false) {
                 let conds = {}
@@ -346,6 +389,12 @@
                                     content: "⬆";
                                 }
                             }
+                        }
+                        .save-as {
+                            float: left;
+                            height: 32px;
+                            line-height: 32px;
+                            padding-left: 40px;
                         }
                         .search {
                             display: inline-block;
