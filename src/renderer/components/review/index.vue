@@ -245,6 +245,7 @@
                     rankMax: 5,
                     sourceUrl: ''
                 }
+                this.calcExist()
                 this.findWords(true)
             },
             findWords (getTotal = false) {

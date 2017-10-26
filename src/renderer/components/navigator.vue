@@ -4,32 +4,20 @@
             <li class="title">
                 <span>{{ $t('recommended') }}</span>
             </li>
-            <li :class="{active: cur === 'home'}" @click="cur = 'home'">
+            <li :class="{active: $route.fullPath === '/homepage'}" @click="$router.push('/homepage')">
                 <i class="fa fa-home"></i>
                 <span>{{ $t('home') }}</span>
-            </li>
-            <li :class="{active: cur === 'github'}" @click="toUrl('github', 'https', 'github.com')">
-                <i class="fa fa-github"></i>
-                <span>github</span>
-            </li>
-            <li :class="{active: cur === 'twitter'}" @click="toUrl('twitter', 'https', 'twitter.com')">
-                <i class="fa fa-twitter"></i>
-                <span>twitter</span>
-            </li>
-            <li :class="{active: cur === 'medium'}" @click="toUrl('medium', 'https', 'medium.com')">
-                <i class="fa fa-medium"></i>
-                <span>medium</span>
             </li>
             <li class="title">
                 <span>
                     {{ $t('add to library') }}
                 </span>
             </li>
-            <li :class="{active: cur === 'search'}" @click="cur = 'search', $router.push('/search')">
+            <li :class="{active: $route.fullPath === '/search'}" @click="$router.push('/search')">
                 <i class="fa fa-search"></i>
                 <span>{{ $t('record new word') }}</span>
             </li>
-            <li :class="{active: cur === 'quickReview'}" @click="cur = 'quickReview', $router.push('/quickReview')">
+            <li :class="{active: $route.fullPath === '/quickReview'}" @click="$router.push('/quickReview')">
                 <i class="fa fa-edit"></i>
                 <span>{{ $t('recent added') }}</span>
             </li>
@@ -38,7 +26,7 @@
                     {{ $t('statistics') }}
                 </span>
             </li>
-            <li :class="{active: cur === 'chart'}" @click="cur = 'chart', $router.push('/chart')">
+            <li :class="{active: $route.fullPath === '/chart'}" @click="$router.push('/chart')">
                 <i class="fa fa-line-chart"></i>
                 <span>{{ $t('chart') }}</span>
             </li>
@@ -47,11 +35,11 @@
                     {{ $t('review') }}
                 </span>
             </li>
-            <li :class="{active: cur === 'review'}" @click="cur = 'review', $router.push('/review/all/true')">
+            <li :class="{active: $route.fullPath === '/review/all/true'}" @click="$router.push('/review/all/true')">
                 <i class="fa fa-calendar"></i>
                 <span>{{ $t('review all') }}</span>
             </li>
-            <li :class="{active: cur === `scheme${scheme._id}`}" @click="cur = `scheme${scheme._id}`, $router.push(`/review/scheme/${scheme._id}`)" v-for="scheme of schemes">
+            <li :class="{active: $route.fullPath === `/review/scheme/${scheme._id}`}" @click="$router.push(`/review/scheme/${scheme._id}`)" v-for="scheme of schemes">
                 <i class="fa fa-list"></i>
                 <span>{{scheme.name}}</span>
                 <i class="fa fa-trash operate" @click.stop="$df(removeScheme, scheme.name, scheme)"></i>
@@ -62,7 +50,7 @@
                 </span>
                 <i class="fa fa-plus-circle menu-action" @click="creatingBook = true"></i>
             </li>
-            <li :class="{active: cur === 'favourite'}" @click="cur = 'favourite', $router.push('/view/like/true')">
+            <li :class="{active: $route.fullPath === '/view/like/true'}" @click="$router.push('/view/like/true')">
                 <i class="fa fa-heart-o"></i>
                 <span>{{ $t('favourite') }}</span>
             </li>
@@ -71,7 +59,7 @@
                 <input @blur="createBook($event.target.value)" @keyup.enter="creatingBook = false" type="text"
                        placeholder="your new book's name" style="height: 26px; width: 160px; padding: 5px; outline: none;">
             </li>
-            <li :class="{active: cur === `book${book._id}`}" @click="cur = `book${book._id}`, $router.push(`/view/book/${book._id}`)" v-for="book of books">
+            <li :class="{active: $route.fullPath === `/view/book/${book._id}`}" @click="$router.push(`/view/book/${book._id}`)" v-for="book of books">
                 <i class="fa fa-list"></i>
                 <span>{{book.name}}</span>
                 <i class="fa fa-trash operate" @click.stop="$df(removeBook, book.name,book)"></i>
@@ -86,7 +74,6 @@
         name: 'navigator',
         data () {
             return {
-                cur: 'home',
                 creatingBook: false
             }
         },
@@ -109,10 +96,6 @@
             removeScheme (...args) {
                 this.$router.push('/review/all/true')
                 this._removeScheme(...args)
-            },
-            toUrl (tag, protocal, url) {
-                this.cur = tag
-                this.$router.push(`/url/${protocal}/${url}`)
             },
             createBook (name) {
                 this.creatingBook = false

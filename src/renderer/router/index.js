@@ -9,9 +9,10 @@ export default new Router({
         name: 'main',
         component: require('@/components/Main'),
         redirect: {
-            name: 'search'
+            name: 'homepage'
         },
         children: [
+            {path: '/homepage', component: require('@/components/homepage'), name: 'homepage'},
             {path: '/search', component: require('@/components/search'), name: 'search'},
             {path: '/quickReview', component: require('@/components/quickReview'), name: 'quickReview'},
             {path: '/review/:type/:id', component: require('@/components/review'), name: 'review'},
