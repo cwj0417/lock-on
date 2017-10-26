@@ -1,11 +1,16 @@
 <template>
     <div class="full-height">
-        <div class="app-head app-drag clearfix">
-            <div class="logo full-height pull-left">
+        <div class="app-head app-drag">
+            <div class="logo full-height">
                 <i class="fa fa-linode"></i>
                 {{ $t('appName') }}
             </div>
-            <div class="operate full-height pull-right">
+            <div class="action full-height">
+                <div class="icon pull-right">
+                    <i class="fa fa-cog" @click="openConfig"></i>
+                </div>
+            </div>
+            <div class="operate full-height">
                 <div class="minimize">
                     <i class="fa fa-map-pin" v-if="!pin" @click="togglePin"></i>
                     <i class="fa fa-map-marker" v-if="pin" @click="togglePin"></i>
@@ -17,17 +22,12 @@
                     </div>
                 </div>
             </div>
-            <div class="action full-height pull-right">
-                <div class="icon pull-right">
-                    <i class="fa fa-cog" @click="openConfig"></i>
-                </div>
-            </div>
         </div>
-        <div style="height: calc(100% - 60px);">
-            <div class="full-height pull-left app-nav">
+        <div style="height: calc(100% - 60px); display: flex;">
+            <div class="full-height app-nav">
                 <navigator></navigator>
             </div>
-            <div class="full-height pull-left app-body">
+            <div class="full-height app-body">
                 <router-view></router-view>
             </div>
         </div>
@@ -74,6 +74,7 @@
     .app-head {
         height: 60px;
         background: var(--major);
+        display: flex;
         .logo {
             width: 200px;
             padding: 20px 0 0 20px;

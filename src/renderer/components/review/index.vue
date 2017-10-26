@@ -1,7 +1,7 @@
 <template>
     <div class="review-all full-height">
-        <div class="review clearfix">
-            <div class="viewContent full-height" :class="{full: !curWord, mini: curWord}">
+        <div class="review">
+            <div class="viewContent" :class="{full: !curWord, mini: curWord}">
                 <div v-if="curWord">
                     <i class="fa fa-backward hand header" @click="curWord = null"></i>
                     <div class="header">{{title}}</div>
@@ -343,6 +343,7 @@
     .review-all {
         .review {
             height: calc(100% - 50px);
+            display: flex;
             .header {
                 font-size: 25px;
                 padding: 5px;

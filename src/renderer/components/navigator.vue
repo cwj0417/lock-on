@@ -1,58 +1,3 @@
-<style lang="scss">
-    .navigator {
-        background: var(--bg);
-        overflow: scroll;
-        user-select: none;
-        cursor: default;
-        ul {
-            li {
-                line-height: 30px;
-                text-indent: 15px;
-                font-size: 13px;
-                font-weight: 500;
-                margin-left: 1px;
-                border-left: 3px solid var(--bg);
-                i {
-                    text-indent: 0;
-                }
-                span {
-                    padding-left: 5px;
-                }
-                &.title {
-                    line-height: 20px;
-                    color: #999999;
-                    font-size: 12px;
-                    padding-top: 15px;
-                    text-indent: 2px;
-                    &:first-child {
-                        padding-top: 2px;
-                    }
-                }
-                &.active {
-                    border-left: 3px solid var(--minor);
-                    background: var(--bg-active);
-                    color: var(--txt-dark);
-                }
-                &:hover {
-                    .operate {
-                        transform: scale(1);
-                    }
-                }
-                .menu-action {
-                    font-size: 17px;
-                    float: right;
-                    padding-right: 12px;
-                }
-                .operate {
-                    transition: transform .2s;
-                    transform: scale(0);
-                    float: right;
-                    padding: 8px 12px;
-                }
-            }
-        }
-    }
-</style>
 <template>
     <div class="full-height pull-left full-width navigator">
         <ul>
@@ -124,7 +69,7 @@
             <li v-if="creatingBook">
                 <i class="fa fa-list"></i>
                 <input @blur="createBook($event.target.value)" @keyup.enter="creatingBook = false" type="text"
-                       placeholder="your new book's name" style="height: 26px; width: 160px; padding: 5px;">
+                       placeholder="your new book's name" style="height: 26px; width: 160px; padding: 5px; outline: none;">
             </li>
             <li :class="{active: cur === `book${book._id}`}" @click="cur = `book${book._id}`, $router.push(`/view/book/${book._id}`)" v-for="book of books">
                 <i class="fa fa-list"></i>
@@ -176,3 +121,64 @@
         }
     }
 </script>
+<style lang="scss">
+    .navigator {
+        background: var(--bg);
+        overflow: scroll;
+        user-select: none;
+        cursor: default;
+        ul {
+            li {
+                line-height: 30px;
+                font-size: 13px;
+                font-weight: 500;
+                margin-left: 1px;
+                border-left: 3px solid var(--bg);
+                display: flex;
+                i {
+                    align-items: center;
+                    height: 12px;
+                    margin: 9px;
+                }
+                span {
+                    display: block;
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                &.title {
+                    color: #999999;
+                    font-size: 12px;
+                    padding-top: 5px;
+                    text-indent: 5px;
+                    span {
+                        line-height: 30px;
+                    }
+                    &:first-child {
+                        padding-top: 2px;
+                    }
+                }
+                &.active {
+                    border-left: 3px solid var(--minor);
+                    background: var(--bg-active);
+                    color: var(--txt-dark);
+                }
+                &:hover {
+                    .operate {
+                        transform: scale(1);
+                    }
+                }
+                .menu-action {
+                    font-size: 18px;
+                    height: 18px;
+                    margin: 6px;
+                }
+                .operate {
+                    transition: transform .2s;
+                    transform: scale(0);
+                }
+            }
+        }
+    }
+</style>
