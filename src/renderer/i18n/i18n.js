@@ -9,6 +9,10 @@ export default {
     'sentence': ['例句', 'sentence', '例文'],
     'sourceUrl': ['来源', 'source url', 'ソース'],
     'like': ['喜欢', 'like', '好き'],
+    // origin fields
+    'rankMin': ['最低星级', 'min rank', 'min rank'],
+    'rankMax': ['最高星级', 'max rank', 'max rank'],
+    'finded': ['热度', 'hot', 'hot'],
     // common-hint
     'more-options': ['更多选项', 'more options', 'more options'],
     'search': ['搜索', 'search', 'search'],

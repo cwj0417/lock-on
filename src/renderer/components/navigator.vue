@@ -109,7 +109,7 @@
             <li :class="{active: cur === `scheme${scheme._id}`}" @click="cur = `scheme${scheme._id}`, $router.push(`/review/scheme/${scheme._id}`)" v-for="scheme of schemes">
                 <i class="fa fa-list"></i>
                 <span>{{scheme.name}}</span>
-                <i class="fa fa-trash operate" @click.stop="removeScheme(scheme)"></i>
+                <i class="fa fa-trash operate" @click.stop="$df(removeScheme, scheme.name, scheme)"></i>
             </li>
             <li class="title">
                 <span>
@@ -129,7 +129,7 @@
             <li :class="{active: cur === `book${book._id}`}" @click="cur = `book${book._id}`, $router.push(`/view/book/${book._id}`)" v-for="book of books">
                 <i class="fa fa-list"></i>
                 <span>{{book.name}}</span>
-                <i class="fa fa-trash operate" @click.stop="removeBook(book)"></i>
+                <i class="fa fa-trash operate" @click.stop="$df(removeBook, book.name,book)"></i>
             </li>
         </ul>
     </div>
@@ -154,9 +154,17 @@
         methods: {
             ...mapActions({
                 postBook: 'books/post',
-                removeBook: 'books/remove',
-                removeScheme: 'schemes/remove'
+                _removeBook: 'books/remove',
+                _removeScheme: 'schemes/remove'
             }),
+            removeBook (...args) {
+                this.$router.push('/view/like/true')
+                this._removeBook(...args)
+            },
+            removeScheme (...args) {
+                this.$router.push('/review/all/true')
+                this._removeScheme(...args)
+            },
             toUrl (tag, protocal, url) {
                 this.cur = tag
                 this.$router.push(`/url/${protocal}/${url}`)

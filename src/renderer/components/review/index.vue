@@ -4,7 +4,7 @@
             <div class="viewContent full-height" :class="{full: !curWord, mini: curWord}">
                 <div v-if="curWord">
                     <i class="fa fa-backward hand header" @click="curWord = null"></i>
-                    <span class="header">{{title}}</span>
+                    <div class="header">{{title}}</div>
                 </div>
                 <div v-else-if="$route.params.type !== 'scheme'" class="filter">
                     <div class="brief clearfix">
@@ -28,8 +28,14 @@
                                 </div>
                                 <div class="save-as">
                                     <i class="fa fa-eraser hand" @click="clear" style="margin-right: 10px;"></i>
-                                    <i class="fa fa-save hand" v-if="!inputFilterTheme" @click="inputFilterTheme = true"></i>
-                                    <i-input v-else :placeholder="$t('save-filter-as')" style="width: 160px;"  @on-blur="inputFilterTheme = false" @on-keyup.enter="saveFilter($event.target.value)" @on-keyup.tab="inputFilterTheme = false" @on-keyup.esc="inputFilterTheme = false"></i-input>
+                                    <span v-if="existScheme" class="hand padding5" @click="$router.push(`/review/scheme/${existScheme._id}`)">
+                                        {{existScheme.name}}
+                                        <i class="fa fa-external-link"></i>
+                                    </span>
+                                    <template v-else>
+                                        <i class="fa fa-save hand" v-if="!inputFilterTheme" @click="inputFilterTheme = true"></i>
+                                        <i-input v-else :placeholder="$t('save-filter-as')" style="width: 160px;"  @on-blur="inputFilterTheme = false" @on-keyup.enter="saveFilter($event.target.value)" @on-keyup.tab="inputFilterTheme = false" @on-keyup.esc="inputFilterTheme = false"></i-input>
+                                    </template>
                                 </div>
                             </div>
                             <div class="clearfix">
@@ -52,9 +58,16 @@
                     </transition>
                 </div>
                 <div class="filter" v-else>
-                    <span class="header">
+                    <div class="header">
                         {{title}}
-                    </span>
+                    </div>
+                    <div class="fixedFilter" v-for="(value, key) in filter">
+                        <span class="key">{{$t(key)}}</span>
+                        <span class="value">{{value}}</span>
+                    </div>
+                    <div class="fixedFilter" v-for="(value, key) in sortStatus" :class="{asc: value === 1, desc: value === -1}">
+                        <span>{{$t(key)}}</span>
+                    </div>
                 </div>
                 <wordList :curWord="curWord" :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
             </div>
@@ -82,7 +95,8 @@
         all: {
             getFilter: () => ({
                 rankMin: 0,
-                rankMax: 5
+                rankMax: 5,
+                sourceUrl: ''
             }),
             getSort: () => ({})
         }
@@ -99,13 +113,15 @@
                 inputFilterTheme: false,
                 filter: {
                     rankMin: 0,
-                    rankMax: 5
+                    rankMax: 5,
+                    sourceUrl: ''
                 },
                 sortStatus: {},
                 pageTotal: 1,
                 pageSize: 10,
                 curPage: 1,
-                handle: null
+                handle: null,
+                existScheme: null
             }
         },
         name: 'review',
@@ -132,10 +148,17 @@
                 this.fullFilter = false
                 this.curWord = null
                 let {type, id} = this.$route.params
+                if (type === 'scheme' && !this.schemes.length) {
+                    setTimeout(this.init, 500)
+                    return
+                }
                 this.curType = types[type]
-                this.filter = this.curType.getFilter(this, id)
-                this.sortStatus = this.curType.getSort(this, id)
+                this.filter = clone(this.curType.getFilter(this, id))
+                this.sortStatus = clone(this.curType.getSort(this, id))
                 this.findWords(true)
+                setTimeout(() => {
+                    this.calcExist()
+                }, 500)
             },
             saveFilter (name) {
                 if (name.trim()) {
@@ -144,7 +167,10 @@
                         sort: {}
                     }
                     for (let key of ['rankMin', 'rankMax', 'sourceUrl']) {
-                        filter.filter[key] = this.filter[key]
+                        if (this.filter[key] !== undefined && this.filter[key] !== '') {
+                            console.log(this.filter[key])
+                            filter.filter[key] = this.filter[key]
+                        }
                     }
                     filter.sort = clone(this.sortStatus)
                     this.addScheme({
@@ -154,6 +180,7 @@
                     .then(() => {
                         this.$Message.success(this.$t('succeed'))
                         this.inputFilterTheme = false
+                        this.calcExist()
                     }, () => {
                         this.$Message.error(this.$t('error'))
                     })
@@ -165,7 +192,25 @@
                 this.curPage = number
                 this.findWords()
             },
+            calcExist () {
+                let looseEqual = function (a, b) {
+                    return JSON.stringify(a.filter) === JSON.stringify(b.filter) && JSON.stringify(a.sort) === JSON.stringify(b.sort)
+                }
+                this.$nextTick(() => {
+                    for (let key in this.filter) {
+                        if (this.filter[key] === '') {
+                            delete this.filter[key]
+                        }
+                    }
+                    this.existScheme = this.schemes.find(({filter}) => looseEqual(filter, {
+                        filter: this.filter,
+                        sort: this.sortStatus
+                    }))
+                    this.$forceUpdate()
+                })
+            },
             sort (field) {
+                this.calcExist()
                 if (field in this.sortStatus) {
                     if (this.sortStatus[field] === 1) {
                         this.sortStatus[field] = -1
@@ -179,6 +224,7 @@
                 this.findWords()
             },
             timer () {
+                this.calcExist()
                 if (this.handle) {
                     clearTimeout(this.handle)
                 }
@@ -195,7 +241,8 @@
                 this.fullRank = false
                 this.filter = {
                     rankMin: 0,
-                    rankMax: 5
+                    rankMax: 5,
+                    sourceUrl: ''
                 }
                 this.findWords(true)
             },
@@ -258,23 +305,29 @@
             }
         },
         watch: {
-            $route: function () {
+            $route () {
                 this.init()
             },
-            'fullRank': function (v) {
+            'fullRank' (v) {
+                if (this.$route.params.type === 'scheme') return
                 if (!v) {
                     this.filter.rankMax = this.filter.rankMin
+                    if (this.filter.rankMin === 0) {
+                        this.filter.rankMax = 5
+                    }
                     this.timer()
                 }
             },
-            'filter.rankMin': function (value) {
+            'filter.rankMin' (value) {
+                if (this.$route.params.type === 'scheme') return
                 if (!this.fullRank) {
                     this.filter.rankMax = value
                 } else if (value > this.filter.rankMax) {
                     this.filter.rankMax = value
                 }
             },
-            'filter.rankMax': function (value) {
+            'filter.rankMax' (value) {
+                if (this.$route.params.type === 'scheme') return
                 if (value < this.filter.rankMin) {
                     this.filter.rankMin = value
                 }
@@ -292,11 +345,38 @@
             .header {
                 font-size: 25px;
                 padding: 5px;
+                display: inline-block;
+            }
+            .fixedFilter {
+                display: inline-block;
+                padding: 5px;
+                background: #eee;
+                margin-right: 5px;
+                border-radius: 6px;
+                .key {
+                    &:after {
+                        content: ':';
+                    }
+                }
+                .value {
+                    color: var(--major);
+                    padding: 3px;
+                    border-radius: 2px;
+                }
+                &.desc:after {
+                    color: var(--major);
+                    content: "⬇";
+                }
+                &.asc:after {
+                    color: var(--major);
+                    content: "⬆";
+                }
             }
             .viewContent {
                 overflow: auto;
                 transition: all .2s;
                 float: left;
+                user-select: none;
                 &.full {
                     width: 100%;
                 }

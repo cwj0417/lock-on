@@ -10,6 +10,10 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import messages from './i18n'
 
+import deleteConfirm from './plugin/deleteConfirm'
+
+Vue.use(deleteConfirm)
+
 Vue.use(VueI18n)
 Vue.use(iView, {
     i18n: (key, value) => i18n.vm._t(key, value)

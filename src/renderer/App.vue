@@ -73,6 +73,10 @@
         width: 100%;
     }
 
+    .padding5 {
+        padding: 5px;
+    }
+
     .clearfix {
         &:after {
             display: block;
