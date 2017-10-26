@@ -147,6 +147,7 @@
             init () {
                 this.fullFilter = false
                 this.curWord = null
+                this.fullRank = false
                 let {type, id} = this.$route.params
                 if (type === 'scheme' && !this.schemes.length) {
                     setTimeout(this.init, 500)
@@ -320,7 +321,7 @@
             },
             'filter.rankMin' (value) {
                 if (this.$route.params.type === 'scheme') return
-                if (!this.fullRank) {
+                if (!this.fullRank && value !== 0) {
                     this.filter.rankMax = value
                 } else if (value > this.filter.rankMax) {
                     this.filter.rankMax = value
