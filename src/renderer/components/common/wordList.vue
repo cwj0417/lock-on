@@ -8,9 +8,9 @@
                 border-left: 1px solid #acb5c4;
                 border-right: 1px solid #acb5c4;
                 border-bottom: 1px solid #acb5c4;
+                display: flex;
                 div {
                     text-align: center;
-                    float: left;
                 }
                 &:nth-child(2n) {
                     background: #f8fdff;
@@ -34,6 +34,9 @@
             }
             .word {
                 width: 160px;
+                span {
+                    padding: 0 5px;
+                }
             }
             .rank {
                 position: relative;
@@ -90,8 +93,8 @@
                        @click.stop="toggleLike(item)"></i>
                 </div>
                 <div class="word">
+                    <span>{{item.word}}</span>
                     <Dropdown @click.native.stop="">
-                        {{item.word}}
                         <i class="fa fa-plus-circle"></i>
                         <DropdownMenu slot="list">
                             <DropdownItem :key="_id" @click.native="addToBook(_id, item._id)" v-for="({_id, name}) of books">{{name}}</DropdownItem>

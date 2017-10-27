@@ -145,6 +145,7 @@
                 addScheme: 'schemes/post'
             }),
             init () {
+                this.curPage = 1
                 this.fullFilter = false
                 this.curWord = null
                 this.fullRank = false

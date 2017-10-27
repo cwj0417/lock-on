@@ -1,16 +1,15 @@
-// import { Modal } from 'iview'
+import { Modal } from 'iview'
 
 export default {
     install (Vue) {
         Vue.prototype.$df = function (fn, name, ...args) {
-            fn && fn(...args)
-            // Modal.confirm({
-            //     render: (h) => h('input'),
-            //     onOk () {
-            //         // fn && fn(...args)
-            //         console.log('ok')
-            //     }
-            // })
+            Modal.confirm({
+                title: 'reminder',
+                content: 'are you sure to delete this item?',
+                onOk () {
+                    fn && fn(...args)
+                }
+            })
         }
     }
 }

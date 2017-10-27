@@ -29,5 +29,11 @@ export default {
     'review': ['复习', 'review', '復習'],
     'review all': ['总览', 'review all', '総覧'],
     'books': ['单词本', 'books', '語本'],
-    'favourite': ['收藏', 'favourite', '収蔵']
+    'favourite': ['收藏', 'favourite', '収蔵'],
+    // reminder
+    'empty-recent-added': ['已经处理完了所有新添加单词, 你可以{route}, 或者{mini}', 'all recent added words have been inserted, you can {route}, or {mini}', 'all recent added words have been inserted, you can {route}, or {mini}'],
+    'add-word-route': ['添加单词', 'add new words', 'add new words'],
+    'add-word-mini': ['从迷你窗口添加', 'add words from mini window', 'add words from mini window'],
+    // confirm
+    'delete-confirm': ['是否确认删除此项目', 'are you sure to delete this item?', 'are you sure to delete this item?']
 }

@@ -12,7 +12,10 @@
             </div>
         </div>
         <div class="empty" v-else>
-            all words inserted, so you are very good good!
+            <i18n path="empty-recent-added" tag="p">
+                <a place="route" @click="$router.push('/search')">{{ $t('add-word-route') }}</a>
+                <a place="mini" @click="$electron.ipcRenderer.send('changeToMini')">{{ $t('add-word-mini') }}</a>
+            </i18n>
         </div>
         <edit v-model="activeId" v-for="item of list" :word="item" :key="item.id"></edit>
     </div>
@@ -61,6 +64,14 @@
             line-height: 30px;
             font-weight: bold;
             text-indent: 7px;
+        }
+        .empty {
+            margin: 100px auto;
+            width: 500px;
+            font-size: 20px;
+            a {
+                color: var(--minor);
+            }
         }
         .column {
             float: left;
