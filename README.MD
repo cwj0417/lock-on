@@ -1,25 +1,22 @@
-# lockon
+# Vocabook
 
-> An electron-vue project
+> postname **lock on**
+
+you can get vocabook on [release](fjonas/lock-on/releases)
 
 #### Build Setup
 
 ``` bash
-# install dependencies
-npm install
+## install
+yarn
 
-# serve with hot reload at localhost:9080
-npm run dev
+## develop
+yarn dev
 
-# build electron application for production
-npm run build
-
-
-# lint all JS/Vue component files in `src/`
-npm run lint
+## release by travis.ci
 
 ```
 
 ---
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+
