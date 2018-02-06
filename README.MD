@@ -13,7 +13,8 @@ yarn
 ## develop
 yarn dev
 
-## release by travis.ci
+## release by travis.ci 
+## add tag and push to build on remote
 
 ```
 
