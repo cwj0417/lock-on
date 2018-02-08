@@ -181,6 +181,7 @@ const playerConfig = {
     minimizable: false,
     maximizable: false,
     alwaysOnTop: true,
+    transparent: true,
     frame: false
 }
 

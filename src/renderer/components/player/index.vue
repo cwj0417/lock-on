@@ -4,12 +4,16 @@
     }
 </style>
 <template>
-    <div class="mini full-height flex">
+    <div class="player full-height flex app-drag">
         player
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     export default {
-
+        data () {
+            return {
+                playing: false
+            }
+        }
     }
 </script>

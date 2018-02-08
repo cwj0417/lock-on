@@ -98,7 +98,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import wordList from '../common/wordList.vue'
     import wordDetail from '../common/wordDetail.vue'
     import clone from 'lodash.clonedeep'
@@ -293,8 +293,8 @@
                             ...conds,
                             $where: function () {
                                 return (has('rankMin') ? this.rank >= vm.filter.rankMin && this.rank <= vm.filter.rankMax : true) &&
-                                    (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
-                                    (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
+                                        (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
+                                        (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
                             }
                         }
                     })
@@ -314,8 +314,8 @@
                         ...conds,
                         $where: function () {
                             return (has('rankMin') ? this.rank >= vm.filter.rankMin && this.rank <= vm.filter.rankMax : true) &&
-                                (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
-                                (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
+                                    (has('startTime') ? this.createTime.valueOf() > vm.filter.startTime : true) &&
+                                    (has('endTime') ? this.createTime.valueOf() < vm.filter.endTime : true)
                         }
                     },
                     sort,

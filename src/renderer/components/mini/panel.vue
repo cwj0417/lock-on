@@ -79,7 +79,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     export default {
         name: 'panel',
         props: ['value', 'current', 'icon'],
@@ -99,27 +99,33 @@
         },
         mounted () {
             let vm = this
+
             function drag (ev) {
                 vm.$emit('startDrag')
             }
+
             function allowDrop (ev) {
                 ev.preventDefault()
             }
+
             function drop (ev) {
                 vm.entered--
                 vm.active = false
                 vm.$emit('endDrag')
                 ev.preventDefault()
             }
+
             function enter (ev) {
                 if (vm.current !== vm.self) {
                     vm.entered++
                     vm.active = true
                 }
             }
+
             function leave (ev) {
                 if (vm.current !== vm.self && !--vm.entered) vm.active = false
             }
+
             let dropEl = this.$el.querySelector('.drop')
             let dragEl = this.$el.querySelector('.drag')
             dragEl.ondragstart = drag

@@ -73,7 +73,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import theme from './theme.vue'
     import lang from './lang.vue'
 

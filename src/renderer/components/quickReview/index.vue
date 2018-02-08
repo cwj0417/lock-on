@@ -20,7 +20,7 @@
         <edit v-model="activeId" v-for="item of list" :word="item" :key="item.id"></edit>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import { mapState, mapActions } from 'vuex'
     import edit from './edit.vue'
 

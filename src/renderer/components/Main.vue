@@ -36,7 +36,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import navigator from './navigator.vue'
     import dbs from '../db'
 

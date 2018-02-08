@@ -4,7 +4,7 @@
 <template>
     <webview :src="src" style="width: 100%; height: 100%;"></webview>
 </template>
-<script>
+<script type="text/ecmascript-6">
     export default {
         name: 'url',
         data () {

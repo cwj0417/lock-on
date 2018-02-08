@@ -4,7 +4,7 @@
 <template>
     <webview :src="src" :style="css"></webview>
 </template>
-<script>
+<script type="text/ecmascript-6">
     export default {
         name: 'webview',
         props: ['src', 'css'],

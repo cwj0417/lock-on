@@ -6,8 +6,9 @@
                    @click.stop="mod({word, field: 'like', value: !word.like})"></i>
             </div>
             <div class="word column">
-                <span class="txt-ellipsis" v-if="!show" >{{word.word}}</span>
-                <input @click.stop="" type="text" v-if="show" :value="word.word" @input="mod({word, field: 'word', value: $event.target.value})">
+                <span class="txt-ellipsis" v-if="!show">{{word.word}}</span>
+                <input @click.stop="" type="text" v-if="show" :value="word.word"
+                       @input="mod({word, field: 'word', value: $event.target.value})">
             </div>
             <div class="sentence column">
                 <span class="txt-ellipsis" v-if="!show">{{word.sourceSentence}}</span>
@@ -33,7 +34,8 @@
                             definition
                         </td>
                         <td class="value">
-                            <textarea rows="5" :value="word.definition" @input="mod({word, field: 'definition', value: $event.target.value})" />
+                            <textarea rows="5" :value="word.definition"
+                                      @input="mod({word, field: 'definition', value: $event.target.value})"/>
                         </td>
                     </tr>
                     <tr>
@@ -41,16 +43,19 @@
                             sentence
                         </td>
                         <td class="value">
-                            <textarea rows="5" :value="word.sourceSentence" @input="mod({word, field: 'sourceSentence', value: $event.target.value})" />
+                            <textarea rows="5" :value="word.sourceSentence"
+                                      @input="mod({word, field: 'sourceSentence', value: $event.target.value})"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="key">
                             url
-                            <i class="fa fa-share" style="float: right; cursor: pointer; padding-top: 10px;" @click="$electron.shell.openExternal(word.sourceUrl)"></i>
+                            <i class="fa fa-share" style="float: right; cursor: pointer; padding-top: 10px;"
+                               @click="$electron.shell.openExternal(word.sourceUrl)"></i>
                         </td>
                         <td class="value">
-                            <input type="text" :value="word.sourceUrl" @input="mod({word, field: 'sourceUrl', value: $event.target.value})">
+                            <input type="text" :value="word.sourceUrl"
+                                   @input="mod({word, field: 'sourceUrl', value: $event.target.value})">
                         </td>
                     </tr>
                 </table>
@@ -58,7 +63,7 @@
         </transition>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import { mapActions } from 'vuex'
 
     export default {

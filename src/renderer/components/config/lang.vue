@@ -11,9 +11,10 @@
         </div>
     </div>
 </template>
-<script>
-    import {mapActions} from 'vuex'
+<script type="text/ecmascript-6">
+    import { mapActions } from 'vuex'
     import dbs from '../../db'
+
     export default {
         methods: {
             ...mapActions({

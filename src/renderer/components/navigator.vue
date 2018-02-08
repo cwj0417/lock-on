@@ -39,7 +39,8 @@
                 <i class="fa fa-calendar"></i>
                 <span>{{ $t('review all') }}</span>
             </li>
-            <li :class="{active: $route.fullPath === `/review/scheme/${scheme._id}`}" @click="$router.push(`/review/scheme/${scheme._id}`)" v-for="scheme of schemes">
+            <li :class="{active: $route.fullPath === `/review/scheme/${scheme._id}`}"
+                @click="$router.push(`/review/scheme/${scheme._id}`)" v-for="scheme of schemes">
                 <i class="fa fa-list"></i>
                 <span>{{scheme.name}}</span>
                 <i class="fa fa-trash operate" @click.stop="$df(removeScheme, scheme.name, scheme)"></i>
@@ -57,9 +58,11 @@
             <li v-if="creatingBook">
                 <i class="fa fa-list"></i>
                 <input @blur="createBook($event.target.value)" @keyup.enter="creatingBook = false" type="text"
-                       placeholder="your new book's name" style="height: 26px; width: 160px; padding: 5px; outline: none;">
+                       placeholder="your new book's name"
+                       style="height: 26px; width: 160px; padding: 5px; outline: none;">
             </li>
-            <li :class="{active: $route.fullPath === `/view/book/${book._id}`}" @click="$router.push(`/view/book/${book._id}`)" v-for="book of books">
+            <li :class="{active: $route.fullPath === `/view/book/${book._id}`}"
+                @click="$router.push(`/view/book/${book._id}`)" v-for="book of books">
                 <i class="fa fa-list"></i>
                 <span>{{book.name}}</span>
                 <i class="fa fa-trash operate" @click.stop="$df(removeBook, book.name,book)"></i>
@@ -67,7 +70,7 @@
         </ul>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import { mapState, mapActions } from 'vuex'
 
     export default {

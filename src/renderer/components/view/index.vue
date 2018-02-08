@@ -16,7 +16,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import wordList from '../common/wordList.vue'
     import wordDetail from '../common/wordDetail.vue'
     import { mapState, mapActions } from 'vuex'

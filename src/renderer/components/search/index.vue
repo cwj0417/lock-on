@@ -15,12 +15,12 @@
     <div class="search">
         <div class="search-wrap">
             <i-input v-model="word" style="width: 50%" @on-change="inputting" @click.native="$event.target.select()">
-            <i-select v-model="fromLang" slot="prepend" style="width: 80px" @on-change="search">
-                <i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>
-            </i-select>
-            <i-select v-model="toLang" slot="append" style="width: 80px" @on-change="search">
-                <i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>
-            </i-select>
+                <i-select v-model="fromLang" slot="prepend" style="width: 80px" @on-change="search">
+                    <i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>
+                </i-select>
+                <i-select v-model="toLang" slot="append" style="width: 80px" @on-change="search">
+                    <i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>
+                </i-select>
             </i-input>
             <div class="info">
                 {{info}}
@@ -53,7 +53,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import webview from '../common/webview.vue'
     import { langConfig, getUrl } from './baiduConfig'
     import { mapActions } from 'vuex'

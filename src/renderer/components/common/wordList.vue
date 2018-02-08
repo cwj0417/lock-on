@@ -87,7 +87,8 @@
                     {{ $t('sentence') }}
                 </div>
             </div>
-            <div class="line" :class="{active: curWord && item._id === curWord._id}" v-for="item of list" @click="$emit('detail', item)">
+            <div class="line" :class="{active: curWord && item._id === curWord._id}" v-for="item of list"
+                 @click="$emit('detail', item)">
                 <div class="like">
                     <i :class="item.like ? 'fa fa-heart hand heart' : 'fa fa-heart-o hand heart'"
                        @click.stop="toggleLike(item)"></i>
@@ -97,12 +98,15 @@
                     <Dropdown @click.native.stop="">
                         <i class="fa fa-plus-circle"></i>
                         <DropdownMenu slot="list">
-                            <DropdownItem :key="_id" @click.native="addToBook(_id, item._id)" v-for="({_id, name}) of books">{{name}}</DropdownItem>
+                            <DropdownItem :key="_id" @click.native="addToBook(_id, item._id)"
+                                          v-for="({_id, name}) of books">{{name}}
+                            </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
                 <div class="rank">
-                    <i class="fa fa-star" :class="item.rank >= 4 ? 'star-high' : item.rank >= 2 ? 'star-medium' : 'star-low'"></i>
+                    <i class="fa fa-star"
+                       :class="item.rank >= 4 ? 'star-high' : item.rank >= 2 ? 'star-medium' : 'star-low'"></i>
                     <div class="badge">
                         {{item.rank}}
                     </div>
@@ -114,7 +118,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import { mapActions, mapState } from 'vuex'
 
     export default {

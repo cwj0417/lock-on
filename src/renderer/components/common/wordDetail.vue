@@ -91,7 +91,7 @@
         </div>
     </div>
 </template>
-<script>
+<script type="text/ecmascript-6">
     import { mapActions, mapState } from 'vuex'
 
     export default {
