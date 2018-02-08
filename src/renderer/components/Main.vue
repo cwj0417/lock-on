@@ -9,6 +9,9 @@
                 <div class="icon pull-right">
                     <i class="fa fa-cog" @click="openConfig"></i>
                 </div>
+                <div class="icon pull-right">
+                    <i class="fa fa-play-circle" @click="openPlayer"></i>
+                </div>
             </div>
             <div class="operate full-height">
                 <div class="minimize">
@@ -54,6 +57,9 @@
             togglePin () {
                 this.pin = !this.pin
                 this.$electron.ipcRenderer.send('pinWindow', this.pin)
+            },
+            openPlayer () {
+                this.$electron.ipcRenderer.send('playerWindow')
             }
         },
         mounted () {

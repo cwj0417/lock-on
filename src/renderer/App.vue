@@ -84,6 +84,9 @@
             content: "";
         }
     }
+    .flex {
+        display: flex;
+    }
 
     .heart {
         color: var(--major)

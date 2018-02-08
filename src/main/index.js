@@ -171,6 +171,19 @@ const configConfig = {
     maximizable: false
 }
 
+const playerConfig = {
+    x: 0,
+    y: 0,
+    show: false,
+    width: 530,
+    height: 110,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    alwaysOnTop: true,
+    frame: false
+}
+
 function sendStatusToWindow (text) {
     console.log('%c ' + text, 'color: red')
     mainWindow.webContents.send('message', text)
@@ -205,6 +218,18 @@ function createMini () {
     })
     mainWindow.on('focus', () => {
         mainWindow.webContents.send('miniFocused')
+    })
+}
+
+function createPlayer () {
+    currentWindow = 'player'
+    mainWindow = new BrowserWindow(playerConfig)
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show()
+    })
+    mainWindow.loadURL(`${winURL}#/player`)
+    mainWindow.on('closed', () => {
+        mainWindow = null
     })
 }
 
@@ -304,6 +329,12 @@ ipcMain.on('changeToNormal', (event, arg) => {
     currentWindow = 'normal'
     closeWindow()
     createWindow()
+})
+ipcMain.on('playerWindow', (event, arg) => {
+    currentWindow = 'player'
+    if (configWindow) configWindow.close()
+    closeWindow()
+    createPlayer()
 })
 
 ipcMain.on('setMini', (event, {w, h}) => {

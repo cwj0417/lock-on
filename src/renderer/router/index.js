@@ -29,6 +29,10 @@ export default new Router({
         name: 'mini',
         component: require('@/components/mini')
     }, {
+        path: '/player',
+        name: 'player',
+        component: require('@/components/player')
+    }, {
         path: '*',
         redirect: '/'
     }]

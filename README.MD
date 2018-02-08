@@ -14,7 +14,7 @@ yarn
 yarn dev
 
 ## release by travis.ci 
-## add tag and push to build on remote
+## set npm version and push to build on remote
 
 ```
 

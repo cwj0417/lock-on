@@ -7,6 +7,7 @@
             </div>
             <div v-else>
                 <span class="header">{{title}}</span>
+                <i class="fa fa-play-circle hand header" @click="play"></i>
             </div>
             <wordList :curWord="curWord" :mini="!!curWord" :list="list" @detail="d => {curWord = d}"></wordList>
         </div>
@@ -73,6 +74,9 @@
                 this.search({
                     find: this.curType.search(this, id)
                 })
+            },
+            play () {
+                this.$electron.ipcRenderer.send('playerWindow')
             }
         },
         watch: {
@@ -84,11 +88,12 @@
             this.init()
         }
     }
+
 </script>
 <style lang="scss">
     .viewWrap {
         .header {
-            font-size: 25px;
+            font-size: 20px;
             padding: 5px;
         }
         .viewContent {

@@ -8,33 +8,45 @@
                 </div>
                 <div v-else-if="$route.params.type !== 'scheme'" class="filter">
                     <div class="brief clearfix">
-                        <i-input class="ipt-word" @on-change="timer" v-model="filter.word" :placeholder="$t('search')" icon="ios-search"></i-input>
+                        <i class="fa fa-play-circle hand header-play" @click="play"></i>
+                        <i-input class="ipt-word" @on-change="timer" v-model="filter.word" :placeholder="$t('search')"
+                                 icon="ios-search"></i-input>
                         <div class="filter-more non-select" @click="fullFilter = !fullFilter">
                             {{ $t('more-options') }}
-                            <i class="fa fa-angle-double-down" :style="{transition: 'all .5s', transform: fullFilter ? 'rotate(180deg)' : 'rotate(0deg)'}"></i>
+                            <i class="fa fa-angle-double-down"
+                               :style="{transition: 'all .5s', transform: fullFilter ? 'rotate(180deg)' : 'rotate(0deg)'}"></i>
                         </div>
-                        <i class="fa fa-hourglass-o fa-spin" v-show="timing" style="line-height: 32px; padding: 0 10px;"></i>
+                        <i class="fa fa-hourglass-o fa-spin" v-show="timing"
+                           style="line-height: 32px; padding: 0 10px;"></i>
                     </div>
                     <transition name="more" mode="out-in">
                         <div class="more clearfix" v-if="fullFilter === true">
                             <div class="clearfix" style="margin-bottom: 10px;">
                                 <div class="sort">
-                                    <span @click="sort('rank')" :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">
+                                    <span @click="sort('rank')"
+                                          :class="{asc: sortStatus.rank === 1, desc: sortStatus.rank === -1}">
                                         <i class="fa fa-sort-amount-desc"></i> {{ $t('rank') }}
                                     </span>
-                                                <span @click="sort('finded')" :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">
+                                    <span @click="sort('finded')"
+                                          :class="{asc: sortStatus.finded === 1, desc: sortStatus.finded === -1}">
                                         <i class="fa fa-sort-amount-desc"></i> {{ $t('hot') }}
                                     </span>
                                 </div>
                                 <div class="save-as">
                                     <i class="fa fa-eraser hand" @click="clear" style="margin-right: 10px;"></i>
-                                    <span v-if="existScheme" class="hand padding5" @click="$router.push(`/review/scheme/${existScheme._id}`)">
+                                    <span v-if="existScheme" class="hand padding5"
+                                          @click="$router.push(`/review/scheme/${existScheme._id}`)">
                                         {{existScheme.name}}
                                         <i class="fa fa-external-link"></i>
                                     </span>
                                     <template v-else>
-                                        <i class="fa fa-save hand" v-if="!inputFilterTheme" @click="inputFilterTheme = true"></i>
-                                        <i-input v-else :placeholder="$t('save-filter-as')" style="width: 160px;"  @on-blur="inputFilterTheme = false" @on-keyup.enter="saveFilter($event.target.value)" @on-keyup.tab="inputFilterTheme = false" @on-keyup.esc="inputFilterTheme = false"></i-input>
+                                        <i class="fa fa-save hand" v-if="!inputFilterTheme"
+                                           @click="inputFilterTheme = true"></i>
+                                        <i-input v-else :placeholder="$t('save-filter-as')" style="width: 160px;"
+                                                 @on-blur="inputFilterTheme = false"
+                                                 @on-keyup.enter="saveFilter($event.target.value)"
+                                                 @on-keyup.tab="inputFilterTheme = false"
+                                                 @on-keyup.esc="inputFilterTheme = false"></i-input>
                                     </template>
                                 </div>
                             </div>
@@ -43,15 +55,18 @@
                                 <span class="search">
                                     {{ $t('sourceUrl') }}:
                                 </span>
-                                    <i-input @on-change="timer" v-model="filter.sourceUrl" style="width: 200px;"></i-input>
+                                    <i-input @on-change="timer" v-model="filter.sourceUrl"
+                                             style="width: 200px;"></i-input>
                                 </div>
                                 <div class="rank">
                                 <span class="search">
                                     {{ $t('rank') }}:
                                 </span>
                                     <rate v-model="filter.rankMin" placeholder="rank-min" @on-change="timer"></rate>
-                                    <rate v-model="filter.rankMax" placeholder="rank-max" @on-change="timer" v-if="fullRank"></rate>
-                                    <i class="fa fa-arrow-left" @click="fullRank = !fullRank" :style="{transition: 'all .5s', transform: fullRank ? 'rotate(0deg)' : 'rotate(180deg)'}"></i>
+                                    <rate v-model="filter.rankMax" placeholder="rank-max" @on-change="timer"
+                                          v-if="fullRank"></rate>
+                                    <i class="fa fa-arrow-left" @click="fullRank = !fullRank"
+                                       :style="{transition: 'all .5s', transform: fullRank ? 'rotate(0deg)' : 'rotate(180deg)'}"></i>
                                 </div>
                             </div>
                         </div>
@@ -61,11 +76,13 @@
                     <div class="header">
                         {{title}}
                     </div>
+                    <i class="fa fa-play-circle hand header" @click="play"></i>
                     <div class="fixedFilter" v-for="(value, key) in filter">
                         <span class="key">{{$t(key)}}</span>
                         <span class="value">{{value}}</span>
                     </div>
-                    <div class="fixedFilter" v-for="(value, key) in sortStatus" :class="{asc: value === 1, desc: value === -1}">
+                    <div class="fixedFilter" v-for="(value, key) in sortStatus"
+                         :class="{asc: value === 1, desc: value === -1}">
                         <span>{{$t(key)}}</span>
                     </div>
                 </div>
@@ -305,6 +322,9 @@
                     skip: this.pageSize * (this.curPage - 1),
                     limit: this.pageSize
                 })
+            },
+            play () {
+                this.$electron.ipcRenderer.send('playerWindow')
             }
         },
         watch: {
@@ -340,6 +360,7 @@
             this.init()
         }
     }
+
 </script>
 <style lang="scss">
     .review-all {
@@ -347,7 +368,7 @@
             height: calc(100% - 50px);
             display: flex;
             .header {
-                font-size: 25px;
+                font-size: 20px;
                 padding: 5px;
                 display: inline-block;
             }
@@ -398,6 +419,12 @@
                     }
                     .brief {
                         padding: 10px;
+                        .header-play {
+                            float: left;
+                            font-size: 20px;
+                            line-height: 32px;
+                            padding: 0 10px;
+                        }
                         .ipt-word {
                             width: 200px;
                             float: left;
