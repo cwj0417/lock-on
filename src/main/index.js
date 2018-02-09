@@ -172,11 +172,9 @@ const configConfig = {
 }
 
 const playerConfig = {
-    x: 0,
-    y: 0,
     show: false,
-    width: 530,
-    height: 110,
+    width: 200,
+    height: 400,
     resizable: false,
     minimizable: false,
     maximizable: false,
@@ -254,6 +252,9 @@ app.on('activate', () => {
         }
         if (currentWindow === 'mini') {
             createMini()
+        }
+        if (currentWindow === 'player') {
+            createPlayer()
         }
     }
 })
@@ -338,7 +339,7 @@ ipcMain.on('playerWindow', (event, arg) => {
     createPlayer()
 })
 
-ipcMain.on('setMini', (event, {w, h}) => {
+ipcMain.on('setWindow', (event, {w, h}) => {
     mainWindow.setSize(w, h, true)
 })
 

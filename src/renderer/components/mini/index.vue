@@ -153,7 +153,7 @@
         watch: {
             mini: function (value) {
                 let [w, h] = value ? [40, 110] : [530, 110]
-                this.$electron.ipcRenderer.send('setMini', {w, h})
+                this.$electron.ipcRenderer.send('setWindow', {w, h})
             }
         }
     }
