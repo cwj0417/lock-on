@@ -22,6 +22,7 @@
         .display {
             overflow: hidden;
             .head {
+                transition: all .3s;
                 display: flex;
                 height: 35px;
                 padding: 5px;
@@ -64,9 +65,9 @@
             }
         }
         &:hover {
-            background: white;
             .display {
                 .head {
+                    background-color: white;
                     .word {
                         color: black;
                     }
@@ -88,8 +89,8 @@
     }
 </style>
 <template>
-    <div class="player full-height flex app-drag">
-        <div class="full-width" v-if="!playing">
+    <div class="player full-height flex">
+        <div class="full-width app-drag" v-if="!playing">
             <div class="jump">
                 <i class="fa fa-close" @click="$electron.ipcRenderer.send('closeWindow')"></i>
                 <i class="fa fa-cog" @click="close"></i>
@@ -100,10 +101,14 @@
                     <Option value='{"all": true}'>{{$t('all')}}</Option>
                     <Option value='{"like": true}'>{{$t('like')}}</Option>
                     <OptionGroup :label="$t('book')">
-                        <Option v-for="(item, index) of books" :value="JSON.stringify(item)" :key="index">{{ item.name }}</Option>
+                        <Option v-for="(item, index) of books" :value="JSON.stringify(item)" :key="index">{{ item.name
+                            }}
+                        </Option>
                     </OptionGroup>
                     <OptionGroup :label="$t('scheme')">
-                        <Option v-for="(item, index) of schemes" :value="JSON.stringify(item)" :key="index">{{ item.name }}</Option>
+                        <Option v-for="(item, index) of schemes" :value="JSON.stringify(item)" :key="index">{{ item.name
+                            }}
+                        </Option>
                     </OptionGroup>
                 </Select>
                 <Select v-model="interval" style="width:200px">
@@ -111,11 +116,13 @@
                     <Option value=10000>10秒</Option>
                     <Option value=20000>20秒</Option>
                 </Select>
-                <button :disabled="!selected" style="margin: 10px 50px;width: 100px;font-size: 30px;" @click="play">play</button>
+                <button :disabled="!selected" style="margin: 10px 50px;width: 100px;font-size: 30px;" @click="play">
+                    play
+                </button>
             </div>
         </div>
         <div class="full-width full-height display" style="background: 'red'" v-else-if="!paused">
-            <div class="head">
+            <div class="head app-drag">
                 <div class="word">
                     <span>{{list[currentWord] && list[currentWord].word}}</span>
                     <span class="definition">{{list[currentWord] && list[currentWord].definition}}</span>
@@ -126,10 +133,11 @@
                 </div>
             </div>
             <div class="body">
-                <a @click="list[currentWord] && $electron.shell.openExternal(list[currentWord].sourceUrl)">{{list[currentWord] && list[currentWord].sourceSentence}}</a>
+                <a @click="list[currentWord] && $electron.shell.openExternal(list[currentWord].sourceUrl)">{{list[currentWord]
+                    && list[currentWord].sourceSentence}}</a>
             </div>
         </div>
-        <div class="full-width full-height paused" v-else>
+        <div class="full-width full-height app-drag paused" v-else>
             <i class="fa fa-play" @click="resume"></i>
         </div>
     </div>
@@ -160,10 +168,59 @@
                 let selected = JSON.parse(this.selected)
                 let p = Promise.resolve()
                 if (selected.all) {
+                    // stands for all
                     p = this.search({})
                 }
                 if (selected.like) {
+                    // stands for like
                     p = this.search({find: {like: true}})
+                }
+                if (selected.list) {
+                    // stands for books
+                    this.search({
+                        find: {
+                            _id: {
+                                $in: selected.list
+                            }
+                        }
+                    })
+                }
+                if (selected.filter) {
+                    // stands for scheme
+                    let conds = {}
+                    let has = (key) => {
+                        if (selected.filter.filter[key]) {
+                            return true
+                        }
+                        return false
+                    }
+                    if (has('recognized')) {
+                        conds.recognized = selected.filter.filter.recognized
+                    }
+                    if (has('word')) {
+                        conds.word = new RegExp(selected.filter.filter.word)
+                    }
+                    if (has('sourceUrl')) {
+                        conds.sourceUrl = new RegExp(selected.filter.filter.sourceUrl)
+                    }
+                    if (has('sourceSentence')) {
+                        conds.sourceSentence = new RegExp(selected.filter.filter.sourceSentence)
+                    }
+                    let sort = selected.filter.sort || {}
+                    if (!sort.createTime) {
+                        sort.createTime = -1
+                    }
+                    this.search({
+                        find: {
+                            ...conds,
+                            $where: function () {
+                                return (has('rankMin') ? this.rank >= selected.filter.filter.rankMin && this.rank <= selected.filter.filter.rankMax : true) &&
+                                        (has('startTime') ? this.createTime.valueOf() > selected.filter.filter.startTime : true) &&
+                                        (has('endTime') ? this.createTime.valueOf() < selected.filter.filter.endTime : true)
+                            }
+                        },
+                        sort
+                    })
                 }
                 p.then(res => {
                     this.startPlay()
@@ -206,6 +263,11 @@
             playing: function (value) {
                 let [w, h] = value ? [530, 110] : [200, 400]
                 this.$electron.ipcRenderer.send('setWindow', {w, h})
+                if (value) {
+                    document.body.style.backgroundColor = 'rgba(255, 255, 255, 0.7)'
+                } else {
+                    document.body.style.background = ''
+                }
             }
         }
     }
