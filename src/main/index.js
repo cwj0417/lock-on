@@ -174,12 +174,11 @@ const configConfig = {
 const playerConfig = {
     show: false,
     width: 200,
-    height: 400,
+    height: 175,
     resizable: false,
     minimizable: false,
     maximizable: false,
     alwaysOnTop: true,
-    transparent: true,
     frame: false
 }
 

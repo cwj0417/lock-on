@@ -18,14 +18,16 @@
         }
         .select {
             height: calc(100% - 35px);
+            padding: 10px;
         }
         .display {
             overflow: hidden;
             .head {
                 transition: all .3s;
                 display: flex;
-                height: 35px;
+                height: 25px;
                 padding: 5px;
+                line-height: 15px;
                 .word {
                     font-size: 15px;
                     font-weight: bold;
@@ -33,7 +35,7 @@
                     color: black;
                 }
                 .definition {
-                    transition: opacity 1.5s;
+                    transition: opacity .5s;
                     opacity: 0;
                 }
                 .stop {
@@ -42,6 +44,22 @@
                     text-align: center;
                     transition: transform .2s;
                     transform: scale(0);
+                }
+            }
+            .process-bar-wrap {
+                height: 10px;
+                .process-bar {
+                    height: 1px;
+                    margin-bottom: 9px;
+                    transition: all .1s linear;
+                    background: var(--minor);
+                    cursor: e-resize;
+                }
+                &:hover {
+                    .process-bar {
+                        height: 10px;
+                        margin: 0;
+                    }
                 }
             }
             .body {
@@ -82,6 +100,7 @@
                     a {
                         color: black;
                         text-decoration: underline;
+                        text-decoration-color: #999;
                     }
                 }
             }
@@ -89,7 +108,7 @@
     }
 </style>
 <template>
-    <div class="player full-height flex">
+    <div class="player full-height flex" @mouseover="_pause" @mouseout="tick">
         <div class="full-width app-drag" v-if="!playing">
             <div class="jump">
                 <i class="fa fa-close" @click="$electron.ipcRenderer.send('closeWindow')"></i>
@@ -97,7 +116,7 @@
                 <i class="fa fa-window-restore" @click="$electron.ipcRenderer.send('changeToNormal')"></i>
             </div>
             <div class="select">
-                <Select v-model="selected" style="width:200px" filterable>
+                <Select v-model="selected" style="width:180px;margin-bottom: 10px;" filterable>
                     <Option value='{"all": true}'>{{$t('all')}}</Option>
                     <Option value='{"like": true}'>{{$t('like')}}</Option>
                     <OptionGroup :label="$t('book')">
@@ -111,12 +130,14 @@
                         </Option>
                     </OptionGroup>
                 </Select>
-                <Select v-model="interval" style="width:200px">
+                <Select v-model="interval" style="width:180px">
                     <Option value=5000>5秒</Option>
                     <Option value=10000>10秒</Option>
                     <Option value=20000>20秒</Option>
                 </Select>
-                <button :disabled="!selected" style="margin: 10px 50px;width: 100px;font-size: 30px;" @click="play">
+                <button :disabled="!selected"
+                        style="margin: 10px 50px;width: 80px;font-size: 16px;padding: 5px;border-radius: 10px;"
+                        @click="play">
                     play
                 </button>
             </div>
@@ -131,6 +152,9 @@
                     <i class="fa fa-pause" @click="pause" style="padding-right: 15px"></i>
                     <i class="fa fa-stop" @click="stop"></i>
                 </div>
+            </div>
+            <div class="process-bar-wrap">
+                <div ref="processbar" class="process-bar" :style="{width: `${cur / interval * 100}%`}" @click="_next"></div>
             </div>
             <div class="body">
                 <a @click="list[currentWord] && $electron.shell.openExternal(list[currentWord].sourceUrl)">{{list[currentWord]
@@ -150,10 +174,11 @@
             return {
                 playing: false,
                 paused: false,
-                selected: null,
+                selected: '{"all": true}',
                 currentWord: 0,
                 timer: null,
-                interval: 10000
+                interval: '10000',
+                cur: 100000
             }
         },
         methods: {
@@ -228,13 +253,8 @@
                 return null
             },
             startPlay () {
-                this.timer = setInterval(() => {
-                    if (this.currentWord === this.list.length - 1) {
-                        this.currentWord = 0
-                    } else {
-                        this.currentWord++
-                    }
-                }, this.interval)
+                this.cur = this.interval
+                this.tick()
             },
             stop () {
                 this.playing = false
@@ -250,6 +270,25 @@
                 this.paused = false
                 this.$electron.ipcRenderer.send('setWindow', {w: 530, h: 110})
                 this.startPlay()
+            },
+            tick () {
+                this.timer = setInterval(() => {
+                    this.cur -= 100
+                    if (this.cur <= 0) {
+                        this._next()
+                    }
+                }, 100)
+            },
+            _pause () {
+                clearInterval(this.timer)
+            },
+            _next () {
+                if (this.currentWord === this.list.length - 1) {
+                    this.currentWord = 0
+                } else {
+                    this.currentWord++
+                }
+                this.cur = this.interval
             }
         },
         computed: {
@@ -261,10 +300,10 @@
         },
         watch: {
             playing: function (value) {
-                let [w, h] = value ? [530, 110] : [200, 400]
+                let [w, h] = value ? [530, 110] : [200, 175]
                 this.$electron.ipcRenderer.send('setWindow', {w, h})
                 if (value) {
-                    document.body.style.backgroundColor = 'rgba(255, 255, 255, 0.7)'
+                    document.body.style.backgroundColor = '#ddd'
                 } else {
                     document.body.style.background = ''
                 }
