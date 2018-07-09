@@ -31,7 +31,7 @@ export default {
     //
     //
     // head and navigator
-    'appName': ['词王', 'vocabook', '語彙集'],
+    'appName': ['vocabook', 'vocabook', 'vocabook'],
     'recommended': ['推荐', 'recommended', 'おすすめ'],
     'home': ['首页', 'home', 'ホーム'],
     'add to library': ['添加到库', 'add to library', 'ライブラリに追加'],

@@ -42,9 +42,10 @@
             float: left;
             width: 100px;
             height: 30px;
+            padding: 5px;
             cursor: pointer;
             &.active {
-                box-shadow: 0 0 5px 5px var(--minor);
+                box-shadow: 0 0 5px 5px var(--minor) inset;
             }
         }
     }

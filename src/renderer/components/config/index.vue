@@ -58,6 +58,10 @@
                 <i class="fa fa-language"></i>
                 <span>{{map['lang']}}</span>
             </div>
+            <div class="tab hand app-non-drag" :class="{active: cur === 'backup'}" @click="cur = 'backup'">
+                <i class="fa fa-save"></i>
+                <span>{{map['backup']}}</span>
+            </div>
         </div>
         <div class="content" v-if="cur === 'word'">
             单词配置...
@@ -71,15 +75,19 @@
         <div class="content" v-if="cur === 'lang'">
             <lang></lang>
         </div>
+        <div class="content" v-if="cur === 'backup'">
+            <backup></backup>
+        </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import theme from './theme.vue'
     import lang from './lang.vue'
+    import backup from './backup.vue'
 
     export default {
         name: 'config',
-        components: {theme, lang},
+        components: {theme, lang, backup},
         data () {
             return {
                 cur: 'word',
@@ -87,7 +95,8 @@
                     word: '单词',
                     theme: '主题',
                     explore: '发现',
-                    lang: '语言'
+                    lang: '语言',
+                    backup: '备份'
                 }
             }
         }

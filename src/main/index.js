@@ -61,7 +61,7 @@ let template = [{
     }, {
         label: 'check update',
         click () {
-            autoUpdater.setFeedURL('https://github.com/fjonas/lock-on/releases/download/v0.0.6')
+            autoUpdater.setFeedURL('https://github.com/cwj0417/lock-on/releases/download/v0.0.6')
             autoUpdater.checkForUpdates()
         }
     }, {
@@ -90,8 +90,6 @@ if (process.platform === 'darwin') {
         submenu: [
             {role: 'about'},
             {type: 'separator'},
-            {role: 'services', submenu: []},
-            {type: 'separator'},
             {role: 'hide'},
             {role: 'hideothers'},
             {role: 'unhide'},
@@ -99,17 +97,6 @@ if (process.platform === 'darwin') {
             {role: 'quit'}
         ]
     })
-    // Edit menu
-    template[0].submenu.push(
-        {type: 'separator'},
-        {
-            label: 'Speech',
-            submenu: [
-                {role: 'startspeaking'},
-                {role: 'stopspeaking'}
-            ]
-        }
-    )
     // Window menu
     template[2].submenu = [
         {role: 'close'},
