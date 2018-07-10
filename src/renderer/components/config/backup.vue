@@ -56,8 +56,8 @@
                 gistore.$api.getList()
                 .then(res => {
                     this.list = res
-                }, err => {
-                    console.log(err)
+                }, res => {
+                    this.list = res
                 })
             },
             backup () {

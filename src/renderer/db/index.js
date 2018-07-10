@@ -77,6 +77,7 @@ export const appDb = {
                 pool[collection].remove({}, {multi: true}, function () {
                     fs.writeFile(path.resolve(userPath, `${collection}.db`), data[collection], err => {
                         if (err) return
+                        alert(collection)
                         pool[collection] = new Datastore({
                             autoload: true,
                             filename: path.join(userPath, `/${collection}.db`)
