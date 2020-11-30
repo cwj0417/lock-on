@@ -1,15 +1,7 @@
 <template>
-    <div class="quick-review">
-        <div class="head clearfix" v-if="list.length">
-            <div class="like column">
-                like
-            </div>
-            <div class="word column">
-                word
-            </div>
-            <div class="sentence column">
-                sentence
-            </div>
+    <div class="quick-review full-height">
+        <div class="head full-height" v-if="list.length">
+            <card v-for="item of list" :word="item" :key="item.id"></card>
         </div>
         <div class="empty" v-else>
             <i18n path="empty-recent-added" tag="p">
@@ -17,21 +9,15 @@
                 <a place="mini" @click="$electron.ipcRenderer.send('changeToMini')">{{ $t('add-word-mini') }}</a>
             </i18n>
         </div>
-        <edit v-model="activeId" v-for="item of list" :word="item" :key="item.id"></edit>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import { mapState, mapActions } from 'vuex'
-    import edit from './edit.vue'
+    import card from './card.vue'
 
     export default {
         name: 'quickReview',
-        data () {
-            return {
-                activeId: null
-            }
-        },
-        components: {edit},
+        components: {card},
         computed: {
             ...mapState({
                 list: state => state.words.words
@@ -60,10 +46,10 @@
             padding: 5px;
         }
         .head {
-            height: 30px;
-            line-height: 30px;
-            font-weight: bold;
-            text-indent: 7px;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            align-content: flex-start;
         }
         .empty {
             margin: 100px auto;
@@ -72,20 +58,6 @@
             a {
                 color: var(--minor);
             }
-        }
-        .column {
-            float: left;
-        }
-        .like {
-            padding-left: 25px;
-            width: 60px;
-            text-align: center;
-        }
-        .word {
-            width: 150px;
-        }
-        .sentence {
-            width: calc(100% - 210px);
         }
     }
 </style>

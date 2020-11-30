@@ -31,7 +31,7 @@ export default {
     //
     //
     // head and navigator
-    'appName': ['vocabook', 'vocabook', 'vocabook'],
+    'appName': ['VOCABOOK', 'VOCABOOK', 'VOCABOOK'],
     'recommended': ['推荐', 'recommended', 'おすすめ'],
     'home': ['首页', 'home', 'ホーム'],
     'add to library': ['添加到库', 'add to library', 'ライブラリに追加'],
@@ -42,7 +42,7 @@ export default {
     'review': ['复习', 'review', '復習'],
     'review all': ['总览', 'review all', '総覧'],
     'books': ['单词本', 'books', '語本'],
-    'favourite': ['收藏', 'favourite', '収蔵'],
+    'favourite': ['收藏', 'like', '収蔵'],
     //
     //
     // reminder
@@ -52,5 +52,8 @@ export default {
     //
     //
     // confirm
-    'delete-confirm': ['是否确认删除此项目', 'are you sure to delete this item?', 'are you sure to delete this item?']
+    'delete-confirm': ['是否确认删除此项目', 'are you sure to delete this item?', 'are you sure to delete this item?'],
+    // placeholder
+    'placeholder-word': ['请输入单词', 'please input word', 'please input'],
+    'placeholder-def': ['请输入解释', 'please input definition', 'please input']
 }

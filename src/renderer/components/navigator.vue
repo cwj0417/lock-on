@@ -1,11 +1,10 @@
 <template>
-    <div class="full-height pull-left full-width navigator">
+    <div class="full-width navigator">
         <ul>
-            <li class="title">
-                <span>{{ $t('recommended') }}</span>
-            </li>
-            <li :class="{active: $route.fullPath === '/homepage'}" @click="$router.push('/homepage')">
-                <i class="fa fa-home"></i>
+            <li :class="{active: $route.fullPath === '/homepage'}" @click="$router.push('/homepage')" style="margin-top: 32px;">
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_home.png" alt="" style="width: 22px; height: 22px;">
+                </div>
                 <span>{{ $t('home') }}</span>
             </li>
             <li class="title">
@@ -14,11 +13,15 @@
                 </span>
             </li>
             <li :class="{active: $route.fullPath === '/search'}" @click="$router.push('/search')">
-                <i class="fa fa-search"></i>
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_record.png" alt="" style="width: 23px; height: 23px;">
+                </div>
                 <span>{{ $t('record new word') }}</span>
             </li>
             <li :class="{active: $route.fullPath === '/quickReview'}" @click="$router.push('/quickReview')">
-                <i class="fa fa-edit"></i>
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_calendar.png" alt="" style="width: 23px; height: 22px;">
+                </div>
                 <span>{{ $t('recent added') }}</span>
             </li>
             <li class="title">
@@ -27,7 +30,9 @@
                 </span>
             </li>
             <li :class="{active: $route.fullPath === '/chart'}" @click="$router.push('/chart')">
-                <i class="fa fa-line-chart"></i>
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_chart.png" alt="" style="width: 24px; height: 22px;">
+                </div>
                 <span>{{ $t('chart') }}</span>
             </li>
             <li class="title">
@@ -36,12 +41,16 @@
                 </span>
             </li>
             <li :class="{active: $route.fullPath === '/review/all/true'}" @click="$router.push('/review/all/true')">
-                <i class="fa fa-calendar"></i>
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_review.png" alt="" style="width: 23px; height: 24px;">
+                </div>
                 <span>{{ $t('review all') }}</span>
             </li>
             <li :class="{active: $route.fullPath === `/review/scheme/${scheme._id}`}"
                 @click="$router.push(`/review/scheme/${scheme._id}`)" v-for="scheme of schemes">
-                <i class="fa fa-list"></i>
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_review.png" alt="" style="width: 23px; height: 24px;">
+                </div>
                 <span>{{scheme.name}}</span>
                 <i class="fa fa-trash operate" @click.stop="$df(removeScheme, scheme.name, scheme)"></i>
             </li>
@@ -52,18 +61,24 @@
                 <i class="fa fa-plus-circle menu-action" @click="creatingBook = true"></i>
             </li>
             <li :class="{active: $route.fullPath === '/view/like/true'}" @click="$router.push('/view/like/true')">
-                <i class="fa fa-heart-o"></i>
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_like.png" alt="" style="width: 24px; height: 22px;">
+                </div>
                 <span>{{ $t('favourite') }}</span>
             </li>
             <li v-if="creatingBook">
-                <i class="fa fa-list"></i>
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_book.png" alt="" style="width: 22px; height: 22px;">
+                </div>
                 <input @blur="createBook($event.target.value)" @keyup.enter="creatingBook = false" type="text"
                        placeholder="your new book's name"
                        style="height: 26px; width: 160px; padding: 5px; outline: none;">
             </li>
             <li :class="{active: $route.fullPath === `/view/book/${book._id}`}"
                 @click="$router.push(`/view/book/${book._id}`)" v-for="book of books">
-                <i class="fa fa-list"></i>
+                <div class="img-wrapper">
+                    <img src="../assets/image/nav_book.png" alt="" style="width: 22px; height: 22px;">
+                </div>
                 <span>{{book.name}}</span>
                 <i class="fa fa-trash operate" @click.stop="$df(removeBook, book.name,book)"></i>
             </li>
@@ -93,7 +108,7 @@
                 _removeScheme: 'schemes/remove'
             }),
             removeBook (...args) {
-                this.$router.push('/view/like/true')
+                this.$router.push('/wordView/like/true')
                 this._removeBook(...args)
             },
             removeScheme (...args) {
@@ -113,42 +128,40 @@
         overflow: scroll;
         user-select: none;
         cursor: default;
+        height: calc(100% - 41px);
         ul {
             li {
-                line-height: 30px;
-                font-size: 13px;
-                font-weight: 500;
-                margin-left: 1px;
-                border-left: 3px solid var(--bg);
+                margin-top: 20px;
+                margin-left: 24px;
+                line-height: 24px;
+                font-size: 16px;
                 display: flex;
-                i {
-                    align-items: center;
-                    height: 12px;
-                    margin: 9px;
+                .img-wrapper {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 18px;
                 }
                 span {
                     display: block;
+                    font-size: 16px;
                     width: 100%;
+                    line-height: 24px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    color: var(--txt-dark);
                 }
                 &.title {
-                    color: #999999;
-                    font-size: 12px;
-                    padding-top: 5px;
-                    text-indent: 5px;
+                    margin-top: 32px;
                     span {
-                        line-height: 30px;
-                    }
-                    &:first-child {
-                        padding-top: 2px;
+                        color: var(--bg-disabled);
+                        font-size: 12px;
+                        line-height: 17px;
                     }
                 }
                 &.active {
-                    border-left: 3px solid var(--minor);
-                    background: var(--bg-active);
-                    color: var(--txt-dark);
+                    color: var(--major);
+                    font-weight: 600;
                 }
                 &:hover {
                     .operate {
@@ -163,6 +176,9 @@
                 .operate {
                     transition: transform .2s;
                     transform: scale(0);
+                    color: var(--minor);
+                    height: 18px;
+                    margin: 3px 10px;
                 }
             }
         }

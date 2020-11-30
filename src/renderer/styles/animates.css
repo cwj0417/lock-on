@@ -21,5 +21,18 @@
     }
 }
 @keyframes rainbow {
-    
+
+}
+
+.ani-block-in {
+    animation: 0.3s block-in ease-in-out;
+}
+
+@keyframes block-in {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
 }

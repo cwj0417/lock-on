@@ -2,33 +2,41 @@
     <div class="full-height">
         <div class="app-head app-drag">
             <div class="logo full-height">
-                <i class="fa fa-linode"></i>
-                {{ $t('appName') }}
-            </div>
-            <div class="action full-height">
-                <div class="icon pull-right">
-                    <i class="fa fa-cog" @click="openConfig"></i>
+                <div class="logo-img">
+                    <img src="../assets/image/logo.png" alt="">
                 </div>
-                <div class="icon pull-right">
-                    <i class="fa fa-play-circle" @click="openPlayer"></i>
+                <div class="logo-txt">
+                    {{ $t('appName') }}
                 </div>
             </div>
-            <div class="operate full-height">
-                <div class="minimize">
-                    <i class="fa fa-map-pin" v-if="!pin" @click="togglePin"></i>
-                    <i class="fa fa-map-marker" v-if="pin" @click="togglePin"></i>
-                    <i class="fa fa-window-minimize pull-right" @click="changeToMini"></i>
+            <div class="full-height placeholder"></div>
+            <div class="full-height user">
+                <div class="avatar full-height">
+                    <img src="../assets/image/avatar.png" alt="">
                 </div>
-                <div class="user-info">
-                    <div style="border-radius:50%;border:1px solid gray;width:30px;height:30px;font-size:20px;color:white;text-align:center;line-height:30px;">
-                        头
-                    </div>
+                <div class="nick full-height">
+                    昵称
                 </div>
+                <div class="arrow full-height">
+                    <img src="../assets/image/dropdown.png" alt="">
+                </div>
+            </div>
+            <div class="full-height mini">
+                <img src="../assets/image/play.png" alt="" @click="openPlayer">
+            </div>
+            <div class="split"></div>
+            <div class="full-height conf">
+                <img src="../assets/image/settings.png" alt="" @click="openConfig">
             </div>
         </div>
-        <div style="height: calc(100% - 60px); display: flex;">
+        <div style="height: calc(100% - 80px); display: flex;">
             <div class="full-height app-nav">
                 <navigator></navigator>
+                <div class="operate full-width">
+                    <img src="../assets/image/nav_mini_disabled.png" alt="" @click="changeToMini">
+                    <img src="../assets/image/nav_fixed_disabled.png" v-if="!pin" alt="" @click="togglePin">
+                    <img src="../assets/image/nav_fixed_selected.png" v-else alt="" @click="togglePin">
+                </div>
             </div>
             <div class="full-height app-body">
                 <router-view></router-view>
@@ -78,53 +86,105 @@
 </script>
 <style lang="scss">
     .app-head {
-        height: 60px;
+        height: 80px;
         background: var(--major);
         display: flex;
         .logo {
             width: 200px;
-            padding: 20px 0 0 20px;
-            line-height: 40px;
-            font-size: 25px;
-            color: white;
-            font-weight: bold;
-        }
-        .action {
-            width: calc(100% - 260px);
-            padding: 20px 0 0 20px;
-            .icon {
-                line-height: 40px;
-                font-size: 20px;
-                padding: 0 20px;
-                color: white;
+            padding: 34px 26px 16px;
+            display: flex;
+            .logo-img {
+                width: 24px;
+                height: 28px;
+                img {
+                    width: 24px;
+                    height: 28px;
+                }
+                margin-right: 20px;
+            }
+            .logo-txt {
+                font-size: 17px;
+                color: var(--txt);
+                font-weight: 500;
+                line-height: 28px;
             }
         }
-        .operate {
-            width: 60px;
-            .minimize {
-                height: 20px;
-                i {
-                    padding-right: 10px;
-                    font-size: 15px;
-                    color: white;
-                    &:hover {
-                        color: gray;
-                    }
+        .placeholder {
+            flex-grow: 1;
+        }
+        .user {
+            display: flex;
+            padding-right: 4px;
+            .avatar {
+                width: 40px;
+                height: 40px;
+                margin-top: 30px;
+                border-radius: 50%;
+                img {
+                    width: 100%
                 }
             }
-            .user-info {
-                height: 40px;
+            .nick {
+                font-size: 16px;
+                line-height: 22px;
+                margin: 39px 0px 19px 16px;
+                color: var(--txt);
+            }
+            .arrow {
+                width: 10px;
+                height: 8px;
+                margin: 46px 8px auto;
+                font-size: 0;
+                img {
+                    width: 10px;
+                    height: 8px;
+                }
+            }
+        }
+        .mini {
+            width: 68px;
+            padding-top: 36px;
+            padding-left: 20px;
+            img {
+                width: 28px;
+                height: 28px;
+            }
+        }
+        .split {
+            width: 1px;
+            height: 16px;
+            margin-top: 42px;
+            background: var(--minor);
+        }
+        .conf {
+            width: 72px;
+            padding-top: 36px;
+            padding-left: 20px;
+            img {
+                width: 28px;
+                height: 28px;
             }
         }
     }
 
     .app-nav {
         width: 200px;
-        overflow: scroll;
+        overflow: hidden;
+        .operate {
+            height: 40px;
+            border-top: 1px solid var(--bg-dark);
+            background: var(--bg);
+            img {
+                width: 24px;
+                height: 24px;
+                margin: 8px 0 8px 24px;
+            }
+        }
     }
 
     .app-body {
         width: calc(100% - 200px);
+        background: var(--bg-dark);
         overflow: scroll;
     }
 </style>

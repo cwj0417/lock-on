@@ -32,6 +32,11 @@
         height: 100%;
     }
 
+    textarea, input {
+        border: none;
+        outline: none;
+    }
+
     /* app-related css have 'app-' prefix */
     .app-drag {
         -webkit-app-region: drag;
@@ -47,6 +52,7 @@
 
     .non-select {
         user-select: none;
+        cursor: default;
     }
 
     ::-webkit-scrollbar{
@@ -90,5 +96,14 @@
 
     .heart {
         color: var(--major)
+    }
+
+    /* iView css rewrite */
+
+    .ivu-rate-star-full:before, .ivu-rate-star-half .ivu-rate-star-content:before {
+        color: var(--major);
+    }
+    .ivu-rate-star-full:hover:before, .ivu-rate-star-half:hover .ivu-rate-star-content:before {
+        color: var(--major);
     }
 </style>

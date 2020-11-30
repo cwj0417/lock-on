@@ -139,13 +139,13 @@ const miniConfig = {
     x: 0,
     y: 0,
     show: false,
-    width: 530,
-    height: 110,
+    width: 200,
+    height: 363,
     resizable: false,
-    minimizable: false,
+    minimizable: true,
     maximizable: false,
     alwaysOnTop: true,
-    frame: false
+    titleBarStyle: 'hidden'
 }
 
 const configConfig = {

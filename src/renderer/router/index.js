@@ -18,7 +18,7 @@ export default new Router({
             {path: '/review/:type/:id', component: require('@/components/review'), name: 'review'},
             {path: '/chart', component: require('@/components/chart'), name: 'chart'},
             {path: '/url/:protocal/:url', component: require('@/components/url'), name: 'url'},
-            {path: '/view/:type/:id', component: require('@/components/view'), name: 'view'}
+            {path: '/view/:type/:id', component: require('@/components/view'), name: 'wordView'}
         ]
     }, {
         path: '/config',

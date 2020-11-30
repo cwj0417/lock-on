@@ -2,6 +2,7 @@
     .search {
         .search-wrap {
             padding-left: 110px;
+            margin-top: 30px;
             .info {
                 color: #bbbec4;
             }
@@ -14,14 +15,7 @@
 <template>
     <div class="search">
         <div class="search-wrap">
-            <i-input v-model="word" style="width: 50%" @on-change="inputting" @click.native="$event.target.select()">
-                <i-select v-model="fromLang" slot="prepend" style="width: 80px" @on-change="search">
-                    <i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>
-                </i-select>
-                <i-select v-model="toLang" slot="append" style="width: 80px" @on-change="search">
-                    <i-option v-for="item of langConfig" :value="item.value" :key="item.value">{{item.label}}</i-option>
-                </i-select>
-            </i-input>
+            <i-input v-model="word" style="width: 50%" @on-change="inputting" @click.native="$event.target.select()"></i-input>
             <div class="info">
                 {{info}}
             </div>
@@ -55,7 +49,7 @@
 </template>
 <script type="text/ecmascript-6">
     import webview from '../common/webview.vue'
-    import { langConfig, getUrl } from './baiduConfig'
+    import { getUrl } from './baiduConfig'
     import { mapActions } from 'vuex'
 
     let inputHandle
@@ -78,7 +72,6 @@
                 dict: null,
                 fromLang: 'auto',
                 toLang: 'auto',
-                langConfig,
                 info: 'input please',
                 result: '',
                 form: {
@@ -132,7 +125,7 @@
                 this.info = 'searching...'
                 this.$http.get(url)
                 .then(res => {
-                    this.result = res.trans_result[0].dst
+                    this.result = res.translation[0]
                     this.info = 'done'
                     this.resetForm(false)
                 })

@@ -1,15 +1,17 @@
 .original {
-    --bg: #eeeeee;
-    --bg-active: #e3e3e3;
-    --txt: #c7c7c7;
+    --bg: #fff;
+    --bg-dark: #FAFAFC;
+    --bg-disabled: #d8d8d8;
+    --txt: #fff;
     --txt-dark: #414141;
-    --major: #545454;
-    --minor: #2e2e2e;
+    --major: #566DE6;
+    --minor: #8A96EE;
 }
 
 .red {
     --bg: #fafafa;
-    --bg-active: #e3e3e3;
+    --bg-dark: #e3e3e3;
+    --bg-disabled: #d8d8d8;
     --txt: #414141;
     --txt-dark: #414141;
     --major: #b72712;
@@ -17,17 +19,19 @@
 }
 
 .night {
-    --bg: #1c1f2b;
-    --bg-active: #e3e3e3;
-    --txt: #909090;
-    --txt-dark: #414141;
-    --major: #4164d9;
-    --minor: #4164d9;
+    --bg: #595959;
+    --bg-dark: #636363;
+    --bg-disabled: #a3a3a3;
+    --txt: #d4c44d;
+    --txt-dark: #f8e854;
+    --major: #4F4F4F;
+    --minor: #808080;
 }
 
 .bright {
     --bg: #fafafa;
-    --bg-active: #e3e3e3;
+    --bg-dark: #e3e3e3;
+    --bg-disabled: #d8d8d8;
     --txt: #414141;
     --txt-dark: #414141;
     --major: #1fb922;
