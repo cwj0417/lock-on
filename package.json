@@ -55,7 +55,7 @@
     }
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "electron-updater": "^2.18.2",
     "eslint": "^3.13.1",
     "font-awesome": "^4.7.0",
